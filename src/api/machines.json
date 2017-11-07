@@ -1,0 +1,162 @@
+[
+    {
+        "id": 1,
+        "machineSrNo": "10001",
+        "orientation": "Horizontal",
+        "shape": "Cylindrical",
+        "doorType": "Single manual door",
+        "machineType": "Automatic"
+    },
+    {
+        "id": 2,
+        "machineSrNo": "10002",
+        "orientation": "Horizontal",
+        "shape": "Ractangular",
+        "doorType": "Two manual doors",
+        "machineType": "Automatic"
+    },
+    {
+        "id": 3,
+        "machineSrNo": "10003",
+        "orientation": "Vertical",
+        "shape": "Cylindrical",
+        "doorType": "Single auto. vertical sliding door",
+        "machineType": "Automatic"
+    },
+    {
+        "id": 4,
+        "machineSrNo": "10004",
+        "orientation": "Horizontal",
+        "shape": "Ractangular",
+        "doorType": "Single auto. horizontal sliding door",
+        "machineType": "Automatic"
+    },
+    {
+        "id": 5,
+        "machineSrNo": "10005",
+        "orientation": "Vertical",
+        "shape": "Cylindrical",
+        "doorType": "Two auto. vertical sliding doors",
+        "machineType": "Automatic"
+    },
+    {
+        "id": 6,
+        "machineSrNo": "10006",
+        "orientation": "Horizontal",
+        "shape": "Ractangular",
+        "doorType": "Two auto. horizontal Sliding doors",
+        "machineType": "Automatic"
+    },
+    {
+        "id": 7,
+        "machineSrNo": "10007",
+        "orientation": "Vertical",
+        "shape": "Cylindrical",
+        "doorType": "Single manual door",
+        "machineType": "Manual"
+    },
+    {
+        "id": 8,
+        "machineSrNo": "10008",
+        "orientation": "Horizontal",
+        "shape": "Ractangular",
+        "doorType": "Two manual doors",
+        "machineType": "Manual"
+    },
+    {
+        "id": 9,
+        "machineSrNo": "10009",
+        "orientation": "Horizontal",
+        "shape": "Rectangular",
+        "doorType": "Two auto. vertical sliding doors",
+        "machineType": "Manual"
+    },
+    {
+        "id": 10,
+        "machineSrNo": "10010",
+        "orientation": "Vertical",
+        "shape": "Ractangular",
+        "doorType": "Two auto. horizontal Sliding doors",
+        "machineType": "Manual"
+    },
+    {
+        "id": 11,
+        "machineSrNo": "10011",
+        "orientation": "Horizontal",
+        "shape": "Cylindrical",
+        "doorType": "Single manual door",
+        "machineType": "Automatic"
+    },
+    {
+        "id": 12,
+        "machineSrNo": "10012",
+        "orientation": "Horizontal",
+        "shape": "Ractangular",
+        "doorType": "Two manual doors",
+        "machineType": "Automatic"
+    },
+    {
+        "id": 13,
+        "machineSrNo": "10013",
+        "orientation": "Horizontal",
+        "shape": "Cylindrical",
+        "doorType": "Single manual door",
+        "machineType": "Automatic"
+    },
+    {
+        "id": 14,
+        "machineSrNo": "10014",
+        "orientation": "Horizontal",
+        "shape": "Ractangular",
+        "doorType": "Two manual doors",
+        "machineType": "Automatic"
+    },
+    {
+        "id": 15,
+        "machineSrNo": "10015",
+        "orientation": "Horizontal",
+        "shape": "Cylindrical",
+        "doorType": "Single auto. vertical sliding door",
+        "machineType": "Automatic"
+    },
+    {
+        "id": 16,
+        "machineSrNo": "10016",
+        "orientation": "Horizontal",
+        "shape": "Ractangular",
+        "doorType": "Two manual doors",
+        "machineType": "Automatic"
+    },
+    {
+        "id": 17,
+        "machineSrNo": "10017",
+        "orientation": "Horizontal",
+        "shape": "Cylindrical",
+        "doorType": "Single manual door",
+        "machineType": "Automatic"
+    },
+    {
+        "id": 18,
+        "machineSrNo": "10018",
+        "orientation": "Horizontal",
+        "shape": "Ractangular",
+        "doorType": "Two manual doors",
+        "machineType": "Automatic"
+    },
+    {
+        "id": 19,
+        "machineSrNo": "10019",
+        "orientation": "Horizontal",
+        "shape": "Cylindrical",
+        "doorType": "Single auto. vertical sliding door",
+        "machineType": "Automatic"
+    },
+    {
+        "id": 20,
+        "machineSrNo": "10020",
+        "orientation": "Horizontal",
+        "shape": "Ractangular",
+        "doorType": "Two manual doors",
+        "machineType": "Automatic"
+    }
+]

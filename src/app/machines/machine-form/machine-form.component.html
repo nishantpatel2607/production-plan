@@ -1,0 +1,71 @@
+<div class="container-fluid">
+  <home></home>
+
+  <div class="row">
+    <!-- <div class="col-sm-2"></div> -->
+    <div class="col-sm-8">
+      <div class="well">
+
+        <form class="data-form" [formGroup]="form" (submit)="save()">
+          <div class="form-group">
+            <label for="machineSrNo">Machine Sr. No.</label>
+            <input formControlName="machineSrNo"
+             id="machineSrNo" 
+             type="text" 
+             class="form-control" />
+             <div *ngIf="machineSrNo.touched && machineSrNo.invalid" class="alert alert-danger">
+                <div *ngIf="machineSrNo.errors.required">Please enter machine Sr. No.</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="orientation">Orientation</label>
+            <select id="orientation" class="form-control" formControlName="orientation">
+              <option selected>Horizontal</option>
+              <option>Vertical</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="shape">Shape</label>
+            <select id="shape" class="form-control" formControlName="shape">
+              <option selected>Cylindrical</option>
+              <option>Rectangular</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="doorType">Door</label>
+            <select id="doorType" class="form-control" formControlName="doorType">
+              <option selected>Single manual door</option>
+              <option>Two manual doors</option>
+              <option>Single auto. vertical sliding door</option>
+              <option>Single auto. horizontal sliding door</option>
+              <option>Two auto. vertical sliding doors</option>
+              <option>Two auto. horizontal Sliding doors</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="machinetype">Type</label>
+            <select id="machinetype" class="form-control" formControlName="machineType">
+              <option selected>Manual</option>
+              <option>Automatic</option>
+            </select>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <button type="submit" class="btn btn-primary btn-block">Save</button>
+            </div>
+            <div class="col-sm-6">
+              <div class="hidden-lg hidden-md hidden-sm">&nbsp;</div>
+              <button class="btn btn-block" (click)="cancelForm()">Cancel</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+    <div class="col-sm-4"></div>
+  </div>
+</div>
