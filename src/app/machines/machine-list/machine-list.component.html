@@ -11,9 +11,6 @@
             </form>
         </div>
 
-
-
-
         <div class='panel-body'>
             <div class='row'>
                 <div class='col-md-4'>
@@ -42,7 +39,7 @@
                             <td>
                                 <input type="checkbox" id="delSel" value="1" (change)="selectedItem(machine,$event)"/> </td>
                             <td>
-                                <a href="">{{machine.machineSrNo}}</a>
+                                <a [routerLink]="['/machine', machine.id]">{{machine.machineSrNo}}</a>
                             </td>
                             <td>{{machine.orientation}}</td>
                             <td>{{machine.shape}}</td>

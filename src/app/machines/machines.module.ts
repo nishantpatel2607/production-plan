@@ -1,3 +1,5 @@
+
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MachineFilterPipe } from './machine-list/machine-filter.pipe';
 import { PagerService } from '../core/services/pager.service';
@@ -17,7 +19,8 @@ import { MachineFormComponent } from './machine-form/machine-form.component';
         SharedModule,
         RouterModule.forChild([
             { path: 'machines', component: MachineListComponent},
-            { path: 'machines/new', component: MachineFormComponent}
+            { path: 'machines/new', component: MachineFormComponent},
+            { path: 'machine/:id',component: MachineFormComponent}
         ])
     ],
     declarations:[
@@ -29,6 +32,7 @@ import { MachineFormComponent } from './machine-form/machine-form.component';
     providers:[
         MachineService,
         PagerService
+      
     ]
 })
 export class MachinesModule{}

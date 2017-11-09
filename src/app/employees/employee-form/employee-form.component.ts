@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'employee-form',
@@ -7,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EmployeeFormComponent implements OnInit {
 
+  form;
   constructor() { }
 
   ngOnInit() {

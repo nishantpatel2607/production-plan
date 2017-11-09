@@ -22,6 +22,13 @@ export class MachineService{
         .catch(this.handleError);
     }
 
+    getMachine(id: number) :Observable<IMachine> {
+        let machine: Observable<IMachine>;
+        machine= this.getMachines()
+        .map((machines: IMachine[])=> machines.find(m => m.id === id))
+        //.do(data => console.log('MAC: ' + JSON.stringify(data)))
+        return machine;
+    }
 
     private handleError(error: Response) {
         

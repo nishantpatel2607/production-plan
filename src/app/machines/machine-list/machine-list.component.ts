@@ -18,7 +18,7 @@ export class MachineListComponent implements OnInit {
 
   machines: IMachine[];
   errorMessage: string;
-  listFilter: string;
+  listFilter: string = "";
 
   pager: any = {};
   pagedItems: IMachine[];
