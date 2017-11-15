@@ -20,6 +20,7 @@ export class EmployeeService{
     
     constructor(private _http: Http){}
 
+    //Get all employees
     getEmployees(): Observable<IEmployee[]>{
         return this._http.get(this._employeesUrl)
         .map((response: Response) => <IEmployee[]> response.json())

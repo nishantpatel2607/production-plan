@@ -18,7 +18,7 @@ export class MachineListComponent implements OnInit {
 
   machines: IMachine[];
   errorMessage: string;
-  listFilter: string = "";
+  listFilter: string = ""; 
 
   pager: any = {};
   pagedItems: IMachine[];
@@ -34,7 +34,7 @@ export class MachineListComponent implements OnInit {
 
   ngOnInit() {
     this.machineService.getMachines()
-      .subscribe(machinesData => {
+      .subscribe(machinesData => { 
         this.machines = machinesData;
         this.filteredItems = machinesData;
         this.checkedItems = [];

@@ -8,6 +8,7 @@ import { IMachine } from '../../model/machine';
 
 import { MachineService } from '../../core/services/machine.service';
 
+
 @Component({
   selector: 'machine-form',
   templateUrl: './machine-form.component.html',
@@ -17,7 +18,7 @@ export class MachineFormComponent implements OnInit {
 
 
   private sub: Subscription;
-  form;
+  form: FormGroup;
   orientationValues: string[] = ['Horizontal', 'Vertical'];
   shapeValues: string[] = ['Cylindrical', 'Rectangular'];
   doorTypeValues: string[] = [
@@ -31,13 +32,16 @@ export class MachineFormComponent implements OnInit {
   machineTypeValues: string[] = ['Automatic', 'Manual'];
   machine: IMachine = {
     id: 0,
+    modelId:0,
     machineSrNo: "",
     orientation: "",
     shape: "",
     doorType: "",
-    machineType: ""
+    machineType: "",
+    machineDescription:""
   }
   errorMessage: string;
+
 
   constructor(fb: FormBuilder,
     private router: Router,
@@ -56,11 +60,11 @@ export class MachineFormComponent implements OnInit {
     this.sub = this.activateRoute.params.subscribe(
       params => {
         let id = +params['id'];
-        if (Number.isNaN(id)==false)
+        if (Number.isNaN(id) == false)
           this.getMachine(id);
 
       });
-      
+
   }
 
   getMachine(id: number) {
@@ -69,18 +73,28 @@ export class MachineFormComponent implements OnInit {
       error => this.errorMessage = <any>error);
   }
 
-  save() {
-    if (this.machine.id != 0){
-      console.log(this.machine);
-    }
-  }
+  
 
   cancelForm(event: Event) {
-        
+    
+    
+    if (this.form.dirty) {
+     
     this.router.navigate(['/machines']);
+        
+      
+    }
+    
+    
   }
 
-  
+  saveForm(){
+    if (this.machine.id != 0) {
+      console.log(this.machine);
+    }
+    
+  }
+
 
   get machineSrNo() {
     return this.form.get("machineSrNo");

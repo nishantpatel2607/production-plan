@@ -1,12 +1,12 @@
 <div class="container-fluid">
   <home></home>
-
+    
   <div class="row">
     <!-- <div class="col-sm-2"></div> -->
     <div class="col-sm-8"> 
       <div class="well">
 
-        <form class="data-form" [formGroup]="form" (ngSubmit)="save()">
+        <form class="data-form" [formGroup]="form" (ngSubmit)="saveForm()">
           <div class="form-group">
             <label for="machineSrNo">Machine Sr. No.</label>
             <input formControlName="machineSrNo"

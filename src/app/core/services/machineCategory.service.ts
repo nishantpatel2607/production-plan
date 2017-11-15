@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 
@@ -6,28 +7,28 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
+import { IMachineCategory } from '../../model/machineCategory';
 
-import {IMachine} from "../../model/machine";
 
 @Injectable()
-export class MachineService{
-    private _machineUrl = "./assets/machines.json"; 
+export class MachineCategoryService{
+    private _machineCategoryUrl = "./assets/machineCategories.json"; 
     
     constructor(private _http: Http){}
 
-    //get all machines
-    getMachines(): Observable<IMachine[]>{
-        return this._http.get(this._machineUrl)
-        .map((response: Response) => <IMachine[]> response.json())
+    //get all categories
+    getMachineCategories(): Observable<IMachineCategory[]>{
+        return this._http.get(this._machineCategoryUrl)
+        .map((response: Response) => <IMachineCategory[]> response.json())
         //.do(data => console.log('All: ' +  JSON.stringify(data)))
         .catch(this.handleError);
     }
 
-    //get machine by Id
-    getMachine(id: number) :Observable<IMachine> {
-        let machine: Observable<IMachine>;
-        machine= this.getMachines()
-        .map((machines: IMachine[])=> machines.find(m => m.id === id))
+    //get machine category based on Id
+    getMachineCategory(id: number) :Observable<IMachineCategory> {
+        let machine: Observable<IMachineCategory>;
+        machine= this.getMachineCategories()
+        .map((machineCategories: IMachineCategory[])=> machineCategories.find(m => m.id === id))
         //.do(data => console.log('MAC: ' + JSON.stringify(data)))
         return machine;
     }

@@ -1,0 +1,104 @@
+<div class="container-fluid">
+  <home></home>
+
+  <div class="row">
+    <div class="col-md-6">
+      <!-- Category panel -->
+      <div class='panel panel-primary'>
+        <div class='panel-heading' style="height: 40px">
+          Categories
+        </div>
+        <div class='panel-body'>
+
+          <form class="form-inline" role="form">
+            <div class="form-group">
+              <label for="machineCategory">Category</label>
+              <input id="machineCategory" type="text" class="form-control" />
+
+              <button class="btn btn-primary">Add</button>
+              <button class="btn btn-default">Clear</button>
+            </div>
+          </form>
+          <br>
+          <div class='table-responsive'>
+            <table class='table table-hover'>
+              <tbody>
+                <tr>
+                  <td>
+                    <input type="text" name="searchCategory" class="form-control" placeholder="Search">
+                  </td>
+                </tr>
+                <tr *ngFor="let category of categoryPagedItems">
+                  <td class="col-md-11">
+                    {{category.categoryName}}
+                  </td>
+                  <td>
+                    <button class="btn btn-danger">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel-footer clearfix">
+            <ul *ngIf="categoryPager.pages && categoryPager.pages.length" class="pagination">
+                <li [ngClass]="{disabled:categoryPager.currentPage === 1}">
+                    <a (click)="setCategoriesPage(1)">First</a>
+                </li>
+                <li [ngClass]="{disabled:categoryPager.currentPage === 1}">
+                    <a (click)="setCategoriesPage(categoryPager.currentPage - 1)">Previous</a>
+                </li>
+                <li *ngFor="let page of categoryPager.pages" [ngClass]="{active:categoryPager.currentPage === page}">
+                    <a (click)="setCategoriesPage(page)">{{page}}</a>
+                </li>
+                <li [ngClass]="{disabled:categoryPager.currentPage === categoryPager.totalPages}">
+                    <a (click)="setCategoriesPage(categoryPager.currentPage + 1)">Next</a>
+                </li>
+                <li [ngClass]="{disabled:categoryPager.currentPage === categoryPager.totalPages}">
+                    <a (click)="setCategoriesPage(categoryPager.totalPages)">Last</a>
+                </li>
+            </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <!-- Model panel -->
+      <div class='panel panel-primary'>
+        <div class='panel-heading' style="height: 40px">
+          Models
+        </div>
+        <div class='panel-body'>
+          <form class="form-inline">
+            <label for="model">Model</label>
+            <input id="model" type="text" class="form-control" />
+            <button class="btn btn-primary">Add</button>
+            <button class="btn btn-default">Clear</button>
+          </form>
+          <br>
+          <div class='table-responsive'>
+            <table class='table table-hover'>
+              <tbody>
+                <tr>
+                  <td>
+                    <input type="text" name="searchModel" class="form-control" placeholder="Search">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col-md-11">
+                    Item 1
+                  </td>
+                  <td>
+                    <button class="btn btn-danger">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel-footer clearfix">
+          footer
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
