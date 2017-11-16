@@ -12,31 +12,41 @@ import { IMachineModel } from '../../model/machineModel';
 
 
 @Injectable()
-export class MachineModelService{
-    private _machineModelUrl = "./assets/machineModels.json"; 
-    
-    constructor(private _http: Http){}
+export class MachineModelService {
+    private _machineModelUrl = "./assets/machineModels.json";
+
+    constructor(private _http: Http) { }
 
     //get Models by specified category Id
-    getMachineModelsByCategory(id: number): Observable<IMachineModel[]>{
+    getMachineModelsByCategory(id: number): Observable<IMachineModel[]> {
         return this._http.get(this._machineModelUrl)
-        .map((response: Response) => (<IMachineModel[]> response.json())
-        .find(m => m.categoryId === id))
-        //.do(data => console.log('All: ' +  JSON.stringify(data)))
-        .catch(this.handleError);
+            .map((response: Response) => (<IMachineModel[]>response.json())
+                .filter(response => response.categoryId === id))
+            //.do(data => console.log('All: ' +  JSON.stringify(data)))
+            .catch(this.handleError);
     }
 
     //get Model by specified Id
-    getMachineModel(id: number) :Observable<IMachineModel> {
+    getMachineModel(id: number): Observable<IMachineModel> {
         return this._http.get(this._machineModelUrl)
-        .map((response: Response) => (<IMachineModel[]> response.json())
-        .find(m => m.id === id))
-        //.do(data => console.log('All: ' +  JSON.stringify(data)))
-        .catch(this.handleError);
+            .map((response: Response) => (<IMachineModel[]>response.json())
+                .find(m => m.id === id))
+            //.do(data => console.log('All: ' +  JSON.stringify(data)))
+            .catch(this.handleError);
     }
 
+    createMachineModel(newMachineModel: IMachineModel) {
+
+    }
+
+    updateMachineModel(machineModel: IMachineModel) {
+
+    }
+
+    deleteMachineModel(id: number) { }
+    
     private handleError(error: Response) {
-        
+
         console.error(error);
         return Observable.throw(error.json().error || 'Server error');
     }

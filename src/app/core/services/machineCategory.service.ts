@@ -33,6 +33,16 @@ export class MachineCategoryService{
         return machine;
     }
 
+    createMachineCategory(newMachineCategory:IMachineCategory){
+
+    }
+
+    updateMachineCategory(machineCategory:IMachineCategory){
+
+    }
+
+    deleteMachineCategory(id:number){}
+
     private handleError(error: Response) {
         
         console.error(error);

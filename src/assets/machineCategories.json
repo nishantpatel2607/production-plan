@@ -10,5 +10,10 @@
     {
         "id": 3,
         "categoryName": "Category Three"
+    },
+
+    {
+        "id": 4,
+        "categoryName": "Category Four"
     }
 ]
