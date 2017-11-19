@@ -20,6 +20,29 @@
           </div>
 
           <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" 
+            class="form-control" 
+            formControlName="machineCategory"
+            [(ngModel)]="selectedMachineCategory"
+            (ngModelChange)="getMachineModels($event)">
+              <option *ngFor="let category of machineCategories" [ngValue]="category" >{{category.categoryName}}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="model">Model</label>
+            <select id="model" 
+            class="form-control" 
+            formControlName="model"
+            [(ngModel)]="selectedMachineModel"
+            
+            (ngModelChange)="setModel($event)">
+            <option *ngFor="let model of machineModels" [ngValue]="model" >{{model.modelName}}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
             <label for="orientation">Orientation</label>
             <select id="orientation" 
             class="form-control" 
