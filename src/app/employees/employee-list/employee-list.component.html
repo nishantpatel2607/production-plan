@@ -35,7 +35,7 @@
                             <td>
                                 <input type="checkbox" id="delSel" value="1" (change)="selectedItem(employee,$event)" /> </td>
                             <td>
-                                <a href="">{{employee.firstName}}</a>
+                                <a [routerLink]="['/employee', employee.id]">{{employee.firstName}}</a>
                             </td>
                             <td>{{employee.lastName}}</td>
                             <td>{{employee.designation}}</td>

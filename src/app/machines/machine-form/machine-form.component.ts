@@ -1,6 +1,6 @@
 import { MachineModelService } from '../../core/services/machineModel.service';
 import { MachineCategoryService } from '../../core/services/machineCategory.service';
-
+ 
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute, CanDeactivate, Router } from '@angular/router';

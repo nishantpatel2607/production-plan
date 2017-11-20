@@ -18,7 +18,8 @@ import { DesignationService } from '../core/services/designation.service';
         RouterModule.forChild([
             {path: 'designations',component:DesignationListComponent},
             { path: 'employees', component: EmployeeListComponent},
-            { path: 'employees/new', component: EmployeeFormComponent}
+            { path: 'employees/new', component: EmployeeFormComponent},
+            { path: 'employee/:id',component: EmployeeFormComponent}
         ])
     ],
     declarations:[

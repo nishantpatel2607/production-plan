@@ -14,7 +14,7 @@ import { IEmployee } from '../../model/employee';
 
 
 
-@Injectable()
+@Injectable() 
 export class EmployeeService{
     private _employeesUrl = "./assets/employees.json"; 
     
@@ -28,6 +28,14 @@ export class EmployeeService{
         .catch(this.handleError);
     }
 
+    //get employee by Id
+    getEmployee(id: number) :Observable<IEmployee> {
+        let employee: Observable<IEmployee>;
+        employee= this.getEmployees()
+        .map((employees: IEmployee[])=> employees.find(m => m.id === id))
+        //.do(data => console.log('MAC: ' + JSON.stringify(data)))
+        return employee;
+    }
     
 
     private handleError(error: Response) {
