@@ -3,6 +3,13 @@
 
 body { padding: 20px; }
 
+main {
+  position: relative;
+  padding-top: 40px;
+  
+}
+
+
 .wrapper {	
     width: 50%;
     transform: translate(-50%, -50%);
@@ -21,4 +28,12 @@ body { padding: 20px; }
   
   .data-form .ng-valid {
     border-left: 5px solid #42A948;
+  }
+
+  .list-footer{
+    padding: 0 15px;
+    height: 20%;
+    line-height: 0px;
+    text-align: center; 
+    
   }

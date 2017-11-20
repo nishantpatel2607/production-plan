@@ -9,7 +9,7 @@ import { IMachineModel } from '../../model/machineModel';
 import { PagerService } from '../../core/services/pager.service';
 
 @Component({
-  selector: 'app-machine-category',
+  selector: 'machine-category',
   templateUrl: './machine-category.component.html',
   styleUrls: ['./machine-category.component.css']
 })
@@ -153,6 +153,12 @@ export class MachineCategoryComponent implements OnInit {
     if (this.categoryName.trim() === "") return;
     var categoryVal = this.categoryName.trim();
     if (this.selectedCategory.id === 0) {
+      //Check if category already exist
+      if (this.categories
+        .find(c=>c.categoryName.toUpperCase().trim() == categoryVal.toUpperCase().trim())){
+          //ToDo: show message category already exist 
+          return;
+      }
       //new category
       this.newCategory = {
         id: -1,
@@ -189,8 +195,13 @@ export class MachineCategoryComponent implements OnInit {
     if (this.modelName.trim() === "") return;
     var modelVal = this.modelName.trim();
     if (this.selectedModel.id === 0) {
+      //check if model exists
+      if (this.models
+        .find(m=>m.modelName.toUpperCase().trim() == modelVal.toUpperCase().trim())){
+          //ToDo: Show message Model already exists
+          return;
+        }
       //new model
-
       this.newModel = {
         id: -1,
         categoryId: this.selectedCategory.id,

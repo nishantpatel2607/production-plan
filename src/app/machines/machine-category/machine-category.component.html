@@ -28,7 +28,7 @@
               <tbody>
                 <tr>
                   <td>
-                    <input type="text" name="searchCategory" 
+                    <input type="text" name="searchCategory"  
                       class="form-control" 
                       placeholder="Search"
                       [ngModel]='categoryListFilter' 
@@ -47,7 +47,7 @@
             </table>
           </div>
         </div>
-        <div class="panel-footer clearfix">
+        <div class="panel-footer clearfix list-footer">
           <ul *ngIf="categoryPager.pages && categoryPager.pages.length" class="pagination">
             <li [ngClass]="{disabled:categoryPager.currentPage === 1}">
               <a (click)="setCategoriesPage(1)">First</a>
@@ -109,7 +109,7 @@
             </table>
           </div>
         </div>
-        <div class="panel-footer clearfix">
+        <div class="panel-footer clearfix list-footer">
           <ul *ngIf="modelPager.pages && modelPager.pages.length" class="pagination">
             <li [ngClass]="{disabled:modelPager.currentPage === 1}">
               <a (click)="setModelsPage(1)">First</a>

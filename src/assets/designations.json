@@ -1,0 +1,54 @@
+[
+    
+    {
+        "id":1,
+        "title":"Accountant",
+        "passcode":false
+    },
+    {
+        "id":2,
+        "title":"Head Fitter",
+        "passcode":true
+    },
+    {
+        "id":3,
+        "title":"Buffer",
+        "passcode":true
+    },
+    {
+        "id":4,
+        "title":"Fitter",
+        "passcode":true
+    },
+    {
+        "id":5,
+        "title":"Welder",
+        "passcode":true
+    },
+    {
+        "id":6,
+        "title":"Skilled Helper",
+        "passcode":true
+    },
+    {
+        "id":7,
+        "title":"Helper",
+        "passcode":true
+    },
+    {
+        "id":8,
+        "title":"Turning Assistant",
+        "passcode":true
+    },
+    {
+        "id":9,
+        "title":"supervisor",
+        "passcode":true
+    },
+    {
+        "id":10,
+        "title":"Manager",
+        "passcode":false
+    }
+
+]
