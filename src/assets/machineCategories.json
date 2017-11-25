@@ -1,19 +1,23 @@
 [
     {
         "id": 1,
-        "categoryName": "Category One"
+        "categoryName": "Sterilizer"
     },
     {
         "id": 2,
-        "categoryName": "Category Two"
+        "categoryName": "Processor"
     },
     {
         "id": 3,
-        "categoryName": "Category Three"
+        "categoryName": "Oven"
     },
 
     {
         "id": 4,
-        "categoryName": "Category Four"
+        "categoryName": "Disinfector"
+    },
+    {
+        "id": 5,
+        "categoryName": "Washer"
     }
 ]

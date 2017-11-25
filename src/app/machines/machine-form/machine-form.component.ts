@@ -39,15 +39,21 @@ export class MachineFormComponent implements OnInit {
   selectedMachineModel: IMachineModel;
   machineModels: IMachineModel[];
   machineTypeValues: string[] = ['Automatic', 'Manual'];
+  machineInstallationTypes:string[] = [
+    'Standing',
+    'Table Top'
+  ];
   machine: IMachine = {
     id: 0,
-    modelId: 0,
-    machineSrNo: "",
+    machineName:"",
+    categoryId:0,
+    modelNo: "",
+    installationType:"",
     orientation: "",
     shape: "",
     doorType: "",
     machineType: "",
-    machineDescription: ""
+    
   }
   errorMessage: string;
 
@@ -59,9 +65,10 @@ export class MachineFormComponent implements OnInit {
     private machineCategoryService: MachineCategoryService,
     private machineModelService: MachineModelService) {
     this.form = fb.group({
-      machineSrNo: ['', Validators.required],
+      machineName: ['', Validators.required],
+      modelNo: ['',Validators.required],
       machineCategory: [],
-      model: ['', Validators.required],
+      installationType: [],
       orientation: [this.orientationValues[0]],
       shape: [this.shapeValues[0]],
       doorType: [this.doorTypeValues[0]],
@@ -88,22 +95,23 @@ export class MachineFormComponent implements OnInit {
     this.machineService.getMachine(id).subscribe(
       mac => {
       this.machine = mac;
-        this.getModelNamefromId();
+        //this.getModelNamefromId();
+        this.getMachineCategory();
       },
       error => this.errorMessage = <any>error);
   }
 
-  getModelNamefromId() {
-    this.machineModelService.getMachineModel(this.machine.modelId).subscribe(
-      mModel => {
-        this.getMachineCategory(mModel);
-      },
-      error => this.errorMessage = <any>error);
+  // getModelNamefromId() {
+  //   this.machineModelService.getMachineModel(this.machine.modelId).subscribe(
+  //     mModel => {
+  //       this.getMachineCategory(mModel);
+  //     },
+  //     error => this.errorMessage = <any>error);
 
-  }
+  // }
 
-  getMachineCategory(model: IMachineModel) {
-    this.machineCategoryService.getMachineCategory(model.categoryId).subscribe(
+  getMachineCategory() {
+    this.machineCategoryService.getMachineCategory(this.machine.categoryId).subscribe(
       mCategory => {
         this.selectedMachineCategory = this.machineCategories.find(c => c.id === mCategory.id);
       },
@@ -120,25 +128,30 @@ export class MachineFormComponent implements OnInit {
   }
 
   //get all models of selected category
-  getMachineModels(category: IMachineCategory) {
-    if (category === undefined) return;
-    this.machineModelService.getMachineModelsByCategory(category.id)
-      .subscribe(modelData => {
-        this.machineModels = modelData;
-        if (this.machine.id !== 0) {
-          this.selectedMachineModel = this.machineModels.find(m => m.id === this.machine.modelId);
-        }
-      },
-      error => this.errorMessage = <any>error);
-  }
+  // getMachineModels(category: IMachineCategory) {
+  //   if (category === undefined) return;
+  //   this.machineModelService.getMachineModelsByCategory(category.id)
+  //     .subscribe(modelData => {
+  //       this.machineModels = modelData;
+  //       if (this.machine.id !== 0) {
+  //         this.selectedMachineModel = this.machineModels.find(m => m.id === this.machine.modelId);
+  //       }
+  //     },
+  //     error => this.errorMessage = <any>error);
+  // }
 
   //assign modelID to machine object modelId property on selectiong value
   //in model combo box
-  setModel(model: IMachineModel) {
-    if (model === undefined) return;
-    this.machine.modelId = model.id;
-  }
+  // setModel(model: IMachineModel) {
+  //   if (model === undefined) return;
+  //   this.machine.modelId = model.id;
+  // }
 
+
+  setCategory(category: IMachineCategory) {
+    if (category === undefined) return;
+    this.machine.categoryId = category.id;
+  }
 
   cancelForm(event: Event) {
     if (this.form.dirty) {
@@ -153,8 +166,16 @@ export class MachineFormComponent implements OnInit {
   }
 
 
-  get machineSrNo() {
-    return this.form.get("machineSrNo");
+  get machineName() {
+    return this.form.get("machineName");
+  }
+
+  get modelNo() {
+    return this.form.get("modelNo");
+  }
+
+  get installationType() {
+    return this.form.get("installationType");
   }
 
   get orientation() {
@@ -171,10 +192,6 @@ export class MachineFormComponent implements OnInit {
 
   get machineType() {
     return this.form.get("machineType");
-  }
-
-  get model() {
-    return this.form.get("model");
   }
 
   get machineCategory() {

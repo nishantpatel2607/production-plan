@@ -15,8 +15,8 @@
             <div class='row'>
                 <div class='col-md-4'>
                     <form class="form-inline">
-                        <input type="text" name="search" class="form-control" placeholder="Search" [(ngModel)]='listFilter'>
-                        <button class="btn btn-default" (click)="filterRecords()">Search</button>
+                        <input type="text" name="search" class="form-control" placeholder="Search" [ngModel]='listFilter' (ngModelChange) = "filterRecords($event)">
+                        <!-- <button class="btn btn-default" (click)="filterRecords()">Search</button> -->
                     </form>
                 </div>
             </div>
@@ -27,11 +27,13 @@
                     <thead>
                         <tr>
                             <th class="col-md-1"></th>
-                            <th class="col-md-2">Machine Sr. No.</th>
-                            <th class="col-md-2">Orientation</th>
+                            <th class="col-md-4">Machine Name</th>
+                            <th class="col-md-3">Model</th>
+                            <th class="col-md-4">Category</th>
+                            <!-- <th class="col-md-2">Orientation</th>
                             <th class="col-md-2">Shape</th>
-                            <th class="col-md-3">Door</th>
-                            <th class="col-md-2">Auto / Manual</th>
+                            <th class="col-md-1">Door</th>
+                            <th class="col-md-1">Auto / Manual</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -39,12 +41,11 @@
                             <td>
                                 <input type="checkbox" id="delSel" value="1" (change)="selectedItem(machine,$event)"/> </td>
                             <td>
-                                <a [routerLink]="['/machine', machine.id]">{{machine.machineSrNo}}</a>
+                                <a [routerLink]="['/machine', machine.id]">{{machine.machineName}}</a>
                             </td>
-                            <td>{{machine.orientation}}</td>
-                            <td>{{machine.shape}}</td>
-                            <td>{{machine.doorType}}</td>
-                            <td>{{machine.machineType}}</td>
+                            <td>{{machine.modelNo}}</td>
+                            <td>{{getCategoryName(machine.categoryId)}}</td>
+                            
                         </tr>
 
                     </tbody>

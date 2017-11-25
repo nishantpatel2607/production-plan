@@ -30,24 +30,24 @@ export class MachineCategoryComponent implements OnInit {
   categoryPagedItems: IMachineCategory[];
   categoryFilteredItems: IMachineCategory[];
 
-  selectedModel: IMachineModel = {
-    id: 0,
-    categoryId: 0,
-    modelName: ""
-  }
-  newModel: IMachineModel;
-  modelName: string = ""; //stores Model texbox value
-  modelListFilter: string = "";//stores Model filter texbox value
-  models: IMachineModel[];
-  modelPager: any = {};
-  modelPagedItems: IMachineModel[];
-  modelFilteredItems: IMachineModel[];
+  // selectedModel: IMachineModel = {
+  //   id: 0,
+  //   categoryId: 0,
+  //   modelName: ""
+  // }
+  // newModel: IMachineModel;
+  // modelName: string = ""; //stores Model texbox value
+  // modelListFilter: string = "";//stores Model filter texbox value
+  // models: IMachineModel[];
+  // modelPager: any = {};
+  // modelPagedItems: IMachineModel[];
+  // modelFilteredItems: IMachineModel[];
 
   constructor(private activeRoute: ActivatedRoute,
     private route: Router,
     private pagerService: PagerService,
-    private machineCategoryService: MachineCategoryService,
-    private machineModelService: MachineModelService) { }
+    private machineCategoryService: MachineCategoryService) { }
+    //private machineModelService: MachineModelService) { }
 
   ngOnInit() {
     this.getMachineCategories();
@@ -75,30 +75,30 @@ export class MachineCategoryComponent implements OnInit {
     this.categoryPagedItems = this.categoryFilteredItems.slice(this.categoryPager.startIndex, this.categoryPager.endIndex + 1);
   }
 
-  setModelsPage(page: number) {
-    if (this.modelFilteredItems.length > 0 && this.modelPager.totalPages == 0) { this.modelPager.totalPages = 1; }
-    if (page < 1 || page > this.modelPager.totalPages) {
-      return;
-    }
-    // get pager object from service
-    this.modelPager = this.pagerService.getPager(this.modelFilteredItems.length, page, this.pagesize);
-    // get current page of items
-    this.modelPagedItems = this.modelFilteredItems.slice(this.modelPager.startIndex, this.modelPager.endIndex + 1);
-  }
+  // setModelsPage(page: number) {
+  //   if (this.modelFilteredItems.length > 0 && this.modelPager.totalPages == 0) { this.modelPager.totalPages = 1; }
+  //   if (page < 1 || page > this.modelPager.totalPages) {
+  //     return;
+  //   }
+  //   // get pager object from service
+  //   this.modelPager = this.pagerService.getPager(this.modelFilteredItems.length, page, this.pagesize);
+  //   // get current page of items
+  //   this.modelPagedItems = this.modelFilteredItems.slice(this.modelPager.startIndex, this.modelPager.endIndex + 1);
+  // }
 
-  getModels(category: IMachineCategory) {
-    this.clearModelPanel();
-    this.categoryName = category.categoryName;
-    this.selectedCategory = category;
-    this.machineModelService.getMachineModelsByCategory(category.id)
-      .subscribe(modelData => {
-        this.models = modelData;
-        this.modelFilteredItems = modelData;
-        //console.log(this.modelFilteredItems); 
-        this.setModelsPage(1);
-      },
-      error => this.errorMessage = <any>error);
-  }
+  // getModels(category: IMachineCategory) {
+  //   this.clearModelPanel();
+  //   this.categoryName = category.categoryName;
+  //   this.selectedCategory = category;
+  //   this.machineModelService.getMachineModelsByCategory(category.id)
+  //     .subscribe(modelData => {
+  //       this.models = modelData;
+  //       this.modelFilteredItems = modelData;
+  //       //console.log(this.modelFilteredItems); 
+  //       this.setModelsPage(1);
+  //     },
+  //     error => this.errorMessage = <any>error);
+  // }
 
   filterCategoryRecords(value) {
     this.categoryListFilter = value;
@@ -116,37 +116,37 @@ export class MachineCategoryComponent implements OnInit {
     this.setCategoriesPage(1);
   }
 
-  filterModelRecords(value) {
-    this.modelListFilter = value;
-    var valueToSearch = this.modelListFilter.toUpperCase().trim();
-    this.modelFilteredItems = [];
-    if (this.modelListFilter != "") {
-      this.models.forEach(model => {
-        if (model.modelName.toUpperCase().indexOf(valueToSearch) >= 0) {
-          this.modelFilteredItems.push(model);
-        }
-      });
-    } else {
-      this.modelFilteredItems = this.models;
-    }
-    this.setModelsPage(1);
-  }
+  // filterModelRecords(value) {
+  //   this.modelListFilter = value;
+  //   var valueToSearch = this.modelListFilter.toUpperCase().trim();
+  //   this.modelFilteredItems = [];
+  //   if (this.modelListFilter != "") {
+  //     this.models.forEach(model => {
+  //       if (model.modelName.toUpperCase().indexOf(valueToSearch) >= 0) {
+  //         this.modelFilteredItems.push(model);
+  //       }
+  //     });
+  //   } else {
+  //     this.modelFilteredItems = this.models; 
+  //   }
+  //   this.setModelsPage(1);
+  // }
 
-  clearModelPanel() {
-    this.modelListFilter = "";
-    this.modelName = "";
-    this.selectedModel = { id: 0, categoryId: 0, modelName: "" };
-  }
+  // clearModelPanel() {
+  //   this.modelListFilter = "";
+  //   this.modelName = "";
+  //   this.selectedModel = { id: 0, categoryId: 0, modelName: "" };
+  // }
 
   clearCategoryPanel() {
     this.categoryName = "";
     this.selectedCategory = { id: 0, categoryName: "" };
-    this.clearModelPanel();
+    //this.clearModelPanel();
     this.newCategory = {
       id: -1,
       categoryName: ""
     }
-    this.getModels(this.newCategory);
+    //this.getModels(this.newCategory);
   }
 
   addOrUpdateCategory() {
@@ -191,46 +191,46 @@ export class MachineCategoryComponent implements OnInit {
   }
 
 
-  addOrUpdateModel() {
-    if (this.modelName.trim() === "") return;
-    var modelVal = this.modelName.trim();
-    if (this.selectedModel.id === 0) {
-      //check if model exists
-      if (this.models
-        .find(m=>m.modelName.toUpperCase().trim() == modelVal.toUpperCase().trim())){
-          //ToDo: Show message Model already exists
-          return;
-        }
-      //new model
-      this.newModel = {
-        id: -1,
-        categoryId: this.selectedCategory.id,
-        modelName: modelVal
-      }
-      this.machineModelService.createMachineModel(this.newModel);
-      //ToDo: remove following code and call getModels
-      this.models.push(this.newModel);
-    }
-    else {
-      //update model
-      this.selectedModel.modelName = modelVal;
-      this.machineModelService.updateMachineModel(this.selectedModel);
-    }
-    this.clearModelPanel();
-    this.setModelsPage(1);
-  }
+  // addOrUpdateModel() {
+  //   if (this.modelName.trim() === "") return;
+  //   var modelVal = this.modelName.trim();
+  //   if (this.selectedModel.id === 0) {
+  //     //check if model exists
+  //     if (this.models
+  //       .find(m=>m.modelName.toUpperCase().trim() == modelVal.toUpperCase().trim())){
+  //         //ToDo: Show message Model already exists
+  //         return;
+  //       }
+  //     //new model
+  //     this.newModel = {
+  //       id: -1,
+  //       categoryId: this.selectedCategory.id,
+  //       modelName: modelVal
+  //     }
+  //     this.machineModelService.createMachineModel(this.newModel);
+  //     //ToDo: remove following code and call getModels
+  //     this.models.push(this.newModel);
+  //   }
+  //   else {
+  //     //update model
+  //     this.selectedModel.modelName = modelVal;
+  //     this.machineModelService.updateMachineModel(this.selectedModel);
+  //   }
+  //   this.clearModelPanel();
+  //   this.setModelsPage(1);
+  // }
 
-  deleteModel(model: IMachineModel) {
-    var index = this.models.findIndex(m => m.id === model.id);
-    if (index >= 0) {
-      this.models.splice(index, 1);
-      this.machineModelService.deleteMachineModel(model.id);
-      this.setModelsPage(1);
-    }
-  }
+  // deleteModel(model: IMachineModel) {
+  //   var index = this.models.findIndex(m => m.id === model.id);
+  //   if (index >= 0) {
+  //     this.models.splice(index, 1);
+  //     this.machineModelService.deleteMachineModel(model.id);
+  //     this.setModelsPage(1);
+  //   }
+  // }
 
-  setSelectedModel(model: IMachineModel) {
-    this.selectedModel = model;
-    this.modelName = model.modelName;
-  }
+  // setSelectedModel(model: IMachineModel) {
+  //   this.selectedModel = model;
+  //   this.modelName = model.modelName;
+  // }
 }

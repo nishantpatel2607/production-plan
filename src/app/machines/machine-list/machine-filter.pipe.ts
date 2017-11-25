@@ -9,6 +9,6 @@ export class MachineFilterPipe implements PipeTransform {
     transform(value: IMachine[], filterBy: string): IMachine[] {
         filterBy = filterBy ? filterBy.toLocaleLowerCase() : null;
         return filterBy ? value.filter((machine: IMachine) =>
-            machine.machineSrNo.toLocaleLowerCase().indexOf(filterBy) !== -1) : value;
+            machine.machineName.toLocaleLowerCase().indexOf(filterBy) !== -1) : value;
     }
 }

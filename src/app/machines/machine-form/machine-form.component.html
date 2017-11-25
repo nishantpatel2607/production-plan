@@ -1,53 +1,56 @@
 <div class="container-fluid">
   <home></home>
-    
+
   <div class="row">
     <!-- <div class="col-sm-2"></div> -->
-    <div class="col-sm-8"> 
+    <div class="col-sm-8">
       <div class="well">
 
         <form class="data-form" [formGroup]="form" (ngSubmit)="saveForm()">
           <div class="form-group">
-            <label for="machineSrNo">Machine Sr. No.</label>
-            <input formControlName="machineSrNo"
-             id="machineSrNo" 
-             [(ngModel)] = "machine.machineSrNo"
-             type="text" 
-             class="form-control" />
-             <div *ngIf="machineSrNo.touched && machineSrNo.invalid" class="alert alert-danger">
-                <div *ngIf="machineSrNo.errors.required">Please enter machine Sr. No.</div>
+            <label for="machineName">Machine Name</label>
+            <input formControlName="machineName" id="machineName" [(ngModel)]="machine.machineName" type="text" class="form-control"
+            />
+            <div *ngIf="machineName.touched && machineName.invalid" class="alert alert-danger">
+              <div *ngIf="machineName.errors.required">Please enter machine Sr. No.</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="modelNo">Model No.</label>
+            <input formControlName="modelNo" id="modelNo" [(ngModel)]="machine.modelNo" type="text" class="form-control"
+            />
+            <div *ngIf="modelNo.touched && modelNo.invalid" class="alert alert-danger">
+              <div *ngIf="modelNo.errors.required">Please enter machine Sr. No.</div>
             </div>
           </div>
 
           <div class="form-group">
             <label for="category">Category</label>
-            <select id="category" 
-            class="form-control" 
-            formControlName="machineCategory"
-            [(ngModel)]="selectedMachineCategory"
-            (ngModelChange)="getMachineModels($event)">
-              <option *ngFor="let category of machineCategories" [ngValue]="category" >{{category.categoryName}}</option>
+            <select id="category" class="form-control" formControlName="machineCategory" [(ngModel)]="selectedMachineCategory">
+              <option *ngFor="let category of machineCategories" [ngValue]="category">{{category.categoryName}}</option>
             </select>
           </div>
 
           <div class="form-group">
+              <label for="installationType">Installation Type</label>
+              <select id="installationType" class="form-control" formControlName="installationType" [(ngModel)]="machine.installationType">
+                <!-- <option *ngFor="let installationTyp of machineInstallationTypes" [ngValue]="installationTyp">{{installationTyp}}</option> -->
+                <option>Free Standing</option>
+                <option>Table Top</option>
+              </select>
+            </div>
+
+          <!-- <div class="form-group">
             <label for="model">Model</label>
-            <select id="model" 
-            class="form-control" 
-            formControlName="model"
-            [(ngModel)]="selectedMachineModel"
-            
-            (ngModelChange)="setModel($event)">
-            <option *ngFor="let model of machineModels" [ngValue]="model" >{{model.modelName}}</option>
+            <select id="model" class="form-control" formControlName="model" [(ngModel)]="selectedMachineModel" (ngModelChange)="setModel($event)">
+              <option *ngFor="let model of machineModels" [ngValue]="model">{{model.modelName}}</option>
             </select>
-          </div>
+          </div> -->
 
           <div class="form-group">
             <label for="orientation">Orientation</label>
-            <select id="orientation" 
-            class="form-control" 
-            formControlName="orientation"
-            [(ngModel)] = "machine.orientation">
+            <select id="orientation" class="form-control" formControlName="orientation" [(ngModel)]="machine.orientation">
               <option selected>Horizontal</option>
               <option>Vertical</option>
             </select>
@@ -55,10 +58,7 @@
 
           <div class="form-group">
             <label for="shape">Shape</label>
-            <select id="shape" 
-              class="form-control" 
-              formControlName="shape"
-              [(ngModel)] = "machine.shape">
+            <select id="shape" class="form-control" formControlName="shape" [(ngModel)]="machine.shape">
               <option selected>Cylindrical</option>
               <option>Rectangular</option>
             </select>
@@ -66,10 +66,7 @@
 
           <div class="form-group">
             <label for="doorType">Door</label>
-            <select id="doorType" 
-              class="form-control" 
-              formControlName="doorType"
-              [(ngModel)] = "machine.doorType">
+            <select id="doorType" class="form-control" formControlName="doorType" [(ngModel)]="machine.doorType">
               <option selected>Single manual door</option>
               <option>Two manual doors</option>
               <option>Single auto. vertical sliding door</option>
@@ -81,10 +78,7 @@
 
           <div class="form-group">
             <label for="machinetype">Type</label>
-            <select id="machinetype" 
-              class="form-control" 
-              formControlName="machineType"
-              [(ngModel)] = "machine.machineType">
+            <select id="machinetype" class="form-control" formControlName="machineType" [(ngModel)]="machine.machineType">
               <option selected>Manual</option>
               <option>Automatic</option>
             </select>

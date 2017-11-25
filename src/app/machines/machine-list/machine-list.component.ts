@@ -1,3 +1,5 @@
+import { MachineCategoryService } from '../../core/services/machineCategory.service';
+import { IMachineCategory } from '../../model/machineCategory';
 
 
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,29 +20,46 @@ export class MachineListComponent implements OnInit {
 
   machines: IMachine[];
   errorMessage: string;
-  listFilter: string = ""; 
+  listFilter: string = "";
 
   pager: any = {};
   pagedItems: IMachine[];
   filteredItems: IMachine[];
 
   checkedItems: IMachine[];
+  machineCategories: IMachineCategory[];
 
 
   constructor(private activeRoute: ActivatedRoute,
     private route: Router,
     private machineService: MachineService,
+    private machineCategoryService: MachineCategoryService,
     private pagerService: PagerService) { }
 
   ngOnInit() {
+    this.machineCategoryService.getMachineCategories()
+    .subscribe(categories => {
+      this.machineCategories = categories;
+    },
+    error => this.errorMessage = <any>error);
+
     this.machineService.getMachines()
-      .subscribe(machinesData => { 
+      .subscribe(machinesData => {
         this.machines = machinesData;
         this.filteredItems = machinesData;
         this.checkedItems = [];
         this.setPage(1);
       },
       error => this.errorMessage = <any>error);
+    
+  }
+
+  getCategoryName(Id:number): string{
+    let categoryName:string = "";
+    let category:IMachineCategory = this.machineCategories.find(c=>c.id === Id);
+    if (category != undefined)
+      categoryName = category.categoryName;
+    return categoryName;
   }
 
   newMachine() {
@@ -81,17 +100,16 @@ export class MachineListComponent implements OnInit {
     this.checkedItems = [];
   }
 
-  filterRecords() {
+  filterRecords(value) {
+    this.listFilter = value;
     var valueToSearch = this.listFilter.toUpperCase().trim();
     this.filteredItems = [];
     if (this.listFilter != "") {
       this.machines.forEach(machine => {
-        if (machine.machineSrNo.toUpperCase().indexOf(valueToSearch) >= 0
-          || machine.machineType.toUpperCase().indexOf(valueToSearch) >= 0
-          || machine.orientation.toUpperCase().indexOf(valueToSearch) >= 0
-          || machine.doorType.toUpperCase().indexOf(valueToSearch) >= 0
-          || machine.shape.toUpperCase().indexOf(valueToSearch) >= 0
-        ) {
+        if (machine.machineName.toUpperCase().indexOf(valueToSearch) >= 0
+          || machine.modelNo.toUpperCase().indexOf(valueToSearch) >= 0
+          || this.getCategoryName(machine.categoryId).toUpperCase().indexOf(valueToSearch) >= 0
+         ) {
           this.filteredItems.push(machine);
         }
       });

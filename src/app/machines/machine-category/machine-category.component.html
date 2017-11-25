@@ -13,30 +13,23 @@
           <form class="form-inline" role="form">
             <div class="form-group">
               <label for="machineCategory">Category</label>
-              <input id="machineCategory" type="text" 
-              class="form-control"
-              name="category"
-              [(ngModel)]='categoryName' />
+              <input id="machineCategory" type="text" class="form-control" name="category" [(ngModel)]='categoryName' />
 
               <button class="btn btn-primary" (click)="addOrUpdateCategory()">Add</button>
               <button class="btn btn-default" (click)="clearCategoryPanel()">Clear</button>
             </div>
-          </form> 
+          </form>
           <br>
           <div class='table-responsive'>
             <table class='table table-hover'>
               <tbody>
                 <tr>
                   <td>
-                    <input type="text" name="searchCategory"  
-                      class="form-control" 
-                      placeholder="Search"
-                      [ngModel]='categoryListFilter' 
-                      (ngModelChange)="filterCategoryRecords($event)">
+                    <input type="text" name="searchCategory" class="form-control" placeholder="Search" [ngModel]='categoryListFilter' (ngModelChange)="filterCategoryRecords($event)">
                   </td>
                 </tr>
                 <tr *ngFor="let category of categoryPagedItems">
-                  <td class="col-md-11" (click)="getModels(category)">
+                  <td class="col-md-11" > <!-- (click)="getModels(category)"> -->
                     {{category.categoryName}}
                   </td>
                   <td>
@@ -68,8 +61,8 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6">
-      <!-- Model panel -->
+    <!-- <div class="col-md-6">
+       Model panel
       <div class='panel panel-primary'>
         <div class='panel-heading' style="height: 40px">
           Models
@@ -77,10 +70,7 @@
         <div class='panel-body'>
           <form class="form-inline">
             <label for="model">Model</label>
-            <input id="model" type="text" 
-              class="form-control" 
-              name="modelName" 
-              [(ngModel)]='modelName'/>
+            <input id="model" type="text" class="form-control" name="modelName" [(ngModel)]='modelName' />
             <button class="btn btn-primary" (click)="addOrUpdateModel()">Add</button>
             <button class="btn btn-default" (click)="clearModelPanel()">Clear</button>
           </form>
@@ -90,16 +80,12 @@
               <tbody>
                 <tr>
                   <td>
-                    <input type="text" name="searchModel" 
-                    class="form-control" 
-                    placeholder="Search"
-                    [ngModel]='modelListFilter' 
-                    (ngModelChange)="filterModelRecords($event)">
+                    <input type="text" name="searchModel" class="form-control" placeholder="Search" [ngModel]='modelListFilter' (ngModelChange)="filterModelRecords($event)">
                   </td>
                 </tr>
                 <tr *ngFor="let model of modelPagedItems">
                   <td class="col-md-11" (click)="setSelectedModel(model)">
-                    {{model.modelName}} 
+                    {{model.modelName}}
                   </td>
                   <td>
                     <button class="btn btn-danger" (click)="deleteModel(model)">Delete</button>
@@ -129,6 +115,6 @@
           </ul>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
