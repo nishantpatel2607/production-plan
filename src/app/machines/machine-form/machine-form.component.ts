@@ -58,7 +58,7 @@ export class MachineFormComponent implements OnInit {
   errorMessage: string;
 
 
-  constructor(fb: FormBuilder,
+  constructor(fb: FormBuilder, 
     private router: Router,
     private activateRoute: ActivatedRoute,
     private machineService: MachineService,

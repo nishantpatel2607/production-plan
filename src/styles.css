@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.css";
+@import '~angular-tree-component/dist/angular-tree-component.css';
 
 body { padding: 20px; }
 

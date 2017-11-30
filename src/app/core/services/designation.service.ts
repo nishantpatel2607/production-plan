@@ -15,12 +15,22 @@ export class DesignationService {
 
     constructor(private _http: Http) { }
 
-    //Get all employees
+    //Get all designations
     getDesignations(): Observable<IDesignation[]> {
         return this._http.get(this._designationsUrl)
             .map((response: Response) => <IDesignation[]>response.json())
             //.do(data => console.log('All: ' + JSON.stringify(data)))
             .catch(this.handleError);
+    }
+
+    //Get a designation
+    getDesignation(id:number): Observable<IDesignation> {
+        let designation : Observable<IDesignation>;
+        designation = this.getDesignations()
+        .map((designations:IDesignation[])=>designations.find(d => d.id == id))
+        .catch(this.handleError);
+        return designation;
+        
     }
 
     createDesignation(newDesignation: IDesignation) {

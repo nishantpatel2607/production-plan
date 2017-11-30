@@ -1,6 +1,6 @@
 
 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
 import { MachineFilterPipe } from './machine-list/machine-filter.pipe';
 import { PagerService } from '../core/services/pager.service';
 import { MachineService } from '../core/services/machine.service';

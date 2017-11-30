@@ -1,3 +1,4 @@
+
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
     <div class="collapse navbar-collapse">
@@ -20,11 +21,14 @@
             <li routerLinkActive="active current">
               <a [routerLink]="['/machines']">Machines</a>
             </li>
-
+            <li role="separator" class="divider"></li>
+            <li routerLinkActive="active current">
+              <a [routerLink]="['/jobs']">Jobs</a>
+            </li>  
           </ul>
         </li>
         <li routerLinkActive="active current">
-          <a>Job Plans</a>
+          <a>Projects</a>
         </li>
       </ul>
     </div>

@@ -14,6 +14,7 @@ import { EmployeesModule } from './employees/employees.module';
 import { AppComponent } from './app.component';
 
 import { LoginFormComponent } from './login-form/login-form.component';
+import { JobsModule } from './jobs/jobs.module';
 
 
 const app_routes: Routes = [
@@ -32,6 +33,7 @@ const app_routes: Routes = [
     SharedModule,
     MachinesModule,
     EmployeesModule,
+    JobsModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,

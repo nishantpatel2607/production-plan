@@ -1,0 +1,47 @@
+[
+    {
+        "id": 1,
+        "jobName": "Job 1",
+        "machineId":1,
+        "jobSequenceNo": 1,
+        "jobDescription": "Manufacturing job 1 for machine",
+        "parentJobId":0,
+        "durationInMins": 480
+    },
+    {
+        "id": 2,
+        "jobName": "Job 1.1",
+        "machineId":1,
+        "jobSequenceNo": 1,
+        "jobDescription": "Manufacturing job 1.1 for machine",
+        "parentJobId":1,
+        "durationInMins": 30
+    },
+    {
+        "id": 3,
+        "jobName": "Job 1.2",
+        "machineId":1,
+        "jobSequenceNo": 2,
+        "jobDescription": "Manufacturing job 1.2 for machine",
+        "parentJobId":1,
+        "durationInMins": 60
+    },
+    {
+        "id": 4,
+        "jobName": "Job 1.3",
+        "machineId":1,
+        "jobSequenceNo": 3,
+        "jobDescription": "Manufacturing job 1.3 for machine",
+        "parentJobId":1,
+        "durationInMins": 90
+    },
+    {
+        "id": 5,
+        "jobName": "Job 2",
+        "machineId":2,
+        "jobSequenceNo": 1,
+        "jobDescription": "Manufacturing job 2 for machine",
+        "parentJobId":0,
+        "durationInMins": 200
+    }
+]
