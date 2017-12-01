@@ -4,17 +4,66 @@
   <div class="row">
     <div class="col-md-4">
       <div class='panel panel-primary'>
-          <div class='panel-heading' style="height: 30px">
+        <div class='panel-heading' style="height: 30px">
+          <form class="form-inline pull-right" style="margin-top: -5px">
+
+            <button class="btn btn-success btn-xs" (click)="newJob()">New Top</button>
+            <button class="btn btn-success btn-xs" (click)="newJob()">New child</button>
+            <button class="btn btn-danger btn-xs" (click)="deleteJob()">Delete</button>
+          </form>
+        </div>
+        <div class='panel-body'>
+          <div class="tree-pane">
+            <tree-root [nodes]="nodes"></tree-root>
           </div>
-          <div class='panel-body' >
-            <div class="tree-pane">
-              <tree-root [nodes]="nodes"></tree-root>
-            </div>
-          </div> 
+        </div>
       </div>
     </div>
-    <div class="col-md-8" style="background-color: lavender">
+    <div class="col-md-8">
+      <div class="well" [hidden]="formHidden" >
+        <form class="data-form" [formGroup]="form" (ngSubmit)="saveForm()">
+          <div class="form-group">
+            <label for="jobName">Job Name</label>
+            <input formControlName="jobName" id="jobName" type="text" class="form-control" />
+          </div>
 
+          <div class="form-group">
+            <label for="machine">Machine</label>
+            <select id="machine" class="form-control" formControlName="machine">
+
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="parentJob">Parent Job</label>
+            <input formControlName="parentJob" id="parentJob" type="text" class="form-control" />
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="jobSequenceNo">Sequence No</label>
+                <input formControlName="jobSequenceNo" id="sequenceNo" type="text" class="form-control" />
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="durationInMins">Duration (in mins)</label>
+                <input formControlName="durationInMins" id="durationInMins" type="text" class="form-control" />
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <button class="btn btn-primary btn-block" [disabled]="!form.valid">Save</button>
+            </div>
+            <div class="col-sm-6">
+              <div class="hidden-lg hidden-md hidden-sm">&nbsp;</div>
+              <button class="btn btn-block" (click)="cancelForm()">Cancel</button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

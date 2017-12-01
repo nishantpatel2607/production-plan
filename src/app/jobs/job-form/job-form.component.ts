@@ -1,3 +1,4 @@
+import { FormBuilder, FormGroup,Validators } from '@angular/forms';
 import { IJob } from '../../model/job';
 import { Component, OnInit } from '@angular/core';
 import { TREE_ACTIONS, IActionMapping } from 'angular-tree-component';
@@ -10,78 +11,36 @@ import { JobService } from '../../core/services/job.service';
 })
 export class JobFormComponent implements OnInit {
 
-  /* nodes = [ 
-    {
-      id: 1,
-      name: 'root1',
-      children: [
-        { id: 2, name: 'child1' },
-        { id: 3, name: 'child2' }
-      ]
-    },
-    {
-      id: 4,
-      name: 'root2',
-      children: [
-        { id: 5, name: 'child2.1' },
-        {
-          id: 6,
-          name: 'child2.2',
-          children: [
-            { id: 7, name: 'subsub' }
-          ]
-        }
-      ]
-    },
-    {
-      id: 4,
-      name: 'root2',
-      children: [
-        { id: 5, name: 'child2.1' },
-        {
-          id: 6,
-          name: 'child2.2',
-          children: [
-            { id: 7, name: 'subsub' }
-          ]
-        }
-      ]
-    },
-    {
-      id: 4,
-      name: 'root2',
-      children: [
-        { id: 5, name: 'child2.1' },
-        {
-          id: 6,
-          name: 'child2.2',
-          children: [
-            { id: 7, name: 'subsub' }
-          ]
-        }
-      ]
-    },
-    {
-      id: 4,
-      name: 'root2',
-      children: [
-        { id: 5, name: 'child2.1' },
-        {
-          id: 6,
-          name: 'child2.2',
-          children: [
-            { id: 7, name: 'subsub' }
-          ]
-        }
-      ]
-    }
-  ]; */
+ 
   nodes;
   jobs: IJob[];
   errorMessage: string;
+  form: FormGroup;
+  formHidden:boolean = true;
 
-  constructor(private jobService: JobService) {
+  job: IJob = {
+    "id": 0,
+    "jobName": "",
+    "machineId":0,
+    "jobSequenceNo": 0,
+    "jobDescription": "",
+    "parentJobId": 0,
+    "durationInMins":0
+  }
 
+
+
+  constructor(private jobService: JobService,
+  fb: FormBuilder)
+  {
+  this.form = fb.group ({
+    jobName: ['',Validators.required],
+    machine :[],
+    jobSequenceNo: ['',[Validators.required,Validators.pattern('^[0-9]+$')]],
+    jobDescription: [],
+    parentJob: [{value: '', disabled: true}],
+    durationInMins: ['',[Validators.required,Validators.pattern('^[0-9]+$')]]
+  });
   }
 
   ngOnInit() {
@@ -116,5 +75,17 @@ export class JobFormComponent implements OnInit {
 
     this.nodes = map['-'].children;
 
+  }
+
+  newJob(){
+    this.formHidden = false;
+  }
+
+  deleteJob(){}
+
+  saveForm(){}
+
+  cancelForm(){
+    this.formHidden = true;
   }
 }
