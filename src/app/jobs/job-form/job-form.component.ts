@@ -3,6 +3,7 @@ import { IJob } from '../../model/job';
 import { Component, OnInit } from '@angular/core';
 import { TREE_ACTIONS, IActionMapping } from 'angular-tree-component';
 import { JobService } from '../../core/services/job.service';
+import { IMachine } from '../../model/machine';
 
 @Component({
   selector: 'app-job-form',
@@ -17,6 +18,8 @@ export class JobFormComponent implements OnInit {
   errorMessage: string;
   form: FormGroup;
   formHidden:boolean = true;
+  selectedMachine: IMachine;
+  
 
   job: IJob = {
     "id": 0,
@@ -39,6 +42,7 @@ export class JobFormComponent implements OnInit {
     jobSequenceNo: ['',[Validators.required,Validators.pattern('^[0-9]+$')]],
     jobDescription: [],
     parentJob: [{value: '', disabled: true}],
+    parentJobId:[],
     durationInMins: ['',[Validators.required,Validators.pattern('^[0-9]+$')]]
   });
   }
@@ -88,4 +92,11 @@ export class JobFormComponent implements OnInit {
   cancelForm(){
     this.formHidden = true;
   }
+
+getJobName(){return this.form.get("jobName");}
+getMachine(){return this.form.get("machine");}
+getJobSequenceNo(){return this.form.get("jobSequenceNo");}
+getJobDescription(){return this.form.get("jobDescription");}
+getParentJob(){return this.form.get("parentJob");}
+getDurationInMins(){return this.form.get("durationInMins");}
 }

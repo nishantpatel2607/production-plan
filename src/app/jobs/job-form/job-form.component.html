@@ -24,31 +24,37 @@
         <form class="data-form" [formGroup]="form" (ngSubmit)="saveForm()">
           <div class="form-group">
             <label for="jobName">Job Name</label>
-            <input formControlName="jobName" id="jobName" type="text" class="form-control" />
+            <input formControlName="jobName" id="jobName" type="text" class="form-control" [(ngModel)] = "job.jobName"  />
           </div>
 
           <div class="form-group">
             <label for="machine">Machine</label>
-            <select id="machine" class="form-control" formControlName="machine">
+            <select id="machine" class="form-control" formControlName="machine" [(ngModel)] = "selectedMachine" >
 
             </select>
           </div>
 
           <div class="form-group">
+              <label for="jobDescription">Job Description</label>
+              <textarea formControlName="jobDescription" id="jobDescription" type="text" class="form-control" style = "resize: none" [(ngModel)] = "job.jobDescription"></textarea>
+            </div>
+
+          <div class="form-group">
             <label for="parentJob">Parent Job</label>
             <input formControlName="parentJob" id="parentJob" type="text" class="form-control" />
+            <input formControlName="parentJobID" id="parentJobId" type="hidden" class="form-control"  [(ngModel)] = "job.parentJobId"/>
           </div>
           <div class="row">
             <div class="col-sm-6">
               <div class="form-group">
                 <label for="jobSequenceNo">Sequence No</label>
-                <input formControlName="jobSequenceNo" id="sequenceNo" type="text" class="form-control" />
+                <input formControlName="jobSequenceNo" id="jobSequenceNo" type="text" class="form-control" [(ngModel)] = "job.jobSequenceNo" />
               </div>
             </div>
             <div class="col-sm-6">
               <div class="form-group">
                 <label for="durationInMins">Duration (in mins)</label>
-                <input formControlName="durationInMins" id="durationInMins" type="text" class="form-control" />
+                <input formControlName="durationInMins" id="durationInMins" type="text" class="form-control" [(ngModel)] = "job.durationInMins" />
               </div>
             </div>
           </div>
