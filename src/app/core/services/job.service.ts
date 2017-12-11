@@ -23,7 +23,7 @@ export class JobService{
     getJobs():Observable<IJob[]>{
         return this._http.get(this._jobUrl)
         .map((response: Response) => <IJob[]> response.json())
-        .do(data => console.log('All: ' +  JSON.stringify(data)))
+        //.do(data => console.log('All: ' +  JSON.stringify(data)))
         .catch(this.handleError);
         
     }
@@ -31,7 +31,8 @@ export class JobService{
     //get the list of designations suitable for supplied job
     getJobDesignations(jobId:number):Observable<IJobDesignations[]>{
         return this._http.get(this._JobDesignationUrl)
-        .map((response: Response) => <IJobDesignations[]> response.json())
+        .map((response: Response) => (<IJobDesignations[]> response.json())
+        .filter(response => response.jobId == jobId))
         //.do(data => console.log('All: ' +  JSON.stringify(data)))
         .catch(this.handleError);
     }
@@ -46,7 +47,7 @@ export class JobService{
     updateJob(){}
 
     //delete existing job
-    deleteJob(){}
+    deleteJob(jobId:number){}
 
     //add designation 
     addJobDesignation(){}

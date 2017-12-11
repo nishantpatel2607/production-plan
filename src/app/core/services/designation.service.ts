@@ -13,7 +13,7 @@ export class DesignationService {
 
     private _designationsUrl = "./assets/designations.json";
 
-    constructor(private _http: Http) { }
+    constructor(private _http: Http) { } 
 
     //Get all designations
     getDesignations(): Observable<IDesignation[]> {

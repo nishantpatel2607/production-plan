@@ -28,7 +28,7 @@ export class MachineService{
         let machine: Observable<IMachine>;
         machine= this.getMachines()
         .map((machines: IMachine[])=> machines.find(m => m.id === id))
-        .do(data => console.log('MAC: ' + JSON.stringify(data)))
+        //.do(data => console.log('MAC: ' + JSON.stringify(data)))
         return machine;
     }
 

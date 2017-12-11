@@ -2,7 +2,7 @@ import { MachineModelService } from '../../core/services/machineModel.service';
 import { MachineCategoryService } from '../../core/services/machineCategory.service';
  
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute, CanDeactivate, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { IMachine } from '../../model/machine';
@@ -23,6 +23,7 @@ export class MachineFormComponent implements OnInit {
 
   private sub: Subscription;
   form: FormGroup;
+ 
   orientationValues: string[] = ['Horizontal', 'Vertical'];
   shapeValues: string[] = ['Cylindrical', 'Rectangular'];
   doorTypeValues: string[] = [

@@ -20,7 +20,7 @@ export class MachineModelService {
     //get Models by specified category Id
     getMachineModelsByCategory(id: number): Observable<IMachineModel[]> {
         return this._http.get(this._machineModelUrl)
-            .map((response: Response) => (<IMachineModel[]>response.json())
+            .map((response: Response) => (<IMachineModel[]>response.json()) 
                 .filter(response => response.categoryId === id))
             //.do(data => console.log('All: ' +  JSON.stringify(data)))
             .catch(this.handleError);
