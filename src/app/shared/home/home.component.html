@@ -8,9 +8,9 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-              <li routerLinkActive="active current">
-                  <a [routerLink]="['/designations']">Designations</a>
-                </li>
+            <li routerLinkActive="active current">
+              <a [routerLink]="['/designations']">Designations</a>
+            </li>
             <li routerLinkActive="active current">
               <a [routerLink]="['/employees']">Employees</a>
             </li>
@@ -27,8 +27,15 @@
             </li>  
           </ul>
         </li>
-        <li routerLinkActive="active current">
-          <a>Projects</a>
+        <li class="dropdown" routerLinkActive="active current">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Projects
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li routerLinkActive="active current">
+              <a [routerLink]="['/projects']">Projects List</a>
+            </li>
+          </ul>
         </li>
       </ul>
     </div>

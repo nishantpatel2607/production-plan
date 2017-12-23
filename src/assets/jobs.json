@@ -1,47 +1,56 @@
 [
     {
         "id": 1,
-        "jobName": "Job 1",
+        "jobName": "FS/9",
         "machineId":1,
         "jobSequenceNo": 1,
-        "jobDescription": "Manufacturing job 1 for machine",
+        "jobDescription": "Manufacturing dry heat sterilizer FS/9",
         "parentJobId":0,
         "durationInMins": 480
     },
     {
         "id": 2,
-        "jobName": "Job 1.1",
+        "jobName": "Chamber Rolling",
         "machineId":1,
         "jobSequenceNo": 1,
-        "jobDescription": "Manufacturing job 1.1 for machine",
+        "jobDescription": "",
         "parentJobId":1,
-        "durationInMins": 30
+        "durationInMins": 300
     },
     {
         "id": 3,
-        "jobName": "Job 1.2",
+        "jobName": "Panel sheet cutting",
         "machineId":1,
         "jobSequenceNo": 2,
-        "jobDescription": "Manufacturing job 1.2 for machine",
+        "jobDescription": "",
         "parentJobId":1,
         "durationInMins": 60
     },
     {
         "id": 4,
-        "jobName": "Job 1.3",
+        "jobName": "Panel hole tapping",
         "machineId":1,
         "jobSequenceNo": 3,
-        "jobDescription": "Manufacturing job 1.3 for machine",
+        "jobDescription": "",
         "parentJobId":1,
-        "durationInMins": 90
+        "durationInMins": 180
     },
     {
         "id": 5,
-        "jobName": "Job 2",
-        "machineId":2,
+        "jobName": "S.G.Tank circle center hole one side machining",
+        "machineId":1,
         "jobSequenceNo": 1,
-        "jobDescription": "Manufacturing job 2 for machine",
-        "parentJobId":0,
+        "jobDescription": "",
+        "parentJobId":1,
         "durationInMins": 200
+    },
+    {
+        "id": 6,
+        "jobName": "Chamber Gauging 38 nos",
+        "machineId":1,
+        "jobSequenceNo": 1,
+        "jobDescription": "",
+        "parentJobId":1,
+        "durationInMins": 540
     }
 ]

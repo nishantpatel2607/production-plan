@@ -8,13 +8,14 @@ import { EmployeeFormComponent } from './employee-form/employee-form.component';
 import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { DesignationListComponent } from './designation-list/designation-list.component';
 import { DesignationService } from '../core/services/designation.service';
-
+import { Ng2OrderModule } from 'ng2-order-pipe';
 
 @NgModule({
     imports: [
         SharedModule,
         ReactiveFormsModule,
         FormsModule,
+        Ng2OrderModule,
         RouterModule.forChild([
             {path: 'designations',component:DesignationListComponent},
             { path: 'employees', component: EmployeeListComponent},

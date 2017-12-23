@@ -1,0 +1,67 @@
+<div class="container-fluid">
+  <home></home>
+  <div class='panel panel-primary'>
+      <div class='panel-heading' style="height: 60px">
+          {{pageTitle}}
+          <form class="form-inline pull-right">
+              <button class="btn btn-default" >New</button>
+              <!-- <button class="btn btn-danger">Delete</button> -->
+          </form>
+      </div>
+
+ 
+  <div class='panel-body'>
+      <div class='row'>
+          <div class='col-md-4'>
+              <form class="form-inline">
+                  <input type="text" name="search" class="form-control" placeholder="Search" [(ngModel)]='listFilter'>
+                  <button class="btn btn-default" (click)="filterRecords()">Search</button>
+              </form>
+          </div>
+      </div><br>
+      <div class='table-responsive'>
+          <table class='table table-hover'>
+              <thead>
+                <th class="col-md-3" (click)="sort('OrderNo')">Order No
+                    <span class="glyphicon sort-icon" *ngIf="key =='OrderNo'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                </th>
+                <th class="col-md-3" (click)="sort('OrderDate')">Order Date
+                    <span class="glyphicon sort-icon" *ngIf="key =='OrderDate'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                </th>
+                <th class="col-md-6" (click)="sort('OrderDescription')">Order Description
+                    <span class="glyphicon sort-icon" *ngIf="key =='OrderDescription'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                </th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let order of pagedItems | orderBy: key : reverse">
+                    <td>
+                        <a [routerLink]="['/order', order.OrderId]">{{order.OrderNo}}</a>
+                    </td>
+                    <td>{{order.OrderDate }}</td>
+                    <td>{{order.OrderDescription}}</td>
+                </tr>
+              </tbody>
+          </table>
+      </div>
+      <div class="panel-footer clearfix">
+          <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+              <li [ngClass]="{disabled:pager.currentPage === 1}">
+                  <a (click)="setPage(1)">First</a>
+              </li>
+              <li [ngClass]="{disabled:pager.currentPage === 1}">
+                  <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+              </li>
+              <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                  <a (click)="setPage(page)">{{page}}</a>
+              </li>
+              <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                  <a (click)="setPage(pager.currentPage + 1)">Next</a>
+              </li>
+              <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                  <a (click)="setPage(pager.totalPages)">Last</a>
+              </li>
+          </ul>
+      </div>
+
+  </div>
+</div>

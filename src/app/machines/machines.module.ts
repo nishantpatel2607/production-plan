@@ -41,5 +41,5 @@ import { MachineModelService } from '../core/services/machineModel.service';
         MachineModelService
       
     ]
-})
+}) 
 export class MachinesModule{}

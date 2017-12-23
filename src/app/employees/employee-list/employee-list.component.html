@@ -18,20 +18,26 @@
                         <button class="btn btn-default" (click)="filterRecords()">Search</button>
                     </form>
                 </div>
-            </div>
+            </div><br>
             <div class='table-responsive'>
                 <table class='table table-hover'>
                     <thead>
                         <tr>
                             <th class="col-md-1"></th>
-                            <th class="col-md-4">First Name</th>
-                            <th class="col-md-3">Last Name</th>
-                            <th class="col-md-4">Designation</th>
+                            <th class="col-md-4" (click)="sort('firstName')">First Name
+                                <span class="glyphicon sort-icon" *ngIf="key =='firstName'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                            </th>
+                            <th class="col-md-3" (click)="sort('lastName')">Last Name
+                                <span class="glyphicon sort-icon" *ngIf="key =='lastName'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                            </th>
+                            <th class="col-md-4" (click)="sort('designation')">Designation
+                                <span class="glyphicon sort-icon" *ngIf="key =='designation'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                            </th>
 
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let employee of pagedItems">
+                        <tr *ngFor="let employee of pagedItems | orderBy: key : reverse"> 
                             <td>
                                 <input type="checkbox" id="delSel" value="1" (change)="selectedItem(employee,$event)" /> </td>
                             <td>

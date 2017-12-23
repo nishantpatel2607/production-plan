@@ -28,6 +28,14 @@ export class EmployeeListComponent implements OnInit {
       private employeeService: EmployeeService,
       private pagerService: PagerService) { }
 
+  //sorting
+  key: string = 'firstName'; //set default
+  reverse: boolean = false;
+  sort(key){
+    this.key = key;
+    this.reverse = !this.reverse; 
+  }
+
   ngOnInit() {
     this.employeeService.getEmployees()
     .subscribe(employeesData => {
@@ -94,7 +102,7 @@ export class EmployeeListComponent implements OnInit {
     } else {
       this.filteredItems = this.employees;
     }
-    console.log(this.filteredItems);
+    // console.log(this.filteredItems);
     this.setPage(1);
 
   }
