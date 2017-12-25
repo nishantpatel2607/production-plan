@@ -1,4 +1,4 @@
-import { MachineModelService } from '../../core/services/machineModel.service';
+import { MachineModelService } from '../../core/services/machineModel.service'; 
 import { MachineCategoryService } from '../../core/services/machineCategory.service';
  
 import { Component, OnInit } from '@angular/core';
@@ -11,7 +11,7 @@ import { IMachine } from '../../model/machine';
 import { MachineService } from '../../core/services/machine.service';
 import { IMachineCategory } from '../../model/machineCategory';
 import { IMachineModel } from '../../model/machineModel';
-import { mcall } from 'q';
+//import { mcall } from 'q';
 
 
 @Component({

@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule} from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { Ng2OrderModule } from 'ng2-order-pipe';
+import { ProjectsFormComponent } from './projects-form/projects-form.component';
 
 @NgModule({ 
     imports: [
@@ -14,12 +15,14 @@ import { Ng2OrderModule } from 'ng2-order-pipe';
         SharedModule,
         Ng2OrderModule,
         RouterModule.forChild([
-            { path: 'projects', component: ProjectListComponent}
+            { path: 'projects', component: ProjectListComponent},
+            { path: 'projects/new', component: ProjectsFormComponent}
             
         ])
     ],
     declarations:[
-        ProjectListComponent
+        ProjectListComponent,
+        ProjectsFormComponent
         
         
     ],

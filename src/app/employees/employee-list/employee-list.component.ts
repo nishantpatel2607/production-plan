@@ -33,7 +33,7 @@ export class EmployeeListComponent implements OnInit {
   reverse: boolean = false;
   sort(key){
     this.key = key;
-    this.reverse = !this.reverse; 
+    this.reverse = !this.reverse;  
   }
 
   ngOnInit() {
@@ -73,7 +73,7 @@ export class EmployeeListComponent implements OnInit {
   }
 
   setPage(page: number) {
-    if (page < 1 || page > this.pager.totalPages) {
+    if (page < 1 || (page > this.pager.totalPages && this.pager.totalPages > 0)) {
       return;
     }
 
@@ -85,9 +85,8 @@ export class EmployeeListComponent implements OnInit {
     this.checkedItems = [];
   }
 
-  filterRecords() {
-    
-    
+  filterRecords(value) {
+    this.listFilter = value;
     var valueToSearch = this.listFilter.toUpperCase().trim();
     this.filteredItems = [];
     if (this.listFilter != "") {

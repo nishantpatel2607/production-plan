@@ -29,7 +29,13 @@ export class MachineListComponent implements OnInit {
   checkedItems: IMachine[];
   machineCategories: IMachineCategory[];
 
-
+//sorting
+key: string = 'machineName'; //set default
+reverse: boolean = false;
+sort(key){
+  this.key = key;
+  this.reverse = !this.reverse; 
+}
   constructor(private activeRoute: ActivatedRoute,
     private route: Router,
     private machineService: MachineService,

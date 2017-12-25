@@ -1,7 +1,7 @@
 export interface IOrder{
-    OrderId: number,
-    OrderNo: string,
-    OrderDate: string,
-    OrderDescription: string,
-    OrderStatus: number
+    id: number,
+    orderNo: string,
+    orderDate: string,
+    orderDescription: string,
+    orderStatus: number
 }

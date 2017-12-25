@@ -12,14 +12,14 @@ import { MachineFormComponent } from './machine-form/machine-form.component';
 import { MachineCategoryComponent } from './machine-category/machine-category.component';
 import { MachineCategoryService } from '../core/services/machineCategory.service';
 import { MachineModelService } from '../core/services/machineModel.service';
-
+import { Ng2OrderModule } from 'ng2-order-pipe';
 
 @NgModule({ 
     imports: [
         FormsModule,
         ReactiveFormsModule,
         SharedModule,
-        
+        Ng2OrderModule,
         RouterModule.forChild([
             { path: 'machines', component: MachineListComponent},
             { path: 'machines/new', component: MachineFormComponent},

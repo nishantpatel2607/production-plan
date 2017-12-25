@@ -1,0 +1,42 @@
+<div class="container-fluid">
+  <home></home>
+
+  <div class="row">
+    <div class="col-sm-8">
+      <div class="well"> 
+          <form class="data-form" [formGroup]="form" (ngSubmit)="saveForm()">
+              <div class="form-group">
+                  <label for="orderNo">Order No.</label>
+                  <input formControlName="orderNo" id="orderNo" [(ngModel)]="order.orderNo" type="text" class="form-control"
+                  />
+                  <div *ngIf="orderNo.touched && orderNo.invalid" class="alert alert-danger">
+                    <div *ngIf="orderNo.errors.required">Please enter order number.</div>
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <label for="orderDate">Order Date.</label>
+                  <input formControlName="orderDate" id="orderDate" [(ngModel)]="order.orderDate" type="text" class="form-control"
+                  />
+                  <div *ngIf="orderDate.touched && orderDate.invalid" class="alert alert-danger">
+                    <div *ngIf="orderDate.errors.required">Please enter order date.</div>
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <label for="job">Job</label>
+                  <select id="job" class="form-control" formControlName="job" [(ngModel)]="selectedJob">
+                    <option *ngFor="let job of topLevelJobs" [ngValue]="job.id">{{job.jobName}}</option>
+                  </select>
+                </div>
+
+              <div class="form-group">
+                  <label for="orderDescription">Order Description.</label>
+                  <input formControlName="orderDescription" id="orderDescription" [(ngModel)]="order.orderDescription" type="text" class="form-control"
+                  />
+              </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>

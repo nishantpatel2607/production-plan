@@ -14,31 +14,31 @@
       <div class='row'>
           <div class='col-md-4'>
               <form class="form-inline">
-                  <input type="text" name="search" class="form-control" placeholder="Search" [(ngModel)]='listFilter'>
-                  <button class="btn btn-default" (click)="filterRecords()">Search</button>
+                  <input type="text" name="search" class="form-control" placeholder="Search" [ngModel]='listFilter' (ngModelChange)="filterRecords($event)"> 
+                  <!-- <button class="btn btn-default" (click)="filterRecords()">Search</button> -->
               </form>
           </div>
       </div><br>
       <div class='table-responsive'>
           <table class='table table-hover'>
               <thead>
-                <th class="col-md-3" (click)="sort('OrderNo')">Order No
-                    <span class="glyphicon sort-icon" *ngIf="key =='OrderNo'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                <th class="col-md-3" (click)="sort('orderNo')">Order No
+                    <span class="glyphicon sort-icon" *ngIf="key =='orderNo'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
                 </th>
-                <th class="col-md-3" (click)="sort('OrderDate')">Order Date
-                    <span class="glyphicon sort-icon" *ngIf="key =='OrderDate'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                <th class="col-md-3" (click)="sort('orderDate')">Order Date
+                    <span class="glyphicon sort-icon" *ngIf="key =='orderDate'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
                 </th>
-                <th class="col-md-6" (click)="sort('OrderDescription')">Order Description
-                    <span class="glyphicon sort-icon" *ngIf="key =='OrderDescription'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                <th class="col-md-6" (click)="sort('orderDescription')">Order Description
+                    <span class="glyphicon sort-icon" *ngIf="key =='orderDescription'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
                 </th>
               </thead>
               <tbody>
                 <tr *ngFor="let order of pagedItems | orderBy: key : reverse">
                     <td>
-                        <a [routerLink]="['/order', order.OrderId]">{{order.OrderNo}}</a>
+                        <a [routerLink]="['/order', order.id]">{{order.orderNo}}</a>
                     </td>
-                    <td>{{order.OrderDate }}</td>
-                    <td>{{order.OrderDescription}}</td>
+                    <td>{{order.orderDate }}</td>
+                    <td>{{order.orderDescription}}</td>
                 </tr>
               </tbody>
           </table>

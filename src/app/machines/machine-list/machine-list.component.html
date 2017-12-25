@@ -27,9 +27,15 @@
                     <thead>
                         <tr>
                             <th class="col-md-1"></th>
-                            <th class="col-md-4">Machine Name</th>
-                            <th class="col-md-3">Model</th>
-                            <th class="col-md-4">Category</th>
+                            <th class="col-md-4" (click)="sort('machineName')">Machine Name
+                                <span class="glyphicon sort-icon" *ngIf="key =='machineName'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                            </th>
+                            <th class="col-md-3" (click)="sort('modelNo')">Model
+                                <span class="glyphicon sort-icon" *ngIf="key =='modelNo'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                            </th>
+                            <th class="col-md-4" (click)="sort('getCategoryName(machine.categoryId)')">Category
+                                <span class="glyphicon sort-icon" *ngIf="key =='getCategoryName(machine.categoryId)'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                            </th>
                             <!-- <th class="col-md-2">Orientation</th>
                             <th class="col-md-2">Shape</th>
                             <th class="col-md-1">Door</th>
@@ -37,7 +43,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let machine of pagedItems">
+                        <tr *ngFor="let machine of pagedItems | orderBy: key : reverse">
                             <td>
                                 <input type="checkbox" id="delSel" value="1" (change)="selectedItem(machine,$event)"/> </td>
                             <td>

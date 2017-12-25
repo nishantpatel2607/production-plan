@@ -26,7 +26,7 @@ export class ProjectListComponent implements OnInit {
      private pagerService: PagerService) { }
 
      //sorting
-  key: string = 'firstName'; //set default
+  key: string = 'orderNo'; //set default
   reverse: boolean = false;
   sort(key){
     this.key = key;
@@ -46,7 +46,8 @@ export class ProjectListComponent implements OnInit {
   }
 
   setPage(page: number) {
-    if (page < 1 || page > this.pager.totalPages) {
+    if (page < 1 || (page > this.pager.totalPages && this.pager.totalPages > 0) ) { 
+      console.log(this.pager.totalPages);
       return;
     }
 
@@ -58,6 +59,29 @@ export class ProjectListComponent implements OnInit {
     
   }
 
-  filterRecords(){}
+  filterRecords(value){
+    console.log(value);
+    this.listFilter = value;
+    let valueToSearch = this.listFilter.toUpperCase().trim();
+    this.filteredItems = [];
+    if (this.listFilter != "") {
+      this.orders.forEach(order => {
+        if (order.orderNo.toUpperCase().indexOf(valueToSearch) >= 0
+          || order.orderDate.toUpperCase().indexOf(valueToSearch) >= 0
+          || order.orderDescription.toUpperCase().indexOf(valueToSearch) >= 0
+       ) {
+          this.filteredItems.push(order);
+        }
+      });
+    } else {
+      this.filteredItems = this.orders;
+    }
+    //console.log(this.filteredItems);
+    this.setPage(1);
+  }
+
+  newProject() {
+    this.route.navigate(['projects/new']);
+  }
 
 }

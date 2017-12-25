@@ -15,11 +15,29 @@ export class OrderService {
     constructor(private _http: Http){}
 
     // Get all orders based on order status
+    //ToDo : call the api to get orders based on order status 
     getOrders(OrderStatus:number): Observable<IOrder[]>{
         return this._http.get(this._ordersUrl)
         .map((response: Response) => <IOrder[]> response.json())
-        .do(data => console.log('All: ' +  JSON.stringify(data)))
+        //.do(data => console.log('All: ' +  JSON.stringify(data)))
         .catch(this.handleError);
+    }
+
+    
+    getAllOrders(): Observable<IOrder[]>{
+        return this._http.get(this._ordersUrl)
+        .map((response: Response) => <IOrder[]> response.json())
+        //.do(data => console.log('All: ' +  JSON.stringify(data)))
+        .catch(this.handleError);
+    }
+
+      //get order by Id
+      getOrder(id: number) :Observable<IOrder> {
+        let order: Observable<IOrder>;
+        order= this.getAllOrders()
+        .map((orders: IOrder[])=> orders.find(o => o.id === id))
+        //.do(data => console.log('MAC: ' + JSON.stringify(data)))
+        return order;
     }
 
     private handleError(error: Response) {

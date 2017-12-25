@@ -2,8 +2,11 @@
     padding: 0 15px;
     height: 20%;
     line-height: 0px;
-    text-align: center; 
+    text-align: center;  
     
+  }
+  th{
+    cursor: pointer;
   }
 
   

@@ -5,5 +5,8 @@
     text-align: center; 
     
   }
+  th{
+    cursor: pointer;
+  }
 
   

@@ -14,8 +14,8 @@
             <div class='row'>
                 <div class='col-md-4'>
                     <form class="form-inline">
-                        <input type="text" name="search" class="form-control" placeholder="Search" [(ngModel)]='listFilter'>
-                        <button class="btn btn-default" (click)="filterRecords()">Search</button>
+                        <input type="text" name="search" class="form-control" placeholder="Search" [ngModel]='listFilter' (ngModelChange)="filterRecords($event)">
+                        <!-- <button class="btn btn-default" (click)="filterRecords()">Search</button> -->
                     </form>
                 </div>
             </div><br>
