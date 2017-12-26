@@ -3,6 +3,7 @@
     "id": 1,
     "orderNo": "1001",
     "orderDate": "10/12/2017",
+    "jobId": 1,
     "orderDescription": "Description of order 1",
     "orderStatus": 1
     },
@@ -10,6 +11,7 @@
     "id": 2,
     "orderNo": "2001",
     "orderDate": "11/12/2017",
+    "jobId": 1,
     "orderDescription": "Description of order 2",
     "orderStatus": 1
     },
@@ -17,6 +19,7 @@
     "id": 3,
     "orderNo": "3001",
     "orderDate": "01/12/2017",
+    "jobId": 1,
     "orderDescription": "Description of order 3",
     "orderStatus": 1
     },
@@ -24,6 +27,7 @@
     "id": 4,
     "orderNo": "4001",
     "orderDate": "10/12/2017",
+    "jobId": 7,
     "orderDescription": "Description of order 4",
     "orderStatus": 1
     },
@@ -31,6 +35,7 @@
     "id": 5,
     "orderNo": "5001",
     "orderDate": "11/12/2017",
+    "jobId": 7,
     "orderDescription": "Description of order 5",
     "orderStatus": 1
     },
@@ -38,6 +43,7 @@
     "id": 6,
     "orderNo": "6001",
     "orderDate": "01/12/2017",
+    "jobId": 7,
     "orderDescription": "Description of order 6",
     "orderStatus": 1
     }

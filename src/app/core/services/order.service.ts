@@ -36,7 +36,7 @@ export class OrderService {
         let order: Observable<IOrder>;
         order= this.getAllOrders()
         .map((orders: IOrder[])=> orders.find(o => o.id === id))
-        //.do(data => console.log('MAC: ' + JSON.stringify(data)))
+        .do(data => console.log('MAC: ' + JSON.stringify(data)))
         return order;
     }
 

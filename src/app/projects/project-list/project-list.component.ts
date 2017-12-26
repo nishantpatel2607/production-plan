@@ -84,4 +84,8 @@ export class ProjectListComponent implements OnInit {
     this.route.navigate(['projects/new']);
   }
 
+  openPlanning(order:IOrder){
+    console.log(order);
+  }
+
 }

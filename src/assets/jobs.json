@@ -52,5 +52,14 @@
         "jobDescription": "",
         "parentJobId":1,
         "durationInMins": 540
+    },
+    {
+        "id": 7,
+        "jobName": "FS/10",
+        "machineId":1,
+        "jobSequenceNo": 1,
+        "jobDescription": "Manufacturing dry heat sterilizer FS/10",
+        "parentJobId":0,
+        "durationInMins": 480
     }
 ]

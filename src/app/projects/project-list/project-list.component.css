@@ -9,4 +9,9 @@
     cursor: pointer;
   }
 
-  
+  td.hoverbutton> button {
+    visibility: hidden;
+  }
+  tr:hover>td> button {
+    visibility: visible;
+  }

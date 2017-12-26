@@ -7,6 +7,8 @@ import { RouterModule} from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { Ng2OrderModule } from 'ng2-order-pipe';
 import { ProjectsFormComponent } from './projects-form/projects-form.component';
+import { MyDatePickerModule } from 'angular4-datepicker/src/my-date-picker/my-date-picker.module';
+import { TooltipDirective } from 'ng2-tooltip-directive/components';
 
 @NgModule({ 
     imports: [
@@ -14,16 +16,19 @@ import { ProjectsFormComponent } from './projects-form/projects-form.component';
         ReactiveFormsModule,
         SharedModule,
         Ng2OrderModule,
+       
+        MyDatePickerModule,
         RouterModule.forChild([
             { path: 'projects', component: ProjectListComponent},
-            { path: 'projects/new', component: ProjectsFormComponent}
+            { path: 'projects/new', component: ProjectsFormComponent},
+            { path: 'project/:id',component: ProjectsFormComponent},
             
         ])
     ],
     declarations:[
         ProjectListComponent,
-        ProjectsFormComponent
-        
+        ProjectsFormComponent,
+        TooltipDirective
         
     ],
     providers:[

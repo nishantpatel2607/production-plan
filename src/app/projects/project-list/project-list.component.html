@@ -1,10 +1,11 @@
 <div class="container-fluid">
   <home></home>
+  
   <div class='panel panel-primary'>
       <div class='panel-heading' style="height: 60px">
           {{pageTitle}}
           <form class="form-inline pull-right">
-              <button class="btn btn-default" >New</button>
+              <button class="btn btn-default" (click) = "newProject()" >New</button>
               <!-- <button class="btn btn-danger">Delete</button> -->
           </form>
       </div>
@@ -28,17 +29,27 @@
                 <th class="col-md-3" (click)="sort('orderDate')">Order Date
                     <span class="glyphicon sort-icon" *ngIf="key =='orderDate'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
                 </th>
-                <th class="col-md-6" (click)="sort('orderDescription')">Order Description
+                <th class="col-md-4" (click)="sort('orderDescription')">Order Description
                     <span class="glyphicon sort-icon" *ngIf="key =='orderDescription'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
                 </th>
+                <th class="col-md-2"></th>
               </thead>
               <tbody>
                 <tr *ngFor="let order of pagedItems | orderBy: key : reverse">
                     <td>
-                        <a [routerLink]="['/order', order.id]">{{order.orderNo}}</a>
+                        <a [routerLink]="['/project', order.id]">{{order.orderNo}}</a>
                     </td>
                     <td>{{order.orderDate }}</td>
                     <td>{{order.orderDescription}}</td>
+                    <td  class="hoverbutton">
+                    <!-- <a  class="btn btn-default btn-md" (click)="openPlanning()" >
+                        <span  class="glyphicon glyphicon-calendar"></span>
+                      </a>  -->
+
+                      <button type="button" class="btn btn-primary" tooltip="Project Plan" (click)="openPlanning(order)">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                          </button>
+                    </td>
                 </tr>
               </tbody>
           </table>

@@ -29,10 +29,9 @@ const app_routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    LoginFormComponent,
-   
-  
+    LoginFormComponent
 
+   
   ],
   imports: [
     SharedModule,

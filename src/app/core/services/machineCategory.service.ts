@@ -21,7 +21,7 @@ export class MachineCategoryService{
         return this._http.get(this._machineCategoryUrl)
         .map((response: Response) => <IMachineCategory[]> response.json())
         //.do(data => console.log('All: ' +  JSON.stringify(data)))
-        .catch(this.handleError);
+        .catch(this.handleError); 
     }
 
     //get machine category based on Id

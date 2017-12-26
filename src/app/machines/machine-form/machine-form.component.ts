@@ -107,11 +107,11 @@ export class MachineFormComponent implements OnInit {
   //     mModel => {
   //       this.getMachineCategory(mModel);
   //     },
-  //     error => this.errorMessage = <any>error);
+  //     error => this.errorMessage = <any>error); 
 
   // }
 
-  getMachineCategory() {
+  getMachineCategory() { 
     this.machineCategoryService.getMachineCategory(this.machine.categoryId).subscribe(
       mCategory => {
         this.selectedMachineCategory = this.machineCategories.find(c => c.id === mCategory.id);

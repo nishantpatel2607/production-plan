@@ -1,4 +1,4 @@
-export interface IJob{
+export interface IJob {
     id: number;
     jobName: string;
     machineId:number;

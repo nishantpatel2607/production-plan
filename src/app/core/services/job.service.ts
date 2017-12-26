@@ -37,7 +37,23 @@ export class JobService{
         .catch(this.handleError);
     }
 
-    
+    //get the list of top level jobs
+    getTopLevelJobs():Observable<IJob[]>{
+        return this._http.get(this._jobUrl)
+        .map((response: Response) => (<IJob[]> response.json())
+        .filter(response => response.parentJobId == 0))
+        //.do(data => console.log('All: ' +  JSON.stringify(data)))
+        .catch(this.handleError);
+    }
+
+    //get job by Id
+    getJob(id: number): Observable<IJob>{
+        let job: Observable<IJob>;
+        job= this.getJobs().map((jobs: IJob[])=> jobs.find(j => j.id === id));
+        return job;
+    }
+
+
     //create new job 
     createJob(){
 
