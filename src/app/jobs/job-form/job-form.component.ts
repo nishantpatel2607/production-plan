@@ -20,7 +20,8 @@ import { IJobDesignations } from '../../model/jobDesignations';
 })
 export class JobFormComponent implements OnInit {
 
-
+  disableNewChildJobButton = true;
+  disableDeleteButton = true;
   nodes;
   jobs: IJob[];
   //arDesignations: any[]=[];
@@ -188,8 +189,9 @@ export class JobFormComponent implements OnInit {
   }
 
   deleteJob() {
+    this.disableDeleteButton = false;
     this.form.reset();
-    this.formHidden = false;
+    this.formHidden = true;
     this.jobService.deleteJob(this.job.id);
     this.getAllJobs();
 
@@ -216,6 +218,7 @@ export class JobFormComponent implements OnInit {
   get designations(){return this.form.get('designations') as FormArray;}
 
   clickNode(selectedNode) {
+    this.disableDeleteButton = false;
     this.treeSelectedNodeData = selectedNode.node.data;
     this.treeSelectedNode = selectedNode.node;
     this.job.id = this.treeSelectedNodeData.id;
@@ -228,8 +231,10 @@ export class JobFormComponent implements OnInit {
     if (this.job.parentJobId != 0) {
       this.parentJob.setValue(selectedNode.node.parent.data.jobName);
       this.machine.disable();
+      this.disableNewChildJobButton = true; 
     }
     else {
+      this.disableNewChildJobButton = false;
       this.parentJob.setValue("");
       this.machine.enable();
     }

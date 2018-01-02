@@ -1,0 +1,43 @@
+<div class="container-fluid">
+  <home></home>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        <div class='col-md-4'>
+          <label>Order No.</label> {{order.orderNo}}
+        </div>
+        <div class='col-md-4'>
+          <label>Order Date </label> {{order.orderDate}}
+        </div>
+        <div class='col-md-4'>
+          <label>Job</label> {{jobName}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">Employees</div>
+            <div class="panel-body">
+                <ul class='list-group'>
+                  <li draggable *ngFor="let emp of employees" [dragData]="emp"  class="list-group-item">{{emp.firstName}} {{emp.lastName}} </li>
+                </ul>
+              </div>
+        </div>
+    </div>
+    <div class="col-sm-9">
+        <div class='table-responsive'>
+            <table class='table table-hover'>
+                <tbody>
+                  <tr *ngFor="let rw of tableRows">
+
+                  </tr>
+                </tbody>
+            </table>
+        </div>
+      
+    </div>
+  </div>
+</div>

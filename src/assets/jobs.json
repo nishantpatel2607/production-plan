@@ -6,7 +6,7 @@
         "jobSequenceNo": 1,
         "jobDescription": "Manufacturing dry heat sterilizer FS/9",
         "parentJobId":0,
-        "durationInMins": 480
+        "durationInMins": 480 
     },
     {
         "id": 2,

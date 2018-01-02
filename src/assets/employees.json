@@ -15,6 +15,47 @@
         "designation": "Fitter",
         "username": "dilipkoli",
         "password": "password"
-    }
+    },
+
+    {
+        "id": 3,
+        "firstName": "Welder",
+        "lastName": "3",
+        "designation": "Welder",
+        "username": "nksonar",
+        "password": "password"
+    },
    
+    {
+        "id": 4,
+        "firstName": "Helper",
+        "lastName": "1",
+        "designation": "Helper",
+        "username": "nksonar",
+        "password": "password"
+    },
+    {
+        "id": 5,
+        "firstName": "Helper",
+        "lastName": "2",
+        "designation": "Helper",
+        "username": "nksonar",
+        "password": "password"
+    },
+    {
+        "id": 6,
+        "firstName": "Helper",
+        "lastName": "3",
+        "designation": "Helper",
+        "username": "nksonar",
+        "password": "password"
+    },
+    {
+        "id": 7,
+        "firstName": "Turning Assistant",
+        "lastName": "2",
+        "designation": "Turning Assistant",
+        "username": "nksonar",
+        "password": "password"
+    }
 ]

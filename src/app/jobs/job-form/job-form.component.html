@@ -8,8 +8,8 @@
           <form class="form-inline pull-right" style="margin-top: -5px">
 
             <button class="btn btn-success btn-xs" (click)="newTopJob()">New job</button>
-            <button class="btn btn-success btn-xs" (click)="newChildJob()">New sub job </button>
-            <button class="btn btn-danger btn-xs" (click)="deleteJob()">Delete</button>
+            <button class="btn btn-success btn-xs" (click)="newChildJob()" [disabled]="disableNewChildJobButton">New sub job </button>
+            <button class="btn btn-danger btn-xs" (click)="deleteJob()" [disabled]= "disableDeleteButton">Delete</button>
           </form>
         </div>
         <div class='panel-body'>

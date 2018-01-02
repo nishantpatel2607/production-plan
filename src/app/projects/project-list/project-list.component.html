@@ -13,7 +13,7 @@
  
   <div class='panel-body'>
       <div class='row'>
-          <div class='col-md-4'>
+          <div class='col-md-4'> 
               <form class="form-inline">
                   <input type="text" name="search" class="form-control" placeholder="Search" [ngModel]='listFilter' (ngModelChange)="filterRecords($event)"> 
                   <!-- <button class="btn btn-default" (click)="filterRecords()">Search</button> -->
@@ -45,10 +45,12 @@
                     <!-- <a  class="btn btn-default btn-md" (click)="openPlanning()" >
                         <span  class="glyphicon glyphicon-calendar"></span>
                       </a>  -->
-
-                      <button type="button" class="btn btn-primary" tooltip="Project Plan" (click)="openPlanning(order)">
+                      <button type="button" class="btn btn-primary" style="margin-right: 10px" tooltip="Plan Resource" (click)="openResourcePlanning(order)">
+                        <span class="glyphicon glyphicon-user"></span>
+                      </button>
+                      <button type="button" class="btn btn-primary" tooltip="Plan Project" (click)="openProjectPlanning(order)">
                             <span class="glyphicon glyphicon-calendar"></span>
-                          </button>
+                      </button>
                     </td>
                 </tr>
               </tbody>

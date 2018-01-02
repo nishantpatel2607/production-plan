@@ -41,8 +41,8 @@ main {
 
   .ng-tooltip {
     max-width: 200px;
-    background-color: black;
-    color: #fff;
+    background-color: #62C4ED;
+    color: black;
     text-align: center;
     border-radius: 6px;
     padding: 5px 8px;
@@ -68,7 +68,7 @@ main {
     left: 50%;
     margin-left: -5px;
     border-width: 5px;
-    border-color: black transparent transparent transparent;
+    border-color: #62C4ED transparent transparent transparent;
 }
 .ng-tooltip-bottom::after {
     bottom: 100%;

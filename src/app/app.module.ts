@@ -20,6 +20,7 @@ import { ProjectsModule } from './projects/projects.module';
 
 
 
+
 const app_routes: Routes = [
   {path: '',  component: LoginFormComponent},
   {path: 'home',   component: HomeComponent}
@@ -29,9 +30,8 @@ const app_routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    LoginFormComponent
-
-   
+    LoginFormComponent,
+    
   ],
   imports: [
     SharedModule,
@@ -44,6 +44,7 @@ const app_routes: Routes = [
     ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot(app_routes)
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

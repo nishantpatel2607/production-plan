@@ -25,7 +25,7 @@ export class EmployeeService{
         return this._http.get(this._employeesUrl)
         .map((response: Response) => <IEmployee[]> response.json())
         .do(data => console.log('All: ' +  JSON.stringify(data)))
-        .catch(this.handleError);
+        .catch(this.handleError); 
     }
 
     //get employee by Id

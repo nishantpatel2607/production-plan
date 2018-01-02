@@ -34,7 +34,7 @@ export class ProjectListComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.orderService.getOrders(this.orderStatus)
+    this.orderService.getOrdersByStatus(this.orderStatus)
     .subscribe(ordersData => {
       this.orders = ordersData;
       
@@ -84,8 +84,11 @@ export class ProjectListComponent implements OnInit {
     this.route.navigate(['projects/new']);
   }
 
-  openPlanning(order:IOrder){
+  openProjectPlanning(order:IOrder){
     console.log(order);
   }
 
+  openResourcePlanning(order:IOrder){
+    this.route.navigate(['projectresource/' + order.id]);
+  }
 }
