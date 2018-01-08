@@ -24,7 +24,7 @@ export class EmployeeService{
     getEmployees(): Observable<IEmployee[]>{
         return this._http.get(this._employeesUrl)
         .map((response: Response) => <IEmployee[]> response.json())
-        .do(data => console.log('All: ' +  JSON.stringify(data)))
+        //.do(data => console.log('All: ' +  JSON.stringify(data)))
         .catch(this.handleError); 
     }
 

@@ -55,6 +55,15 @@
     },
     {
         "id": 7,
+        "jobName": "Chamber Grinding",
+        "machineId":1,
+        "jobSequenceNo": 1,
+        "jobDescription": "",
+        "parentJobId":1,
+        "durationInMins": 540
+    },
+    {
+        "id": 8,
         "jobName": "FS/10",
         "machineId":1,
         "jobSequenceNo": 1,

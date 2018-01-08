@@ -78,39 +78,41 @@ export class ProjectResourcePlanComponent implements OnInit {
 
   getEmployeesList(){
     this.employeeService.getEmployees()
-    .subscribe( employees => {this.employees = employees;});
+    .subscribe( employees => {this.employees = employees;}); 
   }
 
   getOrderProjects(id: number){
     this.orderService.getOrderProjects(id)
     .subscribe(projects => {this.orderProjects = projects},()=>{},
   ()=>{
-    let i:number = 1;
     for(let project of this.orderProjects){
       let projectElement:IProject = {
         jobId:project.JobId,
         jobName:project.jobName,
         employee:[]
       }
-      
       this.arProjects.push(projectElement);
-      if (i === 3){
-        let ar = this.arProjects;
-        this.tableRows.push(ar);
-        this.arProjects=[];
-        i = 1;
-      } else {i = i + 1;}
-
     }
-    if (this.arProjects.length > 0) {
-      let ar = this.arProjects;
-      this.tableRows.push(ar);
-    }
-    console.log(this.tableRows);
-    //this.totRows = Math.ceil(this.arProjects.length/3.0);
-    //this.tableRows = new Array(this.totRows);
-  });
+   });
   }
 
+  assignEmployee(event,project:IProject){
+    if (project.employee.findIndex(emp => emp.id === event.dragData.id ) < 0){
+    project.employee.push(event.dragData);}
+  }
 
+  removeEmployee(project,emp){
+    let index = project.employee.findIndex(e => e.id===emp.id);
+      if (index >= 0){
+      project.employee.splice(index,1);
+    }
+  }
+
+  saveForm(){
+
+  }
+
+  cancelForm(){
+    
+  }
 }
