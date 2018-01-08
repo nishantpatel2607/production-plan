@@ -113,6 +113,6 @@ export class ProjectResourcePlanComponent implements OnInit {
   }
 
   cancelForm(){
-    
+    this.router.navigate(['/projects']);
   }
 }
