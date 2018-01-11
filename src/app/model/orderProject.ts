@@ -1,7 +1,7 @@
-export interface IOrderProject{
+export interface IWorkOrderProject{
     id: number,
-    OrderId:number,
-    JobId:number,
+    workOrderId:number,
+    jobId:number,
     jobName: string,
-    ParentProjectId:number
+    parentProjectId:number
 }

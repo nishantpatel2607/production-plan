@@ -1,80 +1,85 @@
 <div class="container-fluid">
-  <home></home>
-  
-  <div class='panel panel-primary'>
-      <div class='panel-heading' style="height: 60px">
-          {{pageTitle}}
-          <form class="form-inline pull-right">
-              <button class="btn btn-default" (click) = "newProject()" >New</button>
-              <!-- <button class="btn btn-danger">Delete</button> -->
-          </form>
-      </div>
+    <home></home>
 
- 
-  <div class='panel-body'>
-      <div class='row'>
-          <div class='col-md-4'> 
-              <form class="form-inline">
-                  <input type="text" name="search" class="form-control" placeholder="Search" [ngModel]='listFilter' (ngModelChange)="filterRecords($event)"> 
-                  <!-- <button class="btn btn-default" (click)="filterRecords()">Search</button> -->
-              </form>
-          </div>
-      </div><br>
-      <div class='table-responsive'>
-          <table class='table table-hover'>
-              <thead>
-                <th class="col-md-3" (click)="sort('orderNo')">Order No
-                    <span class="glyphicon sort-icon" *ngIf="key =='orderNo'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
-                </th>
-                <th class="col-md-3" (click)="sort('orderDate')">Order Date
-                    <span class="glyphicon sort-icon" *ngIf="key =='orderDate'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
-                </th>
-                <th class="col-md-4" (click)="sort('orderDescription')">Order Description
-                    <span class="glyphicon sort-icon" *ngIf="key =='orderDescription'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
-                </th>
-                <th class="col-md-2"></th>
-              </thead>
-              <tbody>
-                <tr *ngFor="let order of pagedItems | orderBy: key : reverse">
-                    <td>
-                        <a [routerLink]="['/project', order.id]">{{order.orderNo}}</a>
-                    </td>
-                    <td>{{order.orderDate }}</td>
-                    <td>{{order.orderDescription}}</td>
-                    <td  class="hoverbutton">
-                    <!-- <a  class="btn btn-default btn-md" (click)="openPlanning()" >
+    <div class='panel panel-primary'>
+        <div class='panel-heading' style="height: 60px">
+            {{pageTitle}}
+            <form class="form-inline pull-right">
+                <button class="btn btn-default" (click)="newProject()">New</button>
+                <!-- <button class="btn btn-danger">Delete</button> -->
+            </form>
+        </div>
+
+
+        <div class='panel-body'>
+            <div class='row'>
+                <div class='col-md-4'>
+                    <form class="form-inline">
+                        <input type="text" name="search" class="form-control" placeholder="Search" [ngModel]='listFilter' (ngModelChange)="filterRecords($event)">
+                        <!-- <button class="btn btn-default" (click)="filterRecords()">Search</button> -->
+                    </form>
+                </div>
+            </div>
+            <br>
+            <div class='table-responsive'>
+                <table class='table table-hover'>
+                    <thead>
+                        <th class="col-md-2" (click)="sort('workOrderNo')">Work Order No
+                            <span class="glyphicon sort-icon" *ngIf="key =='workOrderNo'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                        </th>
+                        <th class="col-md-2" (click)="sort('orderNo')">Order No
+                            <span class="glyphicon sort-icon" *ngIf="key =='orderNo'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                        </th>
+                        <th class="col-md-2" (click)="sort('orderDate')">Order Date
+                            <span class="glyphicon sort-icon" *ngIf="key =='orderDate'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                        </th>
+                        <th class="col-md-4" (click)="sort('orderDescription')">Order Description
+                            <span class="glyphicon sort-icon" *ngIf="key =='orderDescription'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                        </th>
+                        <th class="col-md-2"></th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let order of pagedItems | orderBy: key : reverse">
+                            <td>
+                                <a [routerLink]="['/project', order.id]">{{order.workOrderNo}}</a>
+                            </td>
+                            <td>{{order.orderNo}}</td>
+                            <td>{{order.orderDate }}</td>
+                            <td>{{order.orderDescription}}</td>
+                            <td class="hoverbutton">
+                                <!-- <a  class="btn btn-default btn-md" (click)="openPlanning()" >
                         <span  class="glyphicon glyphicon-calendar"></span>
                       </a>  -->
-                      <button type="button" class="btn btn-primary" style="margin-right: 10px" tooltip="Plan Resource" (click)="openResourcePlanning(order)">
-                        <span class="glyphicon glyphicon-user"></span>
-                      </button>
-                      <button type="button" class="btn btn-primary" tooltip="Plan Project" (click)="openProjectPlanning(order)">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                      </button>
-                    </td>
-                </tr>
-              </tbody>
-          </table>
-      </div>
-      <div class="panel-footer clearfix">
-          <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
-              <li [ngClass]="{disabled:pager.currentPage === 1}">
-                  <a (click)="setPage(1)">First</a>
-              </li>
-              <li [ngClass]="{disabled:pager.currentPage === 1}">
-                  <a (click)="setPage(pager.currentPage - 1)">Previous</a>
-              </li>
-              <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-                  <a (click)="setPage(page)">{{page}}</a>
-              </li>
-              <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-                  <a (click)="setPage(pager.currentPage + 1)">Next</a>
-              </li>
-              <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-                  <a (click)="setPage(pager.totalPages)">Last</a>
-              </li>
-          </ul>
-      </div>
+                                <button type="button" class="btn btn-primary" style="margin-right: 10px" tooltip="Plan Resource" (click)="openResourcePlanning(order)">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                </button>
+                                <button type="button" class="btn btn-primary" tooltip="Plan Project" (click)="openProjectPlanning(order)">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-footer clearfix">
+                <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                    <li [ngClass]="{disabled:pager.currentPage === 1}">
+                        <a (click)="setPage(1)">First</a>
+                    </li>
+                    <li [ngClass]="{disabled:pager.currentPage === 1}">
+                        <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+                    </li>
+                    <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                        <a (click)="setPage(page)">{{page}}</a>
+                    </li>
+                    <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                        <a (click)="setPage(pager.currentPage + 1)">Next</a>
+                    </li>
+                    <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                        <a (click)="setPage(pager.totalPages)">Last</a>
+                    </li>
+                </ul>
+            </div>
 
-  </div>
-</div>
+        </div>
+    </div>

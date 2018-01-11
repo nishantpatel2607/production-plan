@@ -1,6 +1,6 @@
 import { HomeComponent } from './shared/home/home.component';
 import { SharedModule } from './shared/shared.module';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HttpModule } from '@angular/http';
 import { RouterModule,Routes } from '@angular/router';
@@ -16,10 +16,6 @@ import { AppComponent } from './app.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { JobsModule } from './jobs/jobs.module';
 import { ProjectsModule } from './projects/projects.module';
-
-
-
-
 
 const app_routes: Routes = [
   {path: '',  component: LoginFormComponent},
@@ -43,8 +39,8 @@ const app_routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    RouterModule.forRoot(app_routes)
-    
+    RouterModule.forRoot(app_routes),
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

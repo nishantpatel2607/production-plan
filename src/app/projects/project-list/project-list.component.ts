@@ -1,6 +1,6 @@
-import { OrderService } from '../../core/services/order.service';
+import { WorkOrderService } from '../../core/services/workOrder.service';
 import { Component, OnInit } from '@angular/core';
-import { IOrder } from '../../model/orderMaster';
+import { IWorkOrder } from '../../model/orderMaster';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PagerService } from '../../core/services/pager.service';
 
@@ -12,17 +12,17 @@ import { PagerService } from '../../core/services/pager.service';
 export class ProjectListComponent implements OnInit {
 
   pageTitle: string = "Projects";
-  orders: IOrder[];
+  workOrders: IWorkOrder[];
   errorMessage: string;
   listFilter: string = "";
   orderStatus: number;
   pager: any = {};
-  pagedItems: IOrder[];
-  filteredItems: IOrder[];
+  pagedItems: IWorkOrder[];
+  filteredItems: IWorkOrder[];
 
   constructor(private activeRoute: ActivatedRoute,
     private route: Router,
-     private orderService: OrderService,
+     private workOrderService: WorkOrderService,
      private pagerService: PagerService) { }
 
      //sorting
@@ -34,14 +34,14 @@ export class ProjectListComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.orderService.getOrdersByStatus(this.orderStatus)
+    this.workOrderService.getOrdersByStatus(this.orderStatus)
     .subscribe(ordersData => {
-      this.orders = ordersData;
+      this.workOrders = ordersData;
       
     }, 
     error => this.errorMessage = <any>error,
     ()=>{
-      this.filteredItems = this.orders;
+      this.filteredItems = this.workOrders;
       this.setPage(1);})
   }
 
@@ -65,7 +65,7 @@ export class ProjectListComponent implements OnInit {
     let valueToSearch = this.listFilter.toUpperCase().trim();
     this.filteredItems = [];
     if (this.listFilter != "") {
-      this.orders.forEach(order => {
+      this.workOrders.forEach(order => {
         if (order.orderNo.toUpperCase().indexOf(valueToSearch) >= 0
           || order.orderDate.toUpperCase().indexOf(valueToSearch) >= 0
           || order.orderDescription.toUpperCase().indexOf(valueToSearch) >= 0
@@ -74,7 +74,7 @@ export class ProjectListComponent implements OnInit {
         }
       });
     } else {
-      this.filteredItems = this.orders;
+      this.filteredItems = this.workOrders;
     }
     //console.log(this.filteredItems);
     this.setPage(1);
@@ -84,11 +84,11 @@ export class ProjectListComponent implements OnInit {
     this.route.navigate(['projects/new']);
   }
 
-  openProjectPlanning(order:IOrder){
+  openProjectPlanning(order:IWorkOrder){
     console.log(order);
   }
 
-  openResourcePlanning(order:IOrder){
+  openResourcePlanning(order:IWorkOrder){
     this.route.navigate(['projectresource/' + order.id]);
   }
 }

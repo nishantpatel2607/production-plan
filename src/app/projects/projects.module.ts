@@ -1,5 +1,5 @@
 import { ProjectResourcePlanComponent } from './project-resource-plan/project-resource-plan.component';
-import { OrderService } from '../core/services/order.service';
+import { WorkOrderService } from '../core/services/workOrder.service';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
 import { PagerService } from '../core/services/pager.service';
@@ -11,6 +11,7 @@ import { ProjectsFormComponent } from './projects-form/projects-form.component';
 import { MyDatePickerModule } from 'angular4-datepicker/src/my-date-picker/my-date-picker.module';
 import { TooltipDirective } from 'ng2-tooltip-directive/components';
 import { NgDragDropModule } from 'ng-drag-drop';
+import { DateTimePickerModule } from 'ng-pick-datetime';
 
 
 @NgModule({ 
@@ -21,6 +22,7 @@ import { NgDragDropModule } from 'ng-drag-drop';
         Ng2OrderModule,
         NgDragDropModule.forRoot(),
         MyDatePickerModule,
+        DateTimePickerModule,
         RouterModule.forChild([
             { path: 'projects', component: ProjectListComponent},
             { path: 'projects/new', component: ProjectsFormComponent},
@@ -36,7 +38,7 @@ import { NgDragDropModule } from 'ng-drag-drop';
         ProjectResourcePlanComponent
     ],
     providers:[
-        OrderService
+        WorkOrderService
     ]
 }) 
 export class ProjectsModule{}

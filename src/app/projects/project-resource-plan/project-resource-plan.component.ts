@@ -1,11 +1,11 @@
 import { JobService } from '../../core/services/job.service';
-import { IOrder } from '../../model/orderMaster';
+import { IWorkOrder } from '../../model/orderMaster';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OrderService } from '../../core/services/order.service';
+import { WorkOrderService } from '../../core/services/workOrder.service';
 import { EmployeeService } from '../../core/services/employee.service';
 import { IEmployee } from '../../model/employee';
-import { IOrderProject } from '../../model/orderProject';
+import { IWorkOrderProject } from '../../model/orderProject';
 import { forEach } from '@angular/router/src/utils/collection';
 
 interface IProject {
@@ -21,8 +21,9 @@ interface IProject {
 })
 export class ProjectResourcePlanComponent implements OnInit {
 
-  order : IOrder = {
+  workOrder : IWorkOrder = {
     id: 0,
+    workOrderNo:"",
     orderNo: "",
     orderDate: "",
     jobId: 0,
@@ -31,7 +32,7 @@ export class ProjectResourcePlanComponent implements OnInit {
   }
 
   employees : IEmployee[] = [];
-  orderProjects: IOrderProject[] = [];
+  orderProjects: IWorkOrderProject[] = [];
   jobName:string = '';
   errorMessage: string;
   arProjects = []; //array of projects. 
@@ -41,7 +42,7 @@ export class ProjectResourcePlanComponent implements OnInit {
 
   constructor(private router: Router,
     private activateRoute: ActivatedRoute,
-    private orderService: OrderService,
+    private workOrderService: WorkOrderService,
     private jobService: JobService,
     private employeeService: EmployeeService) { }
 
@@ -59,9 +60,9 @@ export class ProjectResourcePlanComponent implements OnInit {
   }
 
   getOrder(id: number){
-    this.orderService.getOrder(id).subscribe(
+    this.workOrderService.getOrder(id).subscribe(
       order => {
-        this.order = order;
+        this.workOrder = order;
         
         this.getJob();
       }
@@ -69,7 +70,7 @@ export class ProjectResourcePlanComponent implements OnInit {
   }
 
   getJob(){
-    this.jobService.getJob(this.order.jobId).subscribe(
+    this.jobService.getJob(this.workOrder.jobId).subscribe(
       mJob => {
         this.jobName = mJob.jobName;
       },
@@ -82,12 +83,12 @@ export class ProjectResourcePlanComponent implements OnInit {
   }
 
   getOrderProjects(id: number){
-    this.orderService.getOrderProjects(id)
+    this.workOrderService.getOrderProjects(id)
     .subscribe(projects => {this.orderProjects = projects},()=>{},
   ()=>{
     for(let project of this.orderProjects){
       let projectElement:IProject = {
-        jobId:project.JobId,
+        jobId:project.jobId,
         jobName:project.jobName,
         employee:[]
       }

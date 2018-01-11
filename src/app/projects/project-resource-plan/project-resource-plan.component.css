@@ -13,16 +13,27 @@
   }
 
   .yscrollable{
-    overflow-y: auto;
+    overflow-y: scroll;
+   
   }
   
-    table, th, td {
+  table, th, td {
       border: 1px solid white;
-    }
+  }
     
-    th, td {
+  th, td {
       padding: .5em 1em;
-    }
+  }
+
+  .task-employees-panel{
+    margin-top:-15px; 
+    margin-left:-14px; 
+    margin-right:-14px; 
+    height:280px;
+    
+  }
+
+    
 
     
 

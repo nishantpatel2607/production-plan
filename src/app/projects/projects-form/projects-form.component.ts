@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { IJob } from '../../model/job';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IOrder } from '../../model/orderMaster';
-import { OrderService } from '../../core/services/order.service';
+import { IWorkOrder } from '../../model/orderMaster';
+import { WorkOrderService } from '../../core/services/workOrder.service';
 import { JobService } from '../../core/services/job.service';
 import {IMyDpOptions, IMyDateModel} from 'angular4-datepicker/src/my-date-picker/interfaces';
 
@@ -18,8 +18,9 @@ export class ProjectsFormComponent implements OnInit {
   topLevelJobs:IJob[] = [];
   selectedJob:IJob;
   errorMessage: string;
-  order : IOrder = {
+  order : IWorkOrder = {
     id: 0,
+    workOrderNo:"",
     orderNo: "",
     orderDate: "",
     jobId: 0,
@@ -35,11 +36,12 @@ export class ProjectsFormComponent implements OnInit {
   constructor(fb: FormBuilder,
     private router: Router,
     private activateRoute: ActivatedRoute,
-    private orderService: OrderService,
+    private workorderService: WorkOrderService,
     private jobService: JobService
   ) {
     this.form = fb.group({
-      orderNo: ['', Validators.required],
+      workOrderNo:['', Validators.required],
+      orderNo: [''],
       orderDate: ['', Validators.required],
       job: ['', Validators.required],
       orderDescription: ['']
@@ -65,7 +67,7 @@ export class ProjectsFormComponent implements OnInit {
   }
 
   getOrder(id: number){
-    this.orderService.getOrder(id).subscribe(
+    this.workorderService.getOrder(id).subscribe(
       order => {
         this.order = order;
         console.log(this.order);
@@ -98,6 +100,10 @@ export class ProjectsFormComponent implements OnInit {
       this.order.orderDate = this.orderDate.value.formatted;
       console.log(this.order);
     }
+  }
+
+  get workOrderNo(){
+    return this.form.get("workOrderNo");
   }
 
   get orderNo(){

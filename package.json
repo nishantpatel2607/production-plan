@@ -27,6 +27,7 @@
     "classlist.js": "^1.1.20150312",
     "core-js": "^2.4.1",
     "ng-drag-drop": "^4.0.0",
+    "ng-pick-datetime": "^5.0.0-beta.15",
     "ng2-order-pipe": "^0.1.5",
     "ng2-tooltip-directive": "^1.2.3",
     "rxjs": "^5.4.1",
