@@ -9,9 +9,12 @@ import { IWorkOrderProject } from '../../model/orderProject';
 import { forEach } from '@angular/router/src/utils/collection';
 
 interface IProject {
-  jobId:number,
-  jobName:string,
-  employee:any[]
+  jobId:number;
+  jobName:string;
+  jobDesignations:string[];
+  startDateTime:string;
+  endDateTime:string;
+  employee:any[];
 }
 
 @Component({
@@ -31,6 +34,7 @@ export class ProjectResourcePlanComponent implements OnInit {
     orderStatus : 1
   }
 
+  desig:string[] = ["'Fitter'"];
   employees : IEmployee[] = [];
   orderProjects: IWorkOrderProject[] = [];
   jobName:string = '';
@@ -90,8 +94,12 @@ export class ProjectResourcePlanComponent implements OnInit {
       let projectElement:IProject = {
         jobId:project.jobId,
         jobName:project.jobName,
+        jobDesignations:project.jobDesignations,
+        startDateTime:(new Date()).toUTCString(),
+        endDateTime:(new Date()).toUTCString(),
         employee:[]
       }
+      console.log(projectElement);
       this.arProjects.push(projectElement);
     }
    });
@@ -116,4 +124,8 @@ export class ProjectResourcePlanComponent implements OnInit {
   cancelForm(){
     this.router.navigate(['/projects']);
   }
+
+  
+
+  
 }

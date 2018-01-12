@@ -4,7 +4,7 @@
         "jobId": 1,
         "designationId": 9
     },
-    {
+    { 
         "id": 2,
         "jobId": 2,
         "designationId": 4
@@ -23,5 +23,20 @@
         "id": 5,
         "jobId": 1,
         "designationId": 8
+    },
+    {
+        "id": 6,
+        "jobId": 1,
+        "designationId": 6
+    },
+    {
+        "id": 7,
+        "jobId": 2,
+        "designationId": 6
+    },
+    {
+        "id": 8,
+        "jobId": 3,
+        "designationId": 7
     }
 ]

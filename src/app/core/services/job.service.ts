@@ -34,7 +34,7 @@ export class JobService{
         .map((response: Response) => (<IJobDesignations[]> response.json())
         .filter(response => response.jobId == jobId))
         //.do(data => console.log('All: ' +  JSON.stringify(data)))
-        .catch(this.handleError);
+        .catch(this.handleError); 
     }
 
     //get the list of top level jobs

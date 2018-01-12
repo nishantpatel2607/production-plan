@@ -29,7 +29,7 @@
         <div class="panel-heading">Employees</div>
         <div class="panel-body yscrollable" style=" height:400px;">
           <ul class='list-group'>
-            <li draggable *ngFor="let emp of employees" [dragData]="emp" class="list-group-item">{{emp.firstName}} {{emp.lastName}} </li>
+            <li draggable *ngFor="let emp of employees" [dragScope]="emp.designation" [dragData]="emp" class="list-group-item">{{emp.firstName}} {{emp.lastName}} ({{emp.designation}}) </li>
           </ul>
         </div>
       </div>
@@ -46,22 +46,23 @@
               </thead> -->
           <tbody>
             <tr>
-              <td *ngFor="let project of arProjects">
+              <td *ngFor="let projectElement of arProjects">
                 <div class='panel panel-default' style="height:425px; width:300px">
                   <div class="panel-heading">
-                    {{project.jobName | summary:40}} <br>
+                    {{projectElement.jobName | summary:40}} <br>
                         <div style="height:5px"></div>
                         <label>Start Date Time</label><br>
-                        <owl-date-time [autoClose]="true" [dateFormat]="'DD/MM/YYYY HH:mm'" [placeHolder]="'dd/MM/yyyy HH:mm'" [dataType]="'string'"></owl-date-time> <br>
+                        <owl-date-time [autoClose]="true" [(ngModel)]="projectElement.startDateTime" [dateFormat]="'DD/MM/YYYY HH:mm'" [placeHolder]="'dd/MM/yyyy HH:mm'" [dataType]="'string'"></owl-date-time> <br>
                         <label style="margin-top:5px">End Date Time</label><br>
-                        <owl-date-time [autoClose]="true" [dateFormat]="'DD/MM/YYYY HH:mm'" [placeHolder]="'dd/MM/yyyy HH:mm'" [dataType]="'string'"></owl-date-time>
+                        <owl-date-time [autoClose]="true" [(ngModel)]="projectElement.startDateTime" [dateFormat]="'DD/MM/YYYY HH:mm'" [placeHolder]="'dd/MM/yyyy HH:mm'" [dataType]="'string'"></owl-date-time>
                    
                   </div>
-                  <div class="panel-body" droppable [dragOverClass]="'drag-target-border'" [dragHintClass]="'drag-hint'" (onDrop)="assignEmployee($event,project)">
+                  
+                  <div class="panel-body"  [dropScope]="projectElement.jobDesignations" droppable [dragOverClass]="'drag-target-border'" [dragHintClass]="'drag-hint'" (onDrop)="assignEmployee($event,projectElement)">
                     <div class="yscrollable task-employees-panel">
                     <ul class='list-group' >
-                      <li class="list-group-item" *ngFor="let emp of project.employee">{{emp.firstName}} {{emp.lastName}}
-                        <button class="btn btn-xs btn-warning pull-right" (click)="removeEmployee(project,emp)">X</button>
+                      <li class="list-group-item" *ngFor="let emp of projectElement.employee">{{emp.firstName}} {{emp.lastName}}
+                        <button class="btn btn-xs btn-warning pull-right" (click)="removeEmployee(projectElement,emp)">X</button>
                       </li>
                     </ul>
                     </div>

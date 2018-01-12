@@ -3,5 +3,6 @@ export interface IWorkOrderProject{
     workOrderId:number,
     jobId:number,
     jobName: string,
-    parentProjectId:number
+    jobDesignations: string[],
+    parentProjectId:number 
 }

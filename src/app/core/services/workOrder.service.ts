@@ -40,16 +40,16 @@ export class WorkOrderService {
         let order: Observable<IWorkOrder>;
         order= this.getAllOrders()
         .map((orders: IWorkOrder[])=> orders.find(o => o.id === id))
-        .do(data => console.log('MAC: ' + JSON.stringify(data)))
+        //.do(data => console.log('MAC: ' + JSON.stringify(data))) 
         return order;
     }
 
     //get list of all projects of a order. 
-    //Use joins to get job name along with job id, in query
+    //Use joins to get job name and  array of job designations name along with job id, in query
     getOrderProjects(id:number) :Observable<IWorkOrderProject[]>{
         return this._http.get(this._workOrderProjectsUrl)
         .map((response: Response) => <IWorkOrderProject[]> response.json())
-        //.do(data => console.log('All: ' +  JSON.stringify(data)))
+        .do(data => console.log('All: ' +  JSON.stringify(data)))
         .catch(this.handleError);
     }
 
