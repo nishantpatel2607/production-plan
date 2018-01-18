@@ -29,9 +29,17 @@
     margin-top:-15px; 
     margin-left:-14px; 
     margin-right:-14px; 
-    height:280px;
+    height:260px;
     
   }
+
+  .nopadding {
+    padding: 0 !important;
+    margin: 0 !important;
+    margin-left:5px !important;
+ }
+
+ 
 
     
 

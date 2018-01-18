@@ -47,24 +47,60 @@
           <tbody>
             <tr>
               <td *ngFor="let projectElement of arProjects">
-                <div class='panel panel-default' style="height:425px; width:300px">
+                <div class='panel panel-default' style="height:420px; width:330px">
                   <div class="panel-heading">
-                    {{projectElement.jobName | summary:40}} <br>
-                        <div style="height:5px"></div>
-                        <label>Start Date Time</label><br>
-                        <owl-date-time [autoClose]="true" [(ngModel)]="projectElement.startDateTime" [dateFormat]="'DD/MM/YYYY HH:mm'" [placeHolder]="'dd/MM/yyyy HH:mm'" [dataType]="'string'"></owl-date-time> <br>
-                        <label style="margin-top:5px">End Date Time</label><br>
-                        <owl-date-time [autoClose]="true" [(ngModel)]="projectElement.startDateTime" [dateFormat]="'DD/MM/YYYY HH:mm'" [placeHolder]="'dd/MM/yyyy HH:mm'" [dataType]="'string'"></owl-date-time>
-                   
+                    {{projectElement.jobName | summary:40}}
+
+                    <div class="row" style="margin-top: 5px">
+                      <div class="col-sm-5 nopadding" >
+                        <label>Start Date Time</label>
+                        <br>
+                        <owl-date-time #startDt [autoClose]="true"  [dateFormat]="'DD/MM/YYYY HH:mm'" [placeHolder]="'dd/MM/yyyy HH:mm'"
+                          [dataType]="'date'"></owl-date-time>
+                      </div>
+                      <div class="col-sm-5 nopadding">
+                        <label>End Date Time</label>
+                        <br>
+                        <owl-date-time #endDt [autoClose]="true" [dateFormat]="'DD/MM/YYYY HH:mm'" [placeHolder]="'dd/MM/yyyy HH:mm'"
+                          [dataType]="'date'"></owl-date-time>
+                      </div>
+                      <div class="col-sm-1" style="padding-left: 25px;padding-top:5px">
+                        <div style="margin-left: -20px; margin-top: 20px">
+                          <button type="button" class="btn  btn-xs btn-link" (click) = "addDateTime(startDt.value,endDt.value,projectElement)" >
+                            <span class="glyphicon glyphicon-ok"></span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row"style="margin-top:5px">
+                       
+                      
+
+                      <div class="col-md-11 nopadding">
+                        <div style="height: 60px" class="yscrollable">
+                        <ul class='list-group'>
+                            <li class="list-group-item" *ngFor="let startDate of projectElement.startDateTime; let i = index" 
+                            style="height: 30px;padding: 4px 5px;" >{{startDate}} - {{projectElement.endDateTime[i]}}
+                                <button class="btn btn-xs btn-warning pull-right" (click)="removeDateTime(i,projectElement)">X</button>
+                            </li>
+                        </ul>
+                      </div>
+                      </div>
+                      <div class="col-sm-1"></div>
+                     
+                    </div>
                   </div>
-                  
-                  <div class="panel-body"  [dropScope]="projectElement.jobDesignations" droppable [dragOverClass]="'drag-target-border'" [dragHintClass]="'drag-hint'" (onDrop)="assignEmployee($event,projectElement)">
+
+                  <div class="panel-body" [dropScope]="projectElement.jobDesignations" 
+                  droppable [dragOverClass]="'drag-target-border'" [dragHintClass]="'drag-hint'"
+
+                    (onDrop)="assignEmployee($event,projectElement)">
                     <div class="yscrollable task-employees-panel">
-                    <ul class='list-group' >
-                      <li class="list-group-item" *ngFor="let emp of projectElement.employee">{{emp.firstName}} {{emp.lastName}}
-                        <button class="btn btn-xs btn-warning pull-right" (click)="removeEmployee(projectElement,emp)">X</button>
-                      </li>
-                    </ul>
+                      <ul class='list-group'>
+                        <li class="list-group-item" *ngFor="let emp of projectElement.employee">{{emp.firstName}} {{emp.lastName}}
+                          <button class="btn btn-xs btn-warning pull-right" (click)="removeEmployee(projectElement,emp)">X</button>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>

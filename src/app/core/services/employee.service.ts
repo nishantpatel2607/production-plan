@@ -20,7 +20,7 @@ export class EmployeeService{
     
     constructor(private _http: Http){}
 
-    //Get all employees
+    //Get all employees - join query to get designation names
     getEmployees(): Observable<IEmployee[]>{
         return this._http.get(this._employeesUrl)
         .map((response: Response) => <IEmployee[]> response.json())
@@ -28,7 +28,7 @@ export class EmployeeService{
         .catch(this.handleError); 
     }
 
-    //get employee by Id
+    //get employee by Id - join query to get designation name
     getEmployee(id: number) :Observable<IEmployee> {
         let employee: Observable<IEmployee>;
         employee= this.getEmployees()

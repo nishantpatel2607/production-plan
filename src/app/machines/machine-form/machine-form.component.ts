@@ -93,7 +93,7 @@ export class MachineFormComponent implements OnInit {
 
   //retrive selected machine values
   getMachine(id: number) {
-    this.machineService.getMachine(id).subscribe(
+    this.machineService.getMachine(id).subscribe( 
       mac => {
       this.machine = mac;
         //this.getModelNamefromId();
@@ -161,9 +161,10 @@ export class MachineFormComponent implements OnInit {
   }
 
   saveForm() {
-    if (this.machine.id != 0) {
+    //if (this.machine.id != 0) {
+      this.machine.categoryId = this.selectedMachineCategory.id;
       console.log(this.machine);
-    }
+    //}
   }
 
 

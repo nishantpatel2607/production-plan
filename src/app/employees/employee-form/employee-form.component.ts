@@ -17,41 +17,16 @@ export class EmployeeFormComponent implements OnInit {
   private sub: Subscription;
   form: FormGroup;
   designations:IDesignation[];
+  selectedDesignation: IDesignation;
   employee: IEmployee = {
     "id": 0,
     "firstName": "",
     "lastName": "",
+    "designationId":0,
     "designation":"",
     "username": "",
     "password": ""
-    // "marking": false,
-    // "cuttingShearing": false,
-    // "sheetBending": false,
-    // "pipeBending": false,
-    // "straightening": false,
-    // "gauging": false,
-    // "pipeFitting": false,
-    // "insulation": false,
-    // "testing": false,
-    // "fittingAssembly": false,
-    // "filletWeld": false,
-    // "buttWeld": false,
-    // "rootWeld": false,
-    // "backChipping": false,
-    // "tagWeld": false,
-    // "edgeWeld": false,
-    // "pipeWeld": false,
-    // "cleaning": false,
-    // "packing": false,
-    // "handling": false,
-    // "filing": false,
-    // "grinding": false,
-    // "drilling": false,
-    // "tapping": false,
-    // "hacksawCutting": false,
-    // "painting": false,
-    // "helperTagWeld": false,
-    // "buffer": false,
+    
   }
 
   errorMessage: string;
@@ -66,34 +41,7 @@ export class EmployeeFormComponent implements OnInit {
         designation: ['',Validators.required],
         username: [],
         password: []
-        // marking: [],
-        // cuttingShearing: [],
-        // sheetBending: [],
-        // pipeBending: [],
-        // straightening: [],
-        // gauging: [],
-        // pipeFitting: [],
-        // insulation: [],
-        // testing: [],
-        // fittingAssembly: [],
-        // filletWeld: [],
-        // buttWeld: [],
-        // rootWeld: [],
-        // backChipping: [],
-        // tagWeld: [],
-        // edgeWeld: [],
-        // pipeWeld: [],
-        // cleaning: [],
-        // packing: [],
-        // handling: [],
-        // filing: [],
-        // grinding: [],
-        // drilling: [],
-        // tapping: [],
-        // hacksawCutting: [],
-        // painting: [],
-        // helperTagWeld: [],
-        // buffer: []
+        
       });
      }
 
@@ -119,15 +67,23 @@ export class EmployeeFormComponent implements OnInit {
     this.employeeService.getEmployee(id).subscribe(
       emp => {
         this.employee = emp;
+        this.getEmployeeDesignation();
       },
       error => this.errorMessage = <any>error);
     
   }
 
+  getEmployeeDesignation() { 
+    
+        this.selectedDesignation = this.designations.find(d => d.id === this.employee.designationId);
+      
+  }
+
   saveForm(){
-    if (this.employee.id != 0) {
+    //if (this.employee.id != 0) {
+      this.employee.designationId = this.selectedDesignation.id;
       console.log(this.employee);
-    }
+    //}
   }
 
   cancelForm(){

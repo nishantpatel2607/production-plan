@@ -34,9 +34,9 @@
             <label for="designation">Designation</label>
             <select id="designation" 
             formControlName="designation"
-            [(ngModel)] = "employee.designation"
+            [(ngModel)] = "selectedDesignation" 
             class="form-control">
-              <option *ngFor="let designation of designations">{{designation.title}}</option>
+              <option *ngFor="let designation of designations" [ngValue]="designation">{{designation.title}}</option>
             </select>
           </div>
           <div class="form-group">

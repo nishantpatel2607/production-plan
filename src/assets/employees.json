@@ -3,7 +3,8 @@
         "id": 1,
         "firstName": "N. K.",
         "lastName": "Sonar",
-        "designation": "Head Fitter",
+        "designationId": 2,
+        "designation":"Head Fitter",
         "username": "nksonar",
         "password": "password"
     },
@@ -12,6 +13,7 @@
         "id": 2,
         "firstName": "Dilip",
         "lastName": "Koli",
+        "designationId": 4,
         "designation": "Fitter",
         "username": "dilipkoli",
         "password": "password"
@@ -20,7 +22,8 @@
     {
         "id": 3,
         "firstName": "Welder",
-        "lastName": "3",
+        "lastName": "Welder",
+        "designationId": 5,
         "designation": "Welder",
         "username": "nksonar",
         "password": "password"
@@ -29,7 +32,8 @@
     {
         "id": 4,
         "firstName": "Helper",
-        "lastName": "1",
+        "lastName": "Helper",
+        "designationId": 7,
         "designation": "Helper",
         "username": "nksonar",
         "password": "password"
@@ -37,15 +41,17 @@
     {
         "id": 5,
         "firstName": "Helper",
-        "lastName": "2",
-        "designation": "Helper",
+        "lastName": "Helper",
+        "designationId": 7,
+        "designation":"Helper",
         "username": "nksonar",
         "password": "password"
     },
     {
         "id": 6,
         "firstName": "Helper",
-        "lastName": "3",
+        "lastName": "Helper",
+        "designationId": 7,
         "designation": "Helper",
         "username": "nksonar",
         "password": "password"
@@ -53,8 +59,9 @@
     {
         "id": 7,
         "firstName": "Turning Assistant",
-        "lastName": "2",
-        "designation": "Turning Assistant",
+        "lastName": "Assistant",
+        "designationId": 8,
+        "designation": "Helper",
         "username": "nksonar",
         "password": "password"
     }

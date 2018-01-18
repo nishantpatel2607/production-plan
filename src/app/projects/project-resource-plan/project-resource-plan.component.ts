@@ -7,13 +7,14 @@ import { EmployeeService } from '../../core/services/employee.service';
 import { IEmployee } from '../../model/employee';
 import { IWorkOrderProject } from '../../model/orderProject';
 import { forEach } from '@angular/router/src/utils/collection';
+import { DatePipe } from '@angular/common';
 
 interface IProject {
   jobId:number;
   jobName:string;
   jobDesignations:string[];
-  startDateTime:string;
-  endDateTime:string;
+  startDateTime:string[];
+  endDateTime:string[];
   employee:any[];
 }
 
@@ -33,6 +34,7 @@ export class ProjectResourcePlanComponent implements OnInit {
     orderDescription: "",
     orderStatus : 1
   }
+  datepipe: DatePipe = new DatePipe('en-UK');
 
   desig:string[] = ["'Fitter'"];
   employees : IEmployee[] = [];
@@ -95,11 +97,11 @@ export class ProjectResourcePlanComponent implements OnInit {
         jobId:project.jobId,
         jobName:project.jobName,
         jobDesignations:project.jobDesignations,
-        startDateTime:(new Date()).toUTCString(),
-        endDateTime:(new Date()).toUTCString(),
+        startDateTime:[],
+        endDateTime:[],
         employee:[]
       }
-      console.log(projectElement);
+      //console.log(projectElement);
       this.arProjects.push(projectElement);
     }
    });
@@ -125,7 +127,18 @@ export class ProjectResourcePlanComponent implements OnInit {
     this.router.navigate(['/projects']);
   }
 
-  
+  addDateTime(startDt:Date,endDt:Date,projectElement:IProject){
+    //console.log(startDt);
+    if (startDt === undefined || endDt === undefined){return;}
+    if ((startDt.getTime()-endDt.getTime()) > 0){return;}
+    projectElement.startDateTime.push(this.datepipe.transform(startDt,'dd/MM/yyyy HH:mm'));
+    projectElement.endDateTime.push(this.datepipe.transform(endDt,'dd/MM/yyyy HH:mm'));
+  }
+
+  removeDateTime(i:number,projectElement:IProject){
+    projectElement.startDateTime.splice(i,1);
+    projectElement.endDateTime.splice(i,1);
+  }
 
   
 }

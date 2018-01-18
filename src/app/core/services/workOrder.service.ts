@@ -49,7 +49,7 @@ export class WorkOrderService {
     getOrderProjects(id:number) :Observable<IWorkOrderProject[]>{
         return this._http.get(this._workOrderProjectsUrl)
         .map((response: Response) => <IWorkOrderProject[]> response.json())
-        .do(data => console.log('All: ' +  JSON.stringify(data)))
+        //.do(data => console.log('All: ' +  JSON.stringify(data)))
         .catch(this.handleError);
     }
 
