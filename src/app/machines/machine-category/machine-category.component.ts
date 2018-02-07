@@ -1,11 +1,11 @@
-import { MachineModelService } from '../../core/services/machineModel.service';
+
 import { MachineCategoryService } from '../../core/services/machineCategory.service';
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { IMachineCategory } from '../../model/machineCategory';
-import { IMachineModel } from '../../model/machineModel';
+
 import { PagerService } from '../../core/services/pager.service';
 
 @Component({

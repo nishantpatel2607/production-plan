@@ -11,7 +11,7 @@ import { MachineListComponent } from './machine-list/machine-list.component';
 import { MachineFormComponent } from './machine-form/machine-form.component';
 import { MachineCategoryComponent } from './machine-category/machine-category.component';
 import { MachineCategoryService } from '../core/services/machineCategory.service';
-import { MachineModelService } from '../core/services/machineModel.service';
+
 import { Ng2OrderModule } from 'ng2-order-pipe';
 
 @NgModule({ 
@@ -37,8 +37,7 @@ import { Ng2OrderModule } from 'ng2-order-pipe';
     providers:[
         MachineService,
         PagerService,
-        MachineCategoryService,
-        MachineModelService
+        MachineCategoryService
       
     ]
 }) 

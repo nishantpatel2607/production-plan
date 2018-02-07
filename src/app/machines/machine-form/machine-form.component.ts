@@ -1,4 +1,4 @@
-import { MachineModelService } from '../../core/services/machineModel.service'; 
+
 import { MachineCategoryService } from '../../core/services/machineCategory.service';
  
 import { Component, OnInit } from '@angular/core';
@@ -10,7 +10,7 @@ import { IMachine } from '../../model/machine';
 
 import { MachineService } from '../../core/services/machine.service';
 import { IMachineCategory } from '../../model/machineCategory';
-import { IMachineModel } from '../../model/machineModel';
+
 //import { mcall } from 'q';
 
 
@@ -37,8 +37,7 @@ export class MachineFormComponent implements OnInit {
 
   machineCategories: IMachineCategory[];
   selectedMachineCategory: IMachineCategory;
-  selectedMachineModel: IMachineModel;
-  machineModels: IMachineModel[];
+  
   machineTypeValues: string[] = ['Automatic', 'Manual'];
   machineInstallationTypes:string[] = [
     'Standing',
@@ -63,8 +62,8 @@ export class MachineFormComponent implements OnInit {
     private router: Router,
     private activateRoute: ActivatedRoute,
     private machineService: MachineService,
-    private machineCategoryService: MachineCategoryService,
-    private machineModelService: MachineModelService) {
+    private machineCategoryService: MachineCategoryService
+    ) {
     this.form = fb.group({
       machineName: ['', Validators.required],
       modelNo: ['',Validators.required],
