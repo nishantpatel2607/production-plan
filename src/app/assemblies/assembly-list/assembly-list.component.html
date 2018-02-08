@@ -1,0 +1,74 @@
+<div class="container-fluid">
+  <home></home>
+
+  <div class='panel panel-primary'> 
+    <div class='panel-heading' style="height: 60px">
+        Assemblies
+
+        <form class="form-inline pull-right">
+
+            <button class="btn btn-default" (click)="newAssembly()">New</button>
+            <button class="btn btn-danger" (click)="deleteAssembly()">Delete</button>
+        </form>
+    </div>
+
+    <div class='panel-body'>
+        <div class='row'>
+            <div class='col-md-4'>
+                <form class="form-inline">
+                    <input type="text" name="search" class="form-control" placeholder="Search" [ngModel]='listFilter' (ngModelChange) = "filterRecords($event)">
+                    <!-- <button class="btn btn-default" (click)="filterRecords()">Search</button> -->
+                </form>
+            </div>
+        </div>
+
+        <div class='table-responsive'>
+          <table class='table table-hover'>
+              <thead>
+                  <tr>
+                      <th class="col-md-1"></th>
+                      <th class="col-md-4" (click)="sort('assemblyName')">Assembly Name
+                          <span class="glyphicon sort-icon" *ngIf="key =='assemblyName'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                      </th>
+                      <th class="col-md-7" (click)="sort('assemblyDescription')">Description
+                          <span class="glyphicon sort-icon" *ngIf="key =='assemblyDescription'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                      </th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let assembly of pagedItems | orderBy: key : reverse">
+                      <td>
+                          <input type="checkbox" id="delSel" value="1" (change)="selectedItem(assembly,$event)"/> </td>
+                      <td>
+                          <a>{{assembly.assemblyName}}</a>
+                      </td>
+                      <td>{{assembly.assemblyDescription|summary:100}}</td>
+                  </tr>
+
+              </tbody>
+          </table>
+      </div>
+
+    </div>
+
+    <div class="panel-footer clearfix list-footer">
+
+      <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+          <li [ngClass]="{disabled:pager.currentPage === 1}">
+              <a (click)="setPage(1)">First</a>
+          </li>
+          <li [ngClass]="{disabled:pager.currentPage === 1}">
+              <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+          </li>
+          <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+              <a (click)="setPage(page)">{{page}}</a>
+          </li>
+          <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+              <a (click)="setPage(pager.currentPage + 1)">Next</a>
+          </li>
+          <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+              <a (click)="setPage(pager.totalPages)">Last</a>
+          </li>
+      </ul>
+  </div>
+</div>

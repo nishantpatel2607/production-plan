@@ -1,0 +1,61 @@
+<div class="container-fluid">
+    <div class='panel panel-primary'>
+        <div class='panel-heading' >
+            Select Assembly
+        </div>
+        <div class='panel-body'>
+            <div class='row'>
+                <div class='col-md-8'>
+                    <form class="form-inline">
+                        <input type="text" name="search" class="form-control input-sm" placeholder="Search" [ngModel]='listFilter' (ngModelChange) = "filterRecords($event)">
+                    </form>
+                </div>
+            </div>
+            <div class='table'>
+                <table class='table table-hover'>
+                    <thead>
+                        <tr>
+                            <th class="col-md-10" (click)="sort('assemblyName')">Assembly Name
+                                <span class="glyphicon sort-icon" *ngIf="key =='assemblyName'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                            </th>
+                            <th class="col-md-2"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let assembly of pagedItems | orderBy: key : reverse" style="height:15px;" (dblclick)="selectAssembly(assembly)">
+                            <td>
+                                {{assembly.assemblyName}}
+                            </td>
+                            <td class="hoverbutton">
+                              <button class="btn btn-success btn-xs" (click)="selectAssembly(assembly)">
+                                  <span class="glyphicon glyphicon-plus"></span>
+                              </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel-footer clearfix list-footer">
+
+            <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                <li [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a (click)="setPage(1)">First</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+                </li>
+                <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                    <a (click)="setPage(page)">{{page}}</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a (click)="setPage(pager.currentPage + 1)">Next</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a (click)="setPage(pager.totalPages)">Last</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -16,6 +16,8 @@ import { AppComponent } from './app.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { JobsModule } from './jobs/jobs.module';
 import { ProjectsModule } from './projects/projects.module';
+import { AssembliesModule } from './assemblies/assemblies.module';
+
 
 const app_routes: Routes = [
   {path: '',  component: LoginFormComponent},
@@ -26,8 +28,7 @@ const app_routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    LoginFormComponent,
-    
+    LoginFormComponent
   ],
   imports: [
     SharedModule,
@@ -40,7 +41,8 @@ const app_routes: Routes = [
     ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot(app_routes),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AssembliesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

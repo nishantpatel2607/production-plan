@@ -4,7 +4,7 @@ import { IMachineCategory } from '../../model/machineCategory';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-
+ 
 
 import { IMachine } from '../../model/machine';
 import { PagerService } from '../../core/services/pager.service';

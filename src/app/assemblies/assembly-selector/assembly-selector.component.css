@@ -1,0 +1,20 @@
+td.hoverbutton>button {
+  visibility: hidden;
+}
+
+tr:hover>td>button {
+  visibility: visible;
+}
+
+th {
+  cursor: pointer;
+}
+
+.panel-footer {
+  padding: 0 15px;
+  height: 20%;
+  line-height: 0px;
+  text-align: center;
+}
+
+

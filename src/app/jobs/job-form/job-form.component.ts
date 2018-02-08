@@ -25,7 +25,7 @@ export class JobFormComponent implements OnInit {
   nodes;
   jobs: IJob[];
   //arDesignations: any[]=[];
-  errorMessage: string;
+  errorMessage: string; 
   form: FormGroup;
   formHidden: boolean = true;
   selectedMachine: IMachine;
