@@ -1,5 +1,6 @@
-export interface ISubAssembly {
+export interface ISubAssembly { 
     assemblyId: number;
     subAssemblyId: number;
-    Qty: number;
+    subAssemblyName: string;
+    qty: number;
 }

@@ -17,7 +17,7 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { JobsModule } from './jobs/jobs.module';
 import { ProjectsModule } from './projects/projects.module';
 import { AssembliesModule } from './assemblies/assemblies.module';
-
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
 const app_routes: Routes = [
   {path: '',  component: LoginFormComponent},
@@ -42,7 +42,8 @@ const app_routes: Routes = [
     HttpModule,
     RouterModule.forRoot(app_routes),
     BrowserAnimationsModule,
-    AssembliesModule
+    AssembliesModule,
+    AngularMultiSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

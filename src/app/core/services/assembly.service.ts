@@ -9,7 +9,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 
 import {IAssembly} from "../../model/assembly";
-import {IAssemblyDesignations} from "../../model/assemblyDesignations";
+import {IAssemblyDesignation} from "../../model/assemblyDesignations";
 import { IDesignation } from '../../model/designation';
 
 @Injectable()
@@ -30,9 +30,9 @@ export class AssemblyService{
     }
 
     //get the list of designations suitable for supplied assembly
-    getAssemblyDesignations(assemblyId:number):Observable<IAssemblyDesignations[]>{
+    getAssemblyDesignations(assemblyId:number):Observable<IAssemblyDesignation[]>{
         return this._http.get(this._assemblyDesignationUrl)
-        .map((response: Response) => (<IAssemblyDesignations[]> response.json())
+        .map((response: Response) => (<IAssemblyDesignation[]> response.json())
         .filter(response => response.assemblyId == assemblyId))
         //.do(data => console.log('All: ' +  JSON.stringify(data)))
         .catch(this.handleError); 

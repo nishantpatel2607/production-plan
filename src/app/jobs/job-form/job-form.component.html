@@ -20,13 +20,13 @@
       </div>
     </div>
     <div class="col-md-8">
-      <div class="well" [hidden]="formHidden">
+      <div class="well" [hidden]="formHidden"> 
         <form class="data-form" [formGroup]="form" (ngSubmit)="saveForm()">
           <div class="form-group">
             <label for="jobName">Job Name</label>
             <input formControlName="jobName" id="jobName" type="text" class="form-control" [(ngModel)]="job.jobName" />
             <div *ngIf="jobName.touched && jobName.invalid" class="alert alert-danger">
-              <div *ngIf="jobName.errors.required">Please enter job name.</div>
+              
             </div>
           </div>
 

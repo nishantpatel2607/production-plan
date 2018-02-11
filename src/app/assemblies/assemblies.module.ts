@@ -8,7 +8,10 @@ import { RouterModule } from '@angular/router';
 import { AssemblyService } from '../core/services/assembly.service';
 import { AssemblySelectorComponent } from './assembly-selector/assembly-selector.component';
 import { AssemblyFormComponent } from './assembly-form/assembly-form.component';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
+ 
+ 
 @NgModule({
   imports: [
     CommonModule,
@@ -16,6 +19,7 @@ import { AssemblyFormComponent } from './assembly-form/assembly-form.component';
     ReactiveFormsModule,
     SharedModule,
     Ng2OrderModule,
+    AngularMultiSelectModule,
     RouterModule.forChild([
       { path: 'assemblies', component: AssemblyListComponent},
       { path: 'assemblies/new', component: AssemblyFormComponent},

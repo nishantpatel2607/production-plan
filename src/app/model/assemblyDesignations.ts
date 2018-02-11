@@ -1,4 +1,4 @@
-export interface IAssemblyDesignations{
+export interface IAssemblyDesignation{
     assemblyId: number;
     designationId: number; 
 }

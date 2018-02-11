@@ -73,7 +73,7 @@ export class JobFormComponent implements OnInit {
     this.getAllJobs();
     this.getAllMachines();
     this.getAllDesignations();
-
+ 
   }
   ngAfterInit() {
     this.treeModel = this.tree.treeModel;

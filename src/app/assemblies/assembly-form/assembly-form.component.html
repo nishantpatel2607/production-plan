@@ -1,13 +1,79 @@
 <div class="container-fluid">
-    <home></home>
-    <div class="row">
-      <div class="col-md-4">
-        <assembly-selector (ItemSelected)="addAssembly($event)" ></assembly-selector>
-      </div>
-      <div class="col-md-8">
-          <div class="well">
-            
+  <home></home>
+  <div class="row">
+    <div class="col-sm-4">
+      <assembly-selector (ItemSelected)="addSubAssembly($event)"></assembly-selector>
+    </div>
+    <div class="col-md-8">
+      <div class="well">
+        <form class="data-form" [formGroup]="form">
+          <div class="form-group">
+            <label for="assemblyName">Assembly Name</label>
+            <input formControlName="assemblyName" id="assemblyName" type="text" class="form-control" [(ngModel)]="assembly.assemblyName"
+            />
+            <div *ngIf="assemblyName.touched && assemblyName.invalid" class="alert alert-danger">
+            </div>
           </div>
+
+          <div class="form-group">
+            <label for="assemblyDescription">Assembly Description</label>
+            <textarea formControlName="assemblyDescription" id="assemblyDescription" type="text" class="form-control" style="resize: none"
+              [(ngModel)]="assembly.assemblyDescription"></textarea>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="durationInMins">Duration (in mins)</label>
+                <input formControlName="durationInMins" id="durationInMins" type="text" class="form-control" [(ngModel)]="assembly.durationInMins"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="designations">Designations</label>
+            <angular2-multiselect [data]="designationsList" [(ngModel)]="selectedDesignations" [settings]="dropdownSettings" formControlName="assemblyDesignations">
+            </angular2-multiselect>
+          </div>
+          <div class='panel panel-primary'>
+            <div class='panel-body'>
+              <div class='table tab-pane'>
+                <table class='table table-hover'>
+                  <thead>
+                    <tr>
+                      <th class="col-md-9">Sub-Assembly</th>
+                      <th class="col-md-2">Qty</th>
+                      <th class="col-md-1"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let subAssembly of assembly.subAssemblies">
+                      <td>{{subAssembly.subAssemblyName}}</td>
+                      <td>{{subAssembly.qty}}</td>
+                      <td>
+                        <button class="btn btn-danger btn-xs" (click)="removeSubAssembly(subAssembly)">
+                          <span class="glyphicon glyphicon-minus"></span>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <button class="btn btn-primary btn-block" [disabled]="!form.valid" (click)="saveForm()">Save</button>
+            </div>
+            <div class="col-sm-6">
+              <div class="hidden-lg hidden-md hidden-sm">&nbsp;</div>
+              <button class="btn btn-block" (click)="cancelForm()">Cancel</button>
+            </div>
+          </div>
+
+        </form>
       </div>
     </div>
+  </div>
 </div>

@@ -1,0 +1,9 @@
+.noBorder{
+    border-left:none;
+  }
+
+  .tab-pane{
+    height:300px;
+    overflow-y:scroll;
+    width:100%;
+  }

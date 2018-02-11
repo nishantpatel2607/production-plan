@@ -9,7 +9,7 @@ import 'rxjs/add/observable/throw';
 import { IDesignation } from '../../model/designation';
 
 @Injectable()
-export class DesignationService {
+export class DesignationService { 
 
     private _designationsUrl = "./assets/designations.json";
 

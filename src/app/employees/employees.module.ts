@@ -27,6 +27,7 @@ import { Ng2OrderModule } from 'ng2-order-pipe';
         EmployeeFormComponent,
         EmployeeListComponent,
         DesignationListComponent
+        
        
     ],
     providers: [
