@@ -10,7 +10,7 @@ import { IEmployee } from '../../model/employee';
 @Component({
   selector: 'employee-form',
   templateUrl: './employee-form.component.html',
-  styleUrls: ['./employee-form.component.css']
+  styleUrls: ['./employee-form.component.css'] 
 })
 export class EmployeeFormComponent implements OnInit {
 

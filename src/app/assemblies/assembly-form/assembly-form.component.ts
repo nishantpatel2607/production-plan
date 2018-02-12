@@ -1,11 +1,15 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { IVMAssembly } from '../../model/viewModel/vmAssembly';
+import { IVMAssembly } from '../../model/viewModel/assemblyViewModels/vmAssembly';
+import { IVMAssemblyDesignation } from '../../model/viewModel/assemblyViewModels/vmAssemblyDesignation';
+import { IVMSubAssembly } from '../../model/viewModel/assemblyViewModels/vmSubAssembly';
 import { IDesignation } from '../../model/designation';
-import { ISubAssembly } from '../../model/subAssembly';
-import { IAssemblyDesignation } from '../../model/assemblyDesignations';
 import { style } from '@angular/animations';
 import { DesignationService } from '../../core/services/designation.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { AssemblyService } from '../../core/services/assembly.service';
+
 
 interface ISelectionListItem{
   id:number,
@@ -19,7 +23,9 @@ interface ISelectionListItem{
 })
 export class AssemblyFormComponent implements OnInit {
 
+
   form: FormGroup;
+  private sub: Subscription;
   assembly: IVMAssembly = {
     "id": 0,
     "assemblyName": "",
@@ -36,7 +42,10 @@ export class AssemblyFormComponent implements OnInit {
   desigListFromServer:IDesignation[];
   
   constructor(private fb: FormBuilder,
-    private designationService: DesignationService,) {
+    private designationService: DesignationService,
+    private assemblyService: AssemblyService,
+    private router: Router,
+    private activateRoute: ActivatedRoute) {
     this.form = fb.group({
       assemblyName: ['', Validators.required],
       assemblyDescription: [],
@@ -54,13 +63,20 @@ export class AssemblyFormComponent implements OnInit {
       classes:"noBorder",
       showCheckbox: true
     };
+    this.sub = this.activateRoute.params.subscribe(
+      params => {
+        let id = +params['id'];
+        if (Number.isNaN(id) == false) {
+          this.getAssembly(id);
+        }
+      });
     this.getAllDesignations();
   }
 
   addSubAssembly(asm) {
     //alert(assembly.assemblyName);
     //console.log(assembly.id);
-    let subAssembly: ISubAssembly = {
+    let subAssembly: IVMSubAssembly = {
       "assemblyId":this.assembly.id,
       "subAssemblyId":asm.id,
       "subAssemblyName":asm.assemblyName,
@@ -83,6 +99,20 @@ export class AssemblyFormComponent implements OnInit {
     }
   }
 
+  getAssembly(id: number): void {
+    this.assemblyService.getAssembly(id)
+    .subscribe(a => {this.assembly = a; },
+      error => this.errorMessage = <any>error,()=>{
+        this.assembly.assemblyDesignations.forEach(desig =>{
+          let designationItem:ISelectionListItem = {
+            id : desig.designationId,
+            itemName : desig.title
+          }
+          this.selectedDesignations.push(designationItem);
+        })
+      });
+  }
+
   get assemblyName() { return this.form.get("assemblyName"); }
   get assemblyDescription() { return this.form.get("assemblyDescription"); }
   get durationInMins() { return this.form.get("durationInMins"); }
@@ -90,16 +120,22 @@ export class AssemblyFormComponent implements OnInit {
 
   saveForm(){
     this.selectedDesignations.forEach(desig => {
-      let selDesig: IAssemblyDesignation = {
+      let selDesig: IVMAssemblyDesignation = {
         assemblyId:this.assembly.id,
-        designationId: desig.id
+        designationId: desig.id,
+        title: desig.itemName
       }
       this.assembly.assemblyDesignations.push(selDesig);
     });
-    console.log(this.assembly);
+    if (this.assembly.id > 0){
+      this.assemblyService.updateAssembly(this.assembly);
+    } else {this.assemblyService.createAssembly(this.assembly);}
+    //console.log(this.assembly);
   }
 
-  cancelForm(){}
+  cancelForm(){
+    this.router.navigate(['/assemblies']);
+  }
 
   getAllDesignations(){
     this.designationService.getDesignations().subscribe(

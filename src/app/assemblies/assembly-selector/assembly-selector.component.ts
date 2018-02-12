@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter,Output } from '@angular/core';
+import { Component, OnInit, EventEmitter,Output, Input } from '@angular/core';
 import { AssemblyService } from '../../core/services/assembly.service';
 import { PagerService } from '../../core/services/pager.service';
 import { IAssembly } from '../../model/assembly';
@@ -16,6 +16,7 @@ export class AssemblySelectorComponent implements OnInit {
   pager: any = {};
   pagedItems: IAssembly[];
   filteredItems: IAssembly[];
+  disabledAssembly: string;
 
   //sorting
   key: string = 'assemblyName'; //set default
@@ -31,13 +32,17 @@ export class AssemblySelectorComponent implements OnInit {
     private pagerService: PagerService) { }
 
   ngOnInit() {
+    this.loadAssemblies();
+  }
+
+  loadAssemblies(){
     this.assemblyService.getAssemblies()
-      .subscribe(assemblyData => {
-        this.assemblies = assemblyData;
-        this.filteredItems = this.assemblies;
-        this.setPage(1);
-      },
-        error => this.errorMessage = <any>error);
+    .subscribe(assemblyData => {
+      this.assemblies = assemblyData;
+      this.filteredItems = this.assemblies;
+      this.setPage(1);
+    },
+      error => this.errorMessage = <any>error);
   }
 
   setPage(page: number) {
@@ -72,8 +77,9 @@ export class AssemblySelectorComponent implements OnInit {
     this.setPage(1);
   }
 
-  selectAssembly(assembly){
-    this.ItemSelected.emit(assembly);
+  selectAssembly(assembly : IAssembly){
+    if (assembly.assemblyName !== this.disabledAssembly)
+      this.ItemSelected.emit(assembly);
   }
 
 }

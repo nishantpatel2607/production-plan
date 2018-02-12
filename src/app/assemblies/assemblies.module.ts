@@ -23,6 +23,7 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
     RouterModule.forChild([
       { path: 'assemblies', component: AssemblyListComponent},
       { path: 'assemblies/new', component: AssemblyFormComponent},
+      { path: 'assembly/:id', component: AssemblyFormComponent}
   ])
   ],
   declarations: [AssemblyListComponent, AssemblySelectorComponent, AssemblyFormComponent],

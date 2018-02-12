@@ -1,0 +1,135 @@
+[
+    {
+        "id": 1,
+        "assemblyName": "Assembly 1",
+        "assemblyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "durationInMins": 100,
+        "assemblyDesignations": [{
+            "assemblyId": 1,
+            "designationId": 2,
+            "title": "Head Fitter"
+        },
+        {
+            "assemblyId": 1,
+            "designationId": 7,
+            "title": "Helper"
+        }],
+        "subAssemblies":[{
+            "assemblyId": 0,
+            "subAssemblyId": 2,
+            "subAssemblyName": "Assembly 2",
+            "qty": 2
+        },
+        {
+            "assemblyId": 0,
+            "subAssemblyId": 3,
+            "subAssemblyName": "Assembly 3",
+            "qty": 1
+        }]
+    },
+    {
+        "id": 2,
+        "assemblyName": "Assembly 2",
+        "assemblyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "durationInMins": 100, 
+        "assemblyDesignations": [{
+            "assemblyId": 2,
+            "designationId": 2,
+            "title": "Head Fitter"
+        },
+        {
+            "assemblyId": 2,
+            "designationId": 7,
+            "title": "Helper"
+        },
+        {
+            "assemblyId": 2,
+            "designationId": 4,
+            "title": "Fitter"
+        }],
+        "subAssemblies":[]
+    },
+    {
+        "id": 3,
+        "assemblyName": "Assembly 3",
+        "assemblyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "durationInMins": 100,
+        "assemblyDesignations": [{
+            "assemblyId": 3,
+            "designationId": 6,
+            "title": "Skilled Helper"
+        },
+        {
+            "assemblyId": 3,
+            "designationId": 7,
+            "title": "Helper"
+        },
+        {
+            "assemblyId": 3,
+            "designationId": 8,
+            "title": "Turning Assistant"
+        }],
+        "subAssemblies":[{
+            "assemblyId": 3,
+            "subAssemblyId": 4,
+            "subAssemblyName": "Assembly 4",
+            "qty": 3
+        }] 
+    },
+    {
+        "id": 4,
+        "assemblyName": "Assembly 4",
+        "assemblyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "durationInMins": 100,
+        "assemblyDesignations": [],
+        "subAssemblies":[] 
+    },
+    {
+        "id": 5,
+        "assemblyName": "Assembly 5",
+        "assemblyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "durationInMins": 100,
+        "assemblyDesignations": [],
+        "subAssemblies":[] 
+    },
+    {
+        "id": 6,
+        "assemblyName": "Assembly 6",
+        "assemblyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "durationInMins": 100,
+        "assemblyDesignations": [],
+        "subAssemblies":[] 
+    },
+    {
+        "id": 7,
+        "assemblyName": "Assembly 7",
+        "assemblyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "durationInMins": 100,
+        "assemblyDesignations": [],
+        "subAssemblies":[] 
+    },
+    {
+        "id": 8,
+        "assemblyName": "Assembly 8",
+        "assemblyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "durationInMins": 100,
+        "assemblyDesignations": [],
+        "subAssemblies":[] 
+    },
+    {
+        "id": 9,
+        "assemblyName": "Assembly 9",
+        "assemblyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "durationInMins": 100,
+        "assemblyDesignations": [],
+        "subAssemblies":[] 
+    },
+    {
+        "id": 10,
+        "assemblyName": "Assembly 10",
+        "assemblyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "durationInMins": 100,
+        "assemblyDesignations": [],
+        "subAssemblies":[] 
+    }
+]
