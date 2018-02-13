@@ -1,6 +1,6 @@
 
 import { MachineCategoryService } from '../../core/services/machineCategory.service';
- 
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute, CanDeactivate, Router } from '@angular/router';
@@ -10,6 +10,9 @@ import { IMachine } from '../../model/machine';
 
 import { MachineService } from '../../core/services/machine.service';
 import { IMachineCategory } from '../../model/machineCategory';
+import { IVMMachine } from '../../model/viewModel/machineViewModels/vmMachine';
+import { IVMMachineAssembly } from '../../model/viewModel/machineViewModels/vmMachineAssembly';
+import { IAssembly } from '../../model/assembly';
 
 //import { mcall } from 'q';
 
@@ -23,7 +26,7 @@ export class MachineFormComponent implements OnInit {
 
   private sub: Subscription;
   form: FormGroup;
- 
+
   orientationValues: string[] = ['Horizontal', 'Vertical'];
   shapeValues: string[] = ['Cylindrical', 'Rectangular'];
   doorTypeValues: string[] = [
@@ -37,42 +40,43 @@ export class MachineFormComponent implements OnInit {
 
   machineCategories: IMachineCategory[];
   selectedMachineCategory: IMachineCategory;
-  
+
   machineTypeValues: string[] = ['Automatic', 'Manual'];
-  machineInstallationTypes:string[] = [
+  machineInstallationTypes: string[] = [
     'Standing',
     'Table Top'
   ];
-  machine: IMachine = {
-    id: 0,
-    machineName:"",
-    categoryId:0,
-    modelNo: "",
-    installationType:"",
-    orientation: "",
-    shape: "",
-    doorType: "",
-    machineType: "",
-    
+  machine: IVMMachine = {
+    "id": 0,
+    "machineName": "",
+    "categoryId": 0,
+    "modelNo": "",
+    "installationType": "",
+    "orientation": "",
+    "shape": "",
+    "doorType": "",
+    "machineType": "",
+    "machineAssemblies": []
   }
   errorMessage: string;
 
 
-  constructor(fb: FormBuilder, 
+  constructor(fb: FormBuilder,
     private router: Router,
     private activateRoute: ActivatedRoute,
     private machineService: MachineService,
     private machineCategoryService: MachineCategoryService
-    ) {
+  ) {
     this.form = fb.group({
       machineName: ['', Validators.required],
-      modelNo: ['',Validators.required],
+      modelNo: ['', Validators.required],
       machineCategory: [],
       installationType: [],
       orientation: [this.orientationValues[0]],
       shape: [this.shapeValues[0]],
       doorType: [this.doorTypeValues[0]],
-      machineType: [this.machineTypeValues[0]]
+      machineType: [this.machineTypeValues[0]],
+      machineAssemblies: [[]]
     });
 
   }
@@ -92,25 +96,16 @@ export class MachineFormComponent implements OnInit {
 
   //retrive selected machine values
   getMachine(id: number) {
-    this.machineService.getMachine(id).subscribe( 
+    this.machineService.getMachine(id).subscribe(
       mac => {
-      this.machine = mac;
+        this.machine = mac;
         //this.getModelNamefromId();
         this.getMachineCategory();
       },
       error => this.errorMessage = <any>error);
   }
 
-  // getModelNamefromId() {
-  //   this.machineModelService.getMachineModel(this.machine.modelId).subscribe(
-  //     mModel => {
-  //       this.getMachineCategory(mModel);
-  //     },
-  //     error => this.errorMessage = <any>error); 
-
-  // }
-
-  getMachineCategory() { 
+  getMachineCategory() {
     this.machineCategoryService.getMachineCategory(this.machine.categoryId).subscribe(
       mCategory => {
         this.selectedMachineCategory = this.machineCategories.find(c => c.id === mCategory.id);
@@ -127,27 +122,6 @@ export class MachineFormComponent implements OnInit {
       error => this.errorMessage = <any>error);
   }
 
-  //get all models of selected category
-  // getMachineModels(category: IMachineCategory) {
-  //   if (category === undefined) return;
-  //   this.machineModelService.getMachineModelsByCategory(category.id)
-  //     .subscribe(modelData => {
-  //       this.machineModels = modelData;
-  //       if (this.machine.id !== 0) {
-  //         this.selectedMachineModel = this.machineModels.find(m => m.id === this.machine.modelId);
-  //       }
-  //     },
-  //     error => this.errorMessage = <any>error);
-  // }
-
-  //assign modelID to machine object modelId property on selectiong value
-  //in model combo box
-  // setModel(model: IMachineModel) {
-  //   if (model === undefined) return;
-  //   this.machine.modelId = model.id;
-  // }
-
-
   setCategory(category: IMachineCategory) {
     if (category === undefined) return;
     this.machine.categoryId = category.id;
@@ -161,8 +135,8 @@ export class MachineFormComponent implements OnInit {
 
   saveForm() {
     //if (this.machine.id != 0) {
-      this.machine.categoryId = this.selectedMachineCategory.id;
-      console.log(this.machine);
+    this.machine.categoryId = this.selectedMachineCategory.id;
+    console.log(this.machine);
     //}
   }
 
@@ -197,6 +171,31 @@ export class MachineFormComponent implements OnInit {
 
   get machineCategory() {
     return this.form.get("machineCategory");
+  }
+
+  addAssembly(asm: IAssembly) {
+    
+    let subAssembly: IVMMachineAssembly = {
+      "machineId": this.machine.id,
+      "assemblyId": asm.id,
+      "assemblyName": asm.assemblyName,
+      "qty": 1
+    }
+    let assemblyFound = this.machine.machineAssemblies.find(a => a.assemblyId == asm.id)
+
+    if (assemblyFound === undefined) {
+      this.machine.machineAssemblies.push(subAssembly);
+    } else {
+      assemblyFound.qty = assemblyFound.qty + 1;
+    }
+  }
+
+  removeSubAssembly(asm: IVMMachineAssembly) {
+
+    let index = this.machine.machineAssemblies.findIndex(a => a.assemblyId == asm.assemblyId);
+    if (index >= 0) {
+      this.machine.machineAssemblies.splice(index, 1);
+    }
   }
 
 }

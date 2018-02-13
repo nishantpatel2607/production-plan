@@ -13,6 +13,7 @@ import { MachineCategoryComponent } from './machine-category/machine-category.co
 import { MachineCategoryService } from '../core/services/machineCategory.service';
 
 import { Ng2OrderModule } from 'ng2-order-pipe';
+import { AssembliesModule } from '../assemblies/assemblies.module';
 
 @NgModule({ 
     imports: [
@@ -20,6 +21,7 @@ import { Ng2OrderModule } from 'ng2-order-pipe';
         ReactiveFormsModule,
         SharedModule,
         Ng2OrderModule,
+        AssembliesModule,
         RouterModule.forChild([
             { path: 'machines', component: MachineListComponent},
             { path: 'machines/new', component: MachineFormComponent},

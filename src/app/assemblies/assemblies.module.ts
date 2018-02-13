@@ -27,6 +27,7 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
   ])
   ],
   declarations: [AssemblyListComponent, AssemblySelectorComponent, AssemblyFormComponent],
-  providers:[AssemblyService]
+  providers:[AssemblyService],
+  exports: [AssemblySelectorComponent]
 })
 export class AssembliesModule { }
