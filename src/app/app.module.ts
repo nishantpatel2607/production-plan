@@ -14,8 +14,6 @@ import { EmployeesModule } from './employees/employees.module';
 import { AppComponent } from './app.component';
 
 import { LoginFormComponent } from './login-form/login-form.component';
-import { JobsModule } from './jobs/jobs.module';
-import { ProjectsModule } from './projects/projects.module';
 import { AssembliesModule } from './assemblies/assemblies.module';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
@@ -34,8 +32,6 @@ const app_routes: Routes = [
     SharedModule,
     MachinesModule,
     EmployeesModule,
-    JobsModule,
-    ProjectsModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
