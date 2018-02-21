@@ -1,0 +1,70 @@
+<div class="container-fluid">
+  <home></home>
+  <div class="row">
+    <form class="data-form" [formGroup]="form">
+      <ul class="nav nav-tabs">
+        <li class="active">
+          <a data-toggle="tab" href="#details">Details</a>
+        </li>
+        <li>
+          <a data-toggle="tab" href="#team">Team</a>
+        </li>
+        <li>
+          <a data-toggle="tab" href="#plan">Plan</a>
+        </li>
+      </ul>
+      <br/>
+      <div class="tab-content">
+        <div id="details" class="tab-pane fade in active">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="workOrderNo">Work Order No.</label>
+                <input formControlName="workOrderNo" id="workOrderNo" type="text" class="form-control" />
+              </div>
+
+              <div class="form-group">
+                <label for="workOrderDate">Work Order Date</label>
+                <br>
+                <p-calendar class="noBorder" formControlName="workOrderDate" dateFormat="dd/mm/yy" dataType="string" [(ngModel)]="workOrder.workOrderDate"></p-calendar>
+              </div>
+              <div class="form-group">
+                <p-checkbox class="noBorder" formControlName="buildMachine" binary="true" label="Build Machine" [(ngModel)]="buildMachine"></p-checkbox>
+
+              </div>
+
+              <div class="form-group" [hidden]="!buildMachine">
+                <label>Machine</label>
+                <br>
+                <p-dropdown class="noBorder" formControlName="machine" [options]="machineList" [(ngModel)]="workOrder.machine" [filter]="true"
+                  optionLabel="machineName" dataKey="id" placeholder="Select machine" autoDisplayFirst="false"></p-dropdown>
+              </div>
+
+              <div class="form-group" [hidden]="buildMachine">
+                <label>Assembly</label>
+                <br>
+                <p-dropdown class="noBorder" formControlName="assembly" [options]="assemblyList" [(ngModel)]="workOrder.assembly" [filter]="true"
+                  optionLabel="assemblyName" dataKey="id" placeholder="Select assembly" autoDisplayFirst="false"></p-dropdown>
+              </div>
+
+              <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <br>
+                <input  type="text" pKeyFilter="int" pInputText formControlName="qty" [(ngModel)]="workOrder.qty" />
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div id="team" class="tab-pane fade">
+          <h3>Menu 1</h3>
+          <p>Some content in menu 1.</p>
+        </div>
+        <div id="plan" class="tab-pane fade">
+          <h3>Menu 2</h3>
+          <p>Some content in menu 2.</p>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -12,3 +12,8 @@ export interface IVMMachine {
     machineType: string; 
     machineAssemblies: IVMMachineAssembly[];
 }
+
+export interface IVMMachineListItem { 
+    id: number;
+    machineName: string;
+}

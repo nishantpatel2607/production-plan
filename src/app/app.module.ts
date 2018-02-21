@@ -16,7 +16,8 @@ import { AppComponent } from './app.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { AssembliesModule } from './assemblies/assemblies.module';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
-
+import { WorkOrderModule } from './workorder/workorder.module';
+import {MomentModule} from 'angular2-moment/moment.module';
 const app_routes: Routes = [
   {path: '',  component: LoginFormComponent},
   {path: 'home',   component: HomeComponent}
@@ -27,6 +28,7 @@ const app_routes: Routes = [
   declarations: [
     AppComponent,
     LoginFormComponent
+   
   ],
   imports: [
     SharedModule,
@@ -39,7 +41,10 @@ const app_routes: Routes = [
     RouterModule.forRoot(app_routes),
     BrowserAnimationsModule,
     AssembliesModule,
-    AngularMultiSelectModule
+    AngularMultiSelectModule,
+    WorkOrderModule,
+    MomentModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

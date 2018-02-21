@@ -15,7 +15,7 @@ import { MachineCategoryService } from '../core/services/machineCategory.service
 import { Ng2OrderModule } from 'ng2-order-pipe';
 import { AssembliesModule } from '../assemblies/assemblies.module';
 
-@NgModule({ 
+@NgModule({  
     imports: [
         FormsModule,
         ReactiveFormsModule,

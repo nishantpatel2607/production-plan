@@ -1,8 +1,12 @@
 export interface IWorkOrderPlan{
     id:number;
     workOrderId: number;
-    plannedStartDateTime: string;
-    plannedEndDateTime: string;
-    actualStartDateTime: string;
-    actualEndDateTime: string;
+    plannedStartDate: string;
+    plannedEndDate: string;
+    plannedStartTime: string;
+    plannedEndTime: string;
+    actualStartDate: string;
+    actualEndDate: string;
+    actualStartTime: string;
+    actualEndTime: string;
 }

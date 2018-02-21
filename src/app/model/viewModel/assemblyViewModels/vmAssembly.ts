@@ -9,3 +9,8 @@ export interface IVMAssembly {
     assemblyDesignations:IVMAssemblyDesignation[];
     subAssemblies:IVMSubAssembly[];
  }
+
+ export interface IVMAssemblyListItem{
+    id: number;
+    assemblyName: string;
+ }
