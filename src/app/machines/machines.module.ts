@@ -14,7 +14,7 @@ import { MachineCategoryService } from '../core/services/machineCategory.service
 
 import { Ng2OrderModule } from 'ng2-order-pipe';
 import { AssembliesModule } from '../assemblies/assemblies.module';
-
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 @NgModule({  
     imports: [
         FormsModule,
@@ -22,6 +22,7 @@ import { AssembliesModule } from '../assemblies/assemblies.module';
         SharedModule,
         Ng2OrderModule,
         AssembliesModule,
+        AngularMultiSelectModule,
         RouterModule.forChild([
             { path: 'machines', component: MachineListComponent},
             { path: 'machines/new', component: MachineFormComponent},

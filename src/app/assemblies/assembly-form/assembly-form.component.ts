@@ -46,7 +46,7 @@ export class AssemblyFormComponent implements OnInit {
     private assemblyService: AssemblyService,
     private router: Router,
     private activateRoute: ActivatedRoute) {
-    this.form = fb.group({
+    this.form = fb.group({ 
       assemblyName: ['', Validators.required],
       assemblyDescription: [],
       durationInMins: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
@@ -116,7 +116,7 @@ export class AssemblyFormComponent implements OnInit {
   get assemblyName() { return this.form.get("assemblyName"); }
   get assemblyDescription() { return this.form.get("assemblyDescription"); }
   get durationInMins() { return this.form.get("durationInMins"); }
-  get assemblydesignations(){return this.form.get('assemblydesignations') }
+  get assemblyDesignations(){return this.form.get('assemblyDesignations') }
 
   saveForm(){
     this.selectedDesignations.forEach(desig => {

@@ -1,4 +1,5 @@
 import { IVMMachineAssembly } from "./vmMachineAssembly";
+import { IVMMachineDesignation } from "./vmMachineDesignation";
 
 export interface IVMMachine { 
     id: number;
@@ -11,6 +12,7 @@ export interface IVMMachine {
     doorType: string;
     machineType: string; 
     machineAssemblies: IVMMachineAssembly[];
+    machineDesignations:IVMMachineDesignation[];
 }
 
 export interface IVMMachineListItem { 

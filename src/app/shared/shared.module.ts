@@ -25,9 +25,9 @@ import {InputTextModule} from 'primeng/inputtext';
   ],
   exports : [
     CommonModule,
-    HomeComponent,
+    HomeComponent, 
     TableModule,
-    CalendarModule,
+    CalendarModule, 
     CheckboxModule,
     DropdownModule,
     SummaryPipe,  

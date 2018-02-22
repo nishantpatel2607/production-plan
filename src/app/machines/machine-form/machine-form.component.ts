@@ -13,9 +13,15 @@ import { IMachineCategory } from '../../model/machineCategory';
 import { IVMMachine } from '../../model/viewModel/machineViewModels/vmMachine';
 import { IVMMachineAssembly } from '../../model/viewModel/machineViewModels/vmMachineAssembly';
 import { IAssembly } from '../../model/assembly';
+import { IDesignation } from '../../model/designation';
+import { DesignationService } from '../../core/services/designation.service';
+import { IVMMachineDesignation } from '../../model/viewModel/machineViewModels/vmMachineDesignation';
 
 //import { mcall } from 'q';
-
+interface ISelectionListItem{
+  id:number,
+  itemName:string
+}
 
 @Component({
   selector: 'machine-form',
@@ -56,15 +62,21 @@ export class MachineFormComponent implements OnInit {
     "shape": "",
     "doorType": "",
     "machineType": "",
-    "machineAssemblies": []
+    "machineAssemblies": [],
+    "machineDesignations":[],
   }
-  errorMessage: string;
+  designationsList: ISelectionListItem[] = [];
+  selectedDesignations: ISelectionListItem[] = [];
+  dropdownSettings = {};
+  errorMessage: string; 
+  desigListFromServer:IDesignation[];
 
 
   constructor(fb: FormBuilder,
     private router: Router,
     private activateRoute: ActivatedRoute,
     private machineService: MachineService,
+    private designationService: DesignationService,
     private machineCategoryService: MachineCategoryService
   ) {
     this.form = fb.group({
@@ -76,7 +88,8 @@ export class MachineFormComponent implements OnInit {
       shape: [this.shapeValues[0]],
       doorType: [this.doorTypeValues[0]],
       machineType: [this.machineTypeValues[0]],
-      machineAssemblies: [[]]
+      machineAssemblies: [[]],
+      machineDesignations: [[]],
     });
 
   }
@@ -91,7 +104,7 @@ export class MachineFormComponent implements OnInit {
         }
 
       });
-
+      this.getAllDesignations();
   }
 
   //retrive selected machine values
@@ -102,7 +115,16 @@ export class MachineFormComponent implements OnInit {
         //this.getModelNamefromId();
         this.getMachineCategory();
       },
-      error => this.errorMessage = <any>error);
+      error => this.errorMessage = <any>error,
+      ()=>{
+        this.machine.machineDesignations.forEach(desig =>{
+          let designationItem:ISelectionListItem = {
+            id : desig.designationId,
+            itemName : desig.title
+          }
+          this.selectedDesignations.push(designationItem);
+        });
+      });
   }
 
   getMachineCategory() {
@@ -135,6 +157,14 @@ export class MachineFormComponent implements OnInit {
 
   saveForm() {
     //if (this.machine.id != 0) {
+      this.selectedDesignations.forEach(desig => {
+        let selDesig: IVMMachineDesignation = {
+          machineId:this.machine.id,
+          designationId: desig.id,
+          title: desig.itemName
+        }
+        this.machine.machineDesignations.push(selDesig);
+      });
     this.machine.categoryId = this.selectedMachineCategory.id;
     console.log(this.machine);
     //}
@@ -173,6 +203,8 @@ export class MachineFormComponent implements OnInit {
     return this.form.get("machineCategory");
   }
 
+  get machineDesignations(){return this.form.get('machineDesignations') }
+
   addAssembly(asm: IAssembly) {
     
     let subAssembly: IVMMachineAssembly = {
@@ -196,6 +228,26 @@ export class MachineFormComponent implements OnInit {
     if (index >= 0) {
       this.machine.machineAssemblies.splice(index, 1);
     }
+  }
+
+
+  getAllDesignations(){
+    this.designationService.getDesignations().subscribe(
+      designationData => {
+        this.desigListFromServer = designationData;
+      },
+      error => this.errorMessage = <any>error,
+      ()=>{
+        //console.log(this.designationsList);
+        this.desigListFromServer.forEach(desig => {
+          let designation:ISelectionListItem = {
+            id: desig.id,
+            itemName: desig.title
+          }
+          this.designationsList.push(designation);
+        });
+     }
+    )
   }
 
 }
