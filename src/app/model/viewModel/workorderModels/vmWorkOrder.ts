@@ -13,3 +13,12 @@ export interface IVMWorkOrder{
     team:IVMWorkOrderTeam[];
     schedule:IWorkOrderPlan[];
 }
+
+export interface IVMWorkOrderListItem{
+    id:number;
+    workOrderNo: string;
+    workOrderDate: string;
+    machineName:string;
+    assemblyName: string;
+    qty: number;
+}

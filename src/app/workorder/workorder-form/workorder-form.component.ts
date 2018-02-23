@@ -6,6 +6,9 @@ import { IVMMachineListItem } from '../../model/viewModel/machineViewModels/vmMa
 import { IVMAssemblyListItem } from '../../model/viewModel/assemblyViewModels/vmAssembly';
 import { AssemblyService } from '../../core/services/assembly.service';
 import { MachineService } from '../../core/services/machine.service';
+import { IEmployee } from '../../model/employee';
+import { EmployeeService } from '../../core/services/employee.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-workorder-form',
   templateUrl: './workorder-form.component.html',
@@ -18,10 +21,13 @@ export class WorkorderFormComponent implements OnInit {
   defualtDate:Date;
   machineList:IVMMachineListItem[];
   assemblyList: IVMAssemblyListItem[];
+  employeesList: IEmployee[];
 
   constructor(fb: FormBuilder, 
     assemblyService:AssemblyService, 
-    machineService: MachineService) {
+    machineService: MachineService,
+  employeeService: EmployeeService,
+  private router: Router) {
     this.form = fb.group({
       workOrderNo: ['', Validators.required],
       workOrderDate: ['', Validators.required],
@@ -63,5 +69,27 @@ export class WorkorderFormComponent implements OnInit {
   /* itemschange(){
     console.log(this.workOrder.machine);
   } */
+
+  setSelectionBox(status:boolean){
+    this.workOrder.assembly={'id':0, 'assemblyName':''};
+    this.workOrder.machine= {'id':0, 'machineName':''}
+    
+  }
+
+  onMachineChange(event){
+    console.log(event.value);
+  }
+
+  onAssemblyChange(event){
+    console.log(event.value);
+  }
+
+  saveForm(){
+    console.log(this.workOrder);
+  }
+
+  cancelForm(){
+    this.router.navigate(['/workorderlist']);
+  }
 
 }

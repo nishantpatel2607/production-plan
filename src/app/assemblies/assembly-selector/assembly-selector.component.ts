@@ -16,7 +16,7 @@ export class AssemblySelectorComponent implements OnInit {
   pager: any = {};
   pagedItems: IAssembly[];
   filteredItems: IAssembly[];
-  disabledAssembly: string;
+  @Input('DisableAssembly') disabledAssembly: string;
 
   //sorting
   key: string = 'assemblyName'; //set default

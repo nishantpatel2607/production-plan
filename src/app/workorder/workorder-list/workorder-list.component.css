@@ -1,0 +1,11 @@
+th{
+    cursor: pointer;
+  }
+
+  .panel-footer{
+    padding: 0 15px;
+    height: 20%;
+    line-height: 0px;
+    text-align: center;  
+    
+  }

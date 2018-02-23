@@ -2,7 +2,7 @@
   <home></home>
   <div class="row">
     <div class="col-sm-4">
-      <assembly-selector (ItemSelected)="addSubAssembly($event)"></assembly-selector>
+      <assembly-selector [DisableAssembly]="assembly.assemblyName"  (ItemSelected)="addSubAssembly($event)"></assembly-selector>
     </div>
     <div class="col-md-8">
       <div class="well">

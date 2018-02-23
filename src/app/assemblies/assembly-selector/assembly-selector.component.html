@@ -27,7 +27,7 @@
                                 {{assembly.assemblyName}}
                             </td>
                             <td class="hoverbutton">
-                              <button class="btn btn-success btn-xs" (click)="selectAssembly(assembly)">
+                              <button class="btn btn-success btn-xs" (click)="selectAssembly(assembly)" *ngIf="assembly.assemblyName != disabledAssembly">
                                   <span class="glyphicon glyphicon-plus"></span>
                               </button>
                             </td>

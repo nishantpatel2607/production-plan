@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "assemblyId": 1,
+        "designationId": 9
+    },
+    { 
+        "id": 2,
+        "assemblyId": 2,
+        "designationId": 4
+    },
+    {
+        "id": 3,
+        "assemblyId": 3,
+        "designationId": 5
+    },
+    {
+        "id": 4,
+        "assemblyId": 4,
+        "designationId": 6
+    },
+    {
+        "id": 5,
+        "assemblyId": 1,
+        "designationId": 8
+    },
+    {
+        "id": 6,
+        "assemblyId": 1,
+        "designationId": 6
+    },
+    {
+        "id": 7,
+        "assemblyId": 2,
+        "designationId": 6
+    },
+    {
+        "id": 8,
+        "assemblyId": 3,
+        "designationId": 7
+    }
+]

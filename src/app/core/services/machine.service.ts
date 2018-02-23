@@ -9,11 +9,13 @@ import 'rxjs/add/observable/throw';
 
 import {IMachine} from "../../model/machine";
 import { IVMMachine } from '../../model/viewModel/machineViewModels/vmMachine';
+import { IMachineDesignation } from '../../model/machineDesignation';
 
 @Injectable()
 export class MachineService{
     private _machineUrl = "./assets/machines.json"; 
     private _vmMachineUrl = "./assets/vmMachines.json"; 
+    private _machineDesignationUrl = "./assets/machineDesignations.json"; 
     
     constructor(private _http: Http){}
 
@@ -35,6 +37,17 @@ export class MachineService{
         return machine;
     }
 
+    //get the list of designations suitable for supplied assembly
+    getMachineDesignations(machineId:number):Observable<IMachineDesignation[]>{
+        return this._http.get(this._machineDesignationUrl)
+        .map((response: Response) => (<IMachineDesignation[]> response.json())
+        .filter(response => response.machineId == machineId))
+        //.do(data => console.log('All: ' +  JSON.stringify(data)))
+        .catch(this.handleError); 
+    }
+
+    getSuitableEmployees(machineId:number){}
+
     createMachine(machine:IVMMachine){}
 
     updateMachine(machine:IVMMachine){}
@@ -42,8 +55,7 @@ export class MachineService{
     deleteMachine(id: number){}
 
     private handleError(error: Response) {
-        
-        console.error(error);
+         console.error(error);
         return Observable.throw(error.json().error || 'Server error');
     }
 }

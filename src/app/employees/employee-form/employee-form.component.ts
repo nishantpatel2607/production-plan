@@ -46,7 +46,7 @@ export class EmployeeFormComponent implements OnInit {
      }
 
   ngOnInit() :void {
-    this.getAllDesignations();
+    
     this.sub = this.activateRoute.params.subscribe(
       params => {
         let id = +params['id'];
@@ -54,12 +54,18 @@ export class EmployeeFormComponent implements OnInit {
           this.getEmployee(id);
         }
       });
+
+      console.log(this.employee.id);
+      if (this.employee.id == 0){
+        this.getAllDesignations();
+      }
   }
 
   getAllDesignations(){
     this.designationService.getDesignations()
     .subscribe(
       designationsData => {this.designations = designationsData;
+        
     },error=>this.errorMessage=<any>error);
   }
 
@@ -67,9 +73,16 @@ export class EmployeeFormComponent implements OnInit {
     this.employeeService.getEmployee(id).subscribe(
       emp => {
         this.employee = emp;
-        this.getEmployeeDesignation();
+        //this.getEmployeeDesignation();
       },
-      error => this.errorMessage = <any>error);
+      error => this.errorMessage = <any>error,
+    ()=>{this.designationService.getDesignations()
+      .subscribe(
+        designationsData => {this.designations = designationsData;
+          this.getEmployeeDesignation();
+      },error=>this.errorMessage=<any>error,
+    
+    )});
     
   }
 

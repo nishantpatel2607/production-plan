@@ -14,7 +14,7 @@ export class AssemblyListComponent implements OnInit {
 
   assemblies: IAssembly[];
   errorMessage: string;
-  listFilter: string = "";
+  listFilter: string = ""; 
 
   pager: any = {};
   pagedItems: IAssembly[];
