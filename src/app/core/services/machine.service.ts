@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 
 import {IMachine} from "../../model/machine";
-import { IVMMachine } from '../../model/viewModel/machineViewModels/vmMachine';
+import { IVMMachine, IVMMachineListItem } from '../../model/viewModel/machineViewModels/vmMachine';
 import { IMachineDesignation } from '../../model/machineDesignation';
 
 @Injectable()
@@ -16,6 +16,7 @@ export class MachineService{
     private _machineUrl = "./assets/machines.json"; 
     private _vmMachineUrl = "./assets/vmMachines.json"; 
     private _machineDesignationUrl = "./assets/machineDesignations.json"; 
+    private _machineListUrl = "./assets/machinesList.json"; 
     
     constructor(private _http: Http){}
 
@@ -27,9 +28,18 @@ export class MachineService{
         .catch(this.handleError);
     }
 
+    //get all machines
+    getMachineList(): Observable<IVMMachineListItem[]>{
+        return this._http.get(this._machineListUrl)
+        .map((response: Response) => <IVMMachineListItem[]> response.json())
+        //.do(data => console.log('All: ' +  JSON.stringify(data)))
+        .catch(this.handleError);
+    }
+    
+
     //get machine by Id
     getMachine(id: number) :Observable<IVMMachine> {
-        let machine: Observable<IVMMachine>;
+        let machine: Observable<IVMMachine>; 
         machine= (this._http.get(this._vmMachineUrl)
         .map((response: Response) => <IVMMachine[]> response.json()))
         .map((machines: IVMMachine[])=> machines.find(m => m.id === id))
@@ -46,7 +56,7 @@ export class MachineService{
         .catch(this.handleError); 
     }
 
-    getSuitableEmployees(machineId:number){}
+    
 
     createMachine(machine:IVMMachine){}
 

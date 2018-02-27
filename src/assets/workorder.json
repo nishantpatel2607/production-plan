@@ -1,0 +1,40 @@
+[{
+    "id":1,
+    "workOrderNo": "A0001", 
+    "workOrderDate": "01/02/2018",
+    "machine":{"id":2,"machineName": "Dry-heat Sterilizer (Model 2)"},
+    "assembly": {"id":0, "assemblyName":""},
+    "qty": 2
+},
+{
+    "id":2,
+    "workOrderNo": "A0002",
+    "workOrderDate": "01/02/2018",
+    "machine":{"id":0,"machineName": ""},
+    "assembly": {"id":2, "assemblyName":"Assembly 2"},
+    "qty": 5
+},
+{
+    "id":3,
+    "workOrderNo": "A0003",
+    "workOrderDate": "05/02/2018",
+    "machine":{"id":0,"machineName": ""},
+    "assembly": {"id":3, "assemblyName":"Assembly 3"},
+    "qty": 10
+},
+{
+    "id":4,
+    "workOrderNo": "A0004",
+    "workOrderDate": "06/02/2018",
+    "machine":{"id":0,"machineName": ""},
+    "assembly": {"id":3, "assemblyName":"Assembly 3"},
+    "qty": 20
+},
+{
+    "id":5, 
+    "workOrderNo": "A0005",
+    "workOrderDate": "06/02/2018",
+    "machine":{"id":0,"machineName": ""},
+    "assembly": {"id":4, "assemblyName":"Assembly 4"},
+    "qty": 5
+}]

@@ -15,7 +15,8 @@ export interface IVMMachine {
     machineDesignations:IVMMachineDesignation[];
 }
 
-export interface IVMMachineListItem { 
+export interface IVMMachineListItem {  
     id: number;
-    machineName: string;
+    machineName: string;  //machine name + model no
+   
 }

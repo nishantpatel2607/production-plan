@@ -1,5 +1,7 @@
 export interface IVMWorkOrderTeam{
     workOrderId: number;
     employeeId: number;
-    employeeName: string;
+    firstName: string;
+    lastName: string;
+    designation: string;
 }

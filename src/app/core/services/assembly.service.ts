@@ -11,11 +11,12 @@ import 'rxjs/add/observable/throw';
 import {IAssembly} from "../../model/assembly";
 import {IAssemblyDesignation} from "../../model/assemblyDesignations";
 import { IDesignation } from '../../model/designation';
-import { IVMAssembly } from '../../model/viewModel/assemblyViewModels/vmAssembly';
+import { IVMAssembly, IVMAssemblyListItem } from '../../model/viewModel/assemblyViewModels/vmAssembly';
 
 @Injectable()
 export class AssemblyService{
     private _assemblyUrl = "./assets/assemblies.json";
+    private _assemblyListUrl = "./assets/assemblyList.json";
     private _assemblyDesignationUrl = "./assets/assemblyDesignations.json";
     private _vmAssemblyUrl = "./assets/vmAssemblies.json";
     private _topAssemblyUrl="";
@@ -27,6 +28,15 @@ export class AssemblyService{
     getAssemblies():Observable<IAssembly[]>{
         return this._http.get(this._assemblyUrl)
         .map((response: Response) => <IAssembly[]> response.json())
+        //.do(data => console.log('All: ' +  JSON.stringify(data)))
+        .catch(this.handleError);
+    }
+
+
+    //get the list of assemblies (id and assembly name only)
+    getAssemblyList():Observable<IVMAssemblyListItem[]>{
+       return this._http.get(this._assemblyListUrl)
+        .map((response: Response) => <IVMAssemblyListItem[]> response.json())
         //.do(data => console.log('All: ' +  JSON.stringify(data)))
         .catch(this.handleError);
     }

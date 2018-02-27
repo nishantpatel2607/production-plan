@@ -1,0 +1,142 @@
+<div class="container-fluid">
+  <home></home>
+  <div class='panel panel-default'>
+    <div class='panel-heading'>
+      <div class="row">
+        <div class="col-sm-4">Work Order No.: {{workOrder.workOrderNo}}</div>
+        <div class="col-sm-4">Date: {{workOrder.workOrderDate}} </div>
+        <div class="col-sm-4"></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4" *ngIf="workOrder.assembly.assemblyName !=''">Assembly: {{workOrder.assembly.assemblyName}}</div>
+        <div class="col-sm-4" *ngIf="workOrder.machine.machineName !=''">Machine: {{workOrder.machine.machineName}}</div>
+        <div class="col-sm-4">Qty: {{workOrder.qty}} </div>
+        <div class="col-sm-4"></div>
+      </div>
+    </div>
+    <div class='panel-body'>
+      <div class="row">
+        <div class="col-md-6">
+          <div class='panel panel-primary'>
+            <div class='panel-heading'>
+              Available Employees
+            </div>
+            <div class='panel-body'>
+              <div class='row'>
+                <div class='col-md-8'>
+                  <form class="form-inline">
+                    <input type="text" name="search_suitableEmployees" class="form-control input-sm" placeholder="Search" [ngModel]='listFilter_suitableEmployees'
+                      (ngModelChange)="filterRecords_suitableEmployees($event)">
+                  </form>
+                </div>
+              </div>
+
+              <div class='table' style="margin-top: 25px">
+                <table class='table table-hover'>
+
+                  <tbody>
+                    <tr *ngFor="let emp of pagedItems_suitableEmployees; let i = index" style="height:15px;" (dblclick)="addEmpToTeam(emp)">
+                      <td>
+                        {{emp.firstName}} {{emp.lastName}} ({{emp.designation}})
+                      </td>
+                      <td class="hoverbutton">
+                        <button class="btn btn-success btn-xs" (click)="addEmpToTeam(emp)">
+                          <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+            </div>
+
+            <div class="panel-footer clearfix list-footer">
+
+              <ul *ngIf="pager_suitableEmployees.pages && pager_suitableEmployees.pages.length" class="pagination">
+                <li [ngClass]="{disabled:pager_suitableEmployees.currentPage === 1}">
+                  <a (click)="setPage_suitableEmployees(1)">First</a>
+                </li>
+                <li [ngClass]="{disabled:pager_suitableEmployees.currentPage === 1}">
+                  <a (click)="setPage_suitableEmployees(pager_suitableEmployees.currentPage - 1)">Previous</a>
+                </li>
+                <li *ngFor="let page of pager_suitableEmployees.pages" [ngClass]="{active:pager_suitableEmployees.currentPage === page}">
+                  <a (click)="setPage_suitableEmployees(page)">{{page}}</a>
+                </li>
+                <li [ngClass]="{disabled:pager_suitableEmployees.currentPage === pager_suitableEmployees.totalPages}">
+                  <a (click)="setPage_suitableEmployees(pager_suitableEmployees.currentPage + 1)">Next</a>
+                </li>
+                <li [ngClass]="{disabled:pager_suitableEmployees.currentPage === pager_suitableEmployees.totalPages}">
+                  <a (click)="setPage_suitableEmployees(pager_suitableEmployees.totalPages)">Last</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class='panel panel-primary'>
+            <div class='panel-heading'>
+              Team
+            </div>
+            <div class='panel-body'>
+              <div class='row'>
+                <div class='col-md-8'>
+                  <form class="form-inline">
+                    <input type="text" name="search_teamMembers" class="form-control input-sm" placeholder="Search" [ngModel]='listFilter_teamMembers'
+                      (ngModelChange)="filterRecords_teamMembers($event)">
+                  </form>
+                </div>
+              </div>
+
+              <div class='table' style="margin-top: 25px">
+                <table class='table table-hover'>
+                  <!-- <thead>
+                                    <tr>
+                                        <th class="col-md-10">Employees</th>
+                                        <th class="col-md-2"></th>
+                                    </tr>
+                                </thead> -->
+                  <tbody>
+                    <tr *ngFor="let emp of pagedItems_teamMembers" style="height:15px;" (dblclick)="removeEmpFromTeam(emp)">
+                      <td>
+                        {{emp.firstName}} {{emp.lastName}} ({{emp.designation}})
+                      </td>
+                      <td class="hoverbutton">
+                        <button class="btn btn-error btn-xs" (click)="removeEmpFromTeam(emp)">
+                          <span class="glyphicon glyphicon-minus"></span>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="panel-footer clearfix list-footer">
+
+              <ul *ngIf="pager_teamMembers.pages && pager_teamMembers.pages.length" class="pagination">
+                <li [ngClass]="{disabled:pager_teamMembers.currentPage === 1}">
+                  <a (click)="setPage_teamMembers(1)">First</a>
+                </li>
+                <li [ngClass]="{disabled:pager_teamMembers.currentPage === 1}">
+                  <a (click)="setPage_teamMembers(pager_teamMembers.currentPage - 1)">Previous</a>
+                </li>
+                <li *ngFor="let page of pager_teamMembers.pages" [ngClass]="{active:pager_teamMembers.currentPage === page}">
+                  <a (click)="setPage_teamMembers(page)">{{page}}</a>
+                </li>
+                <li [ngClass]="{disabled:pager_teamMembers.currentPage === pager_teamMembers.totalPages}">
+                  <a (click)="setPage_teamMembers(pager_teamMembers.currentPage + 1)">Next</a>
+                </li>
+                <li [ngClass]="{disabled:pager_teamMembers.currentPage === pager_teamMembers.totalPages}">
+                  <a (click)="setPage_teamMembers(pager_teamMembers.totalPages)">Last</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>

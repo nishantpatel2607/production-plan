@@ -28,7 +28,8 @@
             <label>Machine</label>
             <br>
             <p-dropdown class="noBorder" formControlName="machine" [options]="machineList" [(ngModel)]="workOrder.machine" [filter]="true"
-              optionLabel="machineName" dataKey="id" placeholder="Select machine" autoDisplayFirst="false" (onChange)="onMachineChange($event)"></p-dropdown>
+              optionLabel="machineName" dataKey="id" placeholder="Select machine" autoDisplayFirst="false" (onChange)="onMachineChange($event)" 
+              [autoWidth]="false" [style]="{'width': '250px'}"></p-dropdown>
           </div>
 
           <div class="form-group" [hidden]="buildMachine">

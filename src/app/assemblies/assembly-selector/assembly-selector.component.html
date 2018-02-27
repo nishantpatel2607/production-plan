@@ -1,7 +1,7 @@
 <div class="container-fluid">
-    <div class='panel panel-primary'>
+    <div class='panel panel-primary'> 
         <div class='panel-heading' >
-            Select Assembly
+            Select Assembly 
         </div>
         <div class='panel-body'>
             <div class='row'>
@@ -24,7 +24,7 @@
                     <tbody>
                         <tr *ngFor="let assembly of pagedItems | orderBy: key : reverse" style="height:15px;" (dblclick)="selectAssembly(assembly)">
                             <td>
-                                {{assembly.assemblyName}}
+                                {{assembly.assemblyName}} 
                             </td>
                             <td class="hoverbutton">
                               <button class="btn btn-success btn-xs" (click)="selectAssembly(assembly)" *ngIf="assembly.assemblyName != disabledAssembly">

@@ -8,6 +8,7 @@ import { WorkorderFormComponent } from './workorder-form/workorder-form.componen
 import { WorkorderListComponent } from './workorder-list/workorder-list.component';
 import { DateTimePickerModule } from 'ng-pick-datetime';
 import { WorkOrderService } from '../core/services/workorders.service';
+import { WorkorderTeamComponent } from './workorder-team/workorder-team.component';
 
 @NgModule({  
     imports: [
@@ -19,6 +20,8 @@ import { WorkOrderService } from '../core/services/workorders.service';
         RouterModule.forChild([
             { path: 'workorderlist', component: WorkorderListComponent},
             { path: 'workorder/new', component: WorkorderFormComponent},
+            { path: 'workorder/:id', component: WorkorderFormComponent},
+            { path: 'workorderteam/:id', component:WorkorderTeamComponent},
             { path: 'woplanner', component: WoPlannerComponent},
             
         ])
@@ -26,7 +29,8 @@ import { WorkOrderService } from '../core/services/workorders.service';
     declarations:[
         WoPlannerComponent,
         WorkorderFormComponent,
-        WorkorderListComponent
+        WorkorderListComponent,
+        WorkorderTeamComponent
        ],
     providers:[
         WorkOrderService

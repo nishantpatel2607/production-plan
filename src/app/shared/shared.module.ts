@@ -20,11 +20,11 @@ import {InputTextModule} from 'primeng/inputtext';
     DropdownModule,
     CheckboxModule,
     KeyFilterModule,
-    InputTextModule
+    InputTextModule 
    
   ],
   exports : [
-    CommonModule,
+    CommonModule, 
     HomeComponent,  
     TableModule,
     CalendarModule, 

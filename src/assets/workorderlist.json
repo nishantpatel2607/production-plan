@@ -1,8 +1,8 @@
 [{
     "id":1,
-    "workOrderNo": "A0001",
+    "workOrderNo": "A0001", 
     "workOrderDate": "01/02/2018",
-    "machineName":"Wash Disinfector",
+    "machineName":"Dry-heat Sterilizer (Model 2)",
     "assemblyName": "",
     "qty": 2
 },

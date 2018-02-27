@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "assemblyName": "Assembly 1"
+    },
+    {
+        "id": 2,
+        "assemblyName": "Assembly 2"
+    },
+    {
+        "id": 3,
+        "assemblyName": "Assembly 3"
+    },
+    {
+        "id": 4,
+        "assemblyName": "Assembly 4"
+    },
+    {
+        "id": 5,
+        "assemblyName": "Assembly 5"
+    },
+    {
+        "id": 6,
+        "assemblyName": "Assembly 6"
+    },
+    {
+        "id": 7,
+        "assemblyName": "Assembly 7"
+    },
+    {
+        "id": 8,
+        "assemblyName": "Assembly 8"
+    },
+    {
+        "id": 9,
+        "assemblyName": "Assembly 9"
+    },
+    {
+        "id": 10,
+        "assemblyName": "Assembly 10"
+    }
+]

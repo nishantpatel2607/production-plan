@@ -30,15 +30,19 @@
               <th class="col-md-2" (click)="sort('workOrderNo')">Work Order No.
                 <span class="glyphicon sort-icon" *ngIf="key =='workOrderNo'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
               </th>
-              <th class="col-md-2" (click)="sort('workOrderDate')">Work Order Date
+              <th class="col-md-2" (click)="sort('workOrderDate')">Date
                 <span class="glyphicon sort-icon" *ngIf="key =='workOrderDate'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
               </th>
-              <th class="col-md-3" (click)="sort('assemblyName')">Assembly
+              <th class="col-md-2" (click)="sort('assemblyName')">Assembly
                 <span class="glyphicon sort-icon" *ngIf="key =='assemblyName'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
               </th>
-              <th class="col-md-4" (click)="sort('machineName')">Machine
+              <th class="col-md-2" (click)="sort('machineName')">Machine
                 <span class="glyphicon sort-icon" *ngIf="key =='machineName'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
               </th>
+              <th class="col-md-2" (click)="sort('machineName')">Qty
+                <span class="glyphicon sort-icon" *ngIf="key =='qty'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+              </th>
+              <th class="col-md-1">Team</th>
             </tr>
           </thead>
           <tbody>
@@ -51,6 +55,12 @@
               <td>{{workorder.workOrderDate}}</td>
               <td>{{workorder.assemblyName}}</td>
               <td>{{workorder.machineName}}</td>
+              <td>{{workorder.qty}}</td>
+              <td class="hoverbutton">
+                <button type="button" class="btn btn-warning" (click)="openWOTeam(workorder.id)" >
+                  <i class="fa fa-users" aria-hidden="true"></i>
+                </button>
+            </td>
             </tr>
 
           </tbody>

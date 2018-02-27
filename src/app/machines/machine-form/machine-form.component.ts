@@ -74,7 +74,7 @@ export class MachineFormComponent implements OnInit {
 
   constructor(fb: FormBuilder,
     private router: Router,
-    private activateRoute: ActivatedRoute,
+    private activateRoute: ActivatedRoute, 
     private machineService: MachineService,
     private designationService: DesignationService,
     private machineCategoryService: MachineCategoryService
@@ -113,7 +113,7 @@ export class MachineFormComponent implements OnInit {
       mac => {
         this.machine = mac;
         //this.getModelNamefromId();
-        this.getMachineCategory();
+        this.getMachineCategory(); 
       },
       error => this.errorMessage = <any>error,
       ()=>{

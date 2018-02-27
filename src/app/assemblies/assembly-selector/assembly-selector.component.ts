@@ -39,7 +39,7 @@ export class AssemblySelectorComponent implements OnInit {
     this.assemblyService.getAssemblies()
     .subscribe(assemblyData => {
       this.assemblies = assemblyData;
-      this.filteredItems = this.assemblies;
+      this.filteredItems = this.assemblies; 
       this.setPage(1);
     },
       error => this.errorMessage = <any>error);
