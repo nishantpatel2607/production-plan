@@ -73,7 +73,7 @@ export class MachineFormComponent implements OnInit {
 
 
   constructor(fb: FormBuilder,
-    private router: Router,
+    private router: Router, 
     private activateRoute: ActivatedRoute, 
     private machineService: MachineService,
     private designationService: DesignationService,

@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkOrderService } from '../../core/services/workorders.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IVMWorkOrder } from '../../model/viewModel/workorderModels/vmWorkOrder';
 import { IVMMachineListItem } from '../../model/viewModel/machineViewModels/vmMachine';
 import { IVMAssemblyListItem } from '../../model/viewModel/assemblyViewModels/vmAssembly';
 import { IVMWorkOrderSuitableEmployee } from '../../model/viewModel/workorderModels/vmWorkOrderSuitableEmployee';
 import { PagerService } from '../../core/services/pager.service';
+import { IVMWorkOrderTeam } from '../../model/viewModel/workorderModels/vmWorkOrderTeam';
 
 @Component({
   selector: 'app-workorder-team',
@@ -16,22 +17,23 @@ export class WorkorderTeamComponent implements OnInit {
   workOrder: IVMWorkOrder;
   errorMessage;
 
-  suitableEmployees:IVMWorkOrderSuitableEmployee[];
+  suitableEmployees: IVMWorkOrderSuitableEmployee[];
   listFilter_suitableEmployees: string = "";
   pager_suitableEmployees: any = {};
   pagedItems_suitableEmployees: IVMWorkOrderSuitableEmployee[];
   filteredItems_suitableEmployees: IVMWorkOrderSuitableEmployee[];
 
 
-  teamMembers:IVMWorkOrderSuitableEmployee[];
+  teamMembers: IVMWorkOrderTeam[];
   listFilter_teamMembers: string = "";
   pager_teamMembers: any = {};
-  pagedItems_teamMembers: IVMWorkOrderSuitableEmployee[];
-  filteredItems_teamMembers: IVMWorkOrderSuitableEmployee[];
+  pagedItems_teamMembers: IVMWorkOrderTeam[];
+  filteredItems_teamMembers: IVMWorkOrderTeam[];
 
   constructor(private workOrderService: WorkOrderService,
     private activateRoute: ActivatedRoute,
-    private pagerService: PagerService) { } 
+    private pagerService: PagerService,
+    private router: Router,) { }
 
   ngOnInit() {
     let machineItem: IVMMachineListItem = { 'id': 0, 'machineName': '' };
@@ -44,8 +46,8 @@ export class WorkorderTeamComponent implements OnInit {
       assembly: assemblyItem,
       qty: 0
     }
-    this.suitableEmployees=[];
-    this.teamMembers=[];
+    this.suitableEmployees = [];
+    this.teamMembers = [];
 
     this.activateRoute.params.subscribe(
       params => {
@@ -53,6 +55,7 @@ export class WorkorderTeamComponent implements OnInit {
         if (Number.isNaN(id) == false) {
           this.getWorkOrder(id);
           this.getSuitableEmployees(id);
+          this.getWorkOrderTeam(id);
         }
       });
   }
@@ -64,18 +67,38 @@ export class WorkorderTeamComponent implements OnInit {
         //console.log(this.workOrder);
 
       },
-      error => this.errorMessage = <any>error, () => {       
+      error => this.errorMessage = <any>error, () => {
       })
   }
 
-  getSuitableEmployees(id: number){
+  getSuitableEmployees(id: number) {
     this.workOrderService.getSuitableEmployees(id).subscribe(
-      emp =>{
+      emp => {
         this.suitableEmployees = emp;
         this.filteredItems_suitableEmployees = emp;
         this.setPage_suitableEmployees(1);
       },
-      error => this.errorMessage = <any>error, () => {       
+      error => this.errorMessage = <any>error, () => {
+      })
+  }
+
+  getWorkOrderTeam(id: number) {
+    this.workOrderService.getTeamMembers(id).subscribe(
+      emp => {
+        this.teamMembers = emp;
+        this.filteredItems_teamMembers = emp;
+        this.setPage_teamMembers(1);
+      },
+      error => this.errorMessage = <any>error,
+      () => {
+        //Remove employees from available list
+        for (let member of this.teamMembers) {
+          let empPos = this.suitableEmployees.findIndex(e => e.id == member.employeeId);
+          this.suitableEmployees.splice(empPos, 1);
+        }
+
+        this.filteredItems_suitableEmployees = this.suitableEmployees;
+        this.setPage_suitableEmployees(1);
       })
   }
 
@@ -100,9 +123,9 @@ export class WorkorderTeamComponent implements OnInit {
     if (this.listFilter_suitableEmployees != "") {
       this.suitableEmployees.forEach(emp => {
         if (emp.firstName.toUpperCase().indexOf(valueToSearch) >= 0
-            || emp.lastName.toUpperCase().indexOf(valueToSearch) >= 0
-            || emp.designation.toUpperCase().indexOf(valueToSearch) >= 0
-          ) {
+          || emp.lastName.toUpperCase().indexOf(valueToSearch) >= 0
+          || emp.designation.toUpperCase().indexOf(valueToSearch) >= 0
+        ) {
           this.filteredItems_suitableEmployees.push(emp);
         }
       });
@@ -113,14 +136,21 @@ export class WorkorderTeamComponent implements OnInit {
     this.setPage_suitableEmployees(1);
   }
 
-  addEmpToTeam(emp:IVMWorkOrderSuitableEmployee){
-    this.teamMembers.push(emp);
+  addEmpToTeam(emp: IVMWorkOrderSuitableEmployee) {
+    let teamMember: IVMWorkOrderTeam = {
+      workOrderId: this.workOrder.id,
+      employeeId: emp.id,
+      firstName: emp.firstName,
+      lastName: emp.lastName,
+      designation: emp.designation
+    }
+    this.teamMembers.push(teamMember);
     this.filteredItems_teamMembers = this.teamMembers;
     this.setPage_teamMembers(1);
 
-    let empPos:number = 0;
-    empPos = this.suitableEmployees.findIndex(e=>e.id == emp.id);
-    this.suitableEmployees.splice(empPos,1);
+    let empPos: number = 0;
+    empPos = this.suitableEmployees.findIndex(e => e.id == emp.id);
+    this.suitableEmployees.splice(empPos, 1);
     this.filteredItems_suitableEmployees = this.suitableEmployees;
     this.setPage_suitableEmployees(1);
 
@@ -128,14 +158,24 @@ export class WorkorderTeamComponent implements OnInit {
 
   }
 
-  removeEmpFromTeam(emp:IVMWorkOrderSuitableEmployee){
-    this.suitableEmployees.push(emp);
+  removeEmpFromTeam(emp: IVMWorkOrderTeam) {
+
+    let employee: IVMWorkOrderSuitableEmployee = {
+
+      id: emp.employeeId,
+      firstName: emp.firstName,
+      lastName: emp.lastName,
+      designation: emp.designation
+    }
+
+
+    this.suitableEmployees.push(employee);
     this.filteredItems_suitableEmployees = this.suitableEmployees;
     this.setPage_suitableEmployees(1);
-    
-    let empPos:number = 0;
-    empPos = this.teamMembers.findIndex(e=>e.id == emp.id);
-    this.teamMembers.splice(empPos,1);
+
+    let empPos: number = 0;
+    empPos = this.teamMembers.findIndex(e => e.employeeId == emp.employeeId);
+    this.teamMembers.splice(empPos, 1);
     this.filteredItems_teamMembers = this.teamMembers;
     this.setPage_teamMembers(1);
   }
@@ -160,8 +200,8 @@ export class WorkorderTeamComponent implements OnInit {
     if (this.listFilter_teamMembers != "") {
       this.teamMembers.forEach(emp => {
         if (emp.firstName.toUpperCase().indexOf(valueToSearch) >= 0
-            || emp.lastName.toUpperCase().indexOf(valueToSearch) >= 0
-            || emp.designation.toUpperCase().indexOf(valueToSearch) >= 0
+          || emp.lastName.toUpperCase().indexOf(valueToSearch) >= 0
+          || emp.designation.toUpperCase().indexOf(valueToSearch) >= 0
         ) {
           this.filteredItems_teamMembers.push(emp);
         }
@@ -171,6 +211,14 @@ export class WorkorderTeamComponent implements OnInit {
     }
     //console.log(this.filteredItems);
     this.setPage_teamMembers(1);
+  }
+
+  saveForm(){
+    this.workOrderService.saveTeamMembers(this.teamMembers);
+  }
+
+  cancelForm(){
+    this.router.navigate(['/workorderlist']);
   }
 
 }

@@ -3,15 +3,25 @@
   <div class='panel panel-default'>
     <div class='panel-heading'>
       <div class="row">
-        <div class="col-sm-4">Work Order No.: {{workOrder.workOrderNo}}</div>
-        <div class="col-sm-4">Date: {{workOrder.workOrderDate}} </div>
-        <div class="col-sm-4"></div>
-      </div>
-      <div class="row">
-        <div class="col-sm-4" *ngIf="workOrder.assembly.assemblyName !=''">Assembly: {{workOrder.assembly.assemblyName}}</div>
-        <div class="col-sm-4" *ngIf="workOrder.machine.machineName !=''">Machine: {{workOrder.machine.machineName}}</div>
-        <div class="col-sm-4">Qty: {{workOrder.qty}} </div>
-        <div class="col-sm-4"></div>
+        <div class="col-md-9">
+          <div class="row">
+            <div class="col-sm-4">Work Order No.: {{workOrder.workOrderNo}}</div>
+            <div class="col-sm-4">Date: {{workOrder.workOrderDate}} </div>
+            <div class="col-sm-4"></div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4" *ngIf="workOrder.assembly.assemblyName !=''">Assembly: {{workOrder.assembly.assemblyName}}</div>
+            <div class="col-sm-4" *ngIf="workOrder.machine.machineName !=''">Machine: {{workOrder.machine.machineName}}</div>
+            <div class="col-sm-4">Qty: {{workOrder.qty}} </div>
+            <div class="col-sm-4"></div>
+          </div>
+        </div>
+        <div class="col-md-3">
+            <form class="form-inline pull-right">
+                <button class="btn btn-primary" (click)="saveForm()" >Save</button>
+                <button class="btn btn-default" (click)="cancelForm()" >Cancel</button>
+            </form>
+        </div>
       </div>
     </div>
     <div class='panel-body'>
@@ -102,7 +112,7 @@
                         {{emp.firstName}} {{emp.lastName}} ({{emp.designation}})
                       </td>
                       <td class="hoverbutton">
-                        <button class="btn btn-error btn-xs" (click)="removeEmpFromTeam(emp)">
+                        <button class="btn btn-danger btn-xs" (click)="removeEmpFromTeam(emp)">
                           <span class="glyphicon glyphicon-minus"></span>
                         </button>
                       </td>

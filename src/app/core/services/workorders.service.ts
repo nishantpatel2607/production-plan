@@ -9,6 +9,7 @@ import 'rxjs/add/observable/throw';
 import { IVMWorkOrderListItem, IVMWorkOrder } from '../../model/viewModel/workorderModels/vmWorkOrder';
 import { IWorkOrder } from '../../model/workOrder';
 import { IVMWorkOrderSuitableEmployee } from '../../model/viewModel/workorderModels/vmWorkOrderSuitableEmployee';
+import { IVMWorkOrderTeam } from '../../model/viewModel/workorderModels/vmWorkOrderTeam';
 
 
 @Injectable()
@@ -16,6 +17,8 @@ export class WorkOrderService{
     private workOrderListUrl = "./assets/workorderlist.json"; 
     private workOrders = "./assets/workorder.json"; 
     private workOrderSuitableEmployees = "./assets/workOrderSuitableEmployees.json"
+    private workOrderTeamMembers = "./assets/workOrderTeamMembers.json"
+
 
     constructor(private _http: Http){}
 
@@ -43,6 +46,18 @@ export class WorkOrderService{
         .map((response: Response) => <IVMWorkOrderSuitableEmployee[]> response.json())
         //.do(data => console.log('MAC: ' + JSON.stringify(data)))
         .catch(this.handleError);  
+    }
+
+    //get workorder team members.
+    getTeamMembers(id:number): Observable<IVMWorkOrderTeam[]>{
+        return this._http.get(this.workOrderTeamMembers)
+        .map((response: Response) => <IVMWorkOrderTeam[]> response.json())
+        //.do(data => console.log('MAC: ' + JSON.stringify(data)))
+        .catch(this.handleError);  
+    }
+
+    saveTeamMembers(teamMembers:IVMWorkOrderTeam[]){
+        
     }
 
     private handleError(error: Response) {

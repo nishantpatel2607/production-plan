@@ -15,7 +15,7 @@ describe('WorkorderListComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WorkorderListComponent);
-    component = fixture.componentInstance;
+    component = fixture.componentInstance; 
     fixture.detectChanges();
   });
 

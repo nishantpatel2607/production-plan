@@ -3,4 +3,4 @@ export interface IVMWorkOrderSuitableEmployee{
     firstName: string;
     lastName: string;
     designation: string;
-}
+} 
