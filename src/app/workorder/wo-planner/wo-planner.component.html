@@ -2,15 +2,14 @@
   <home></home>
   <div class="row">
     <div class="col-sm-2">
+      <button class="btn btn-primary btn-block">Add Work Order</button>
     </div>
     <div class="col-sm-2">
-      <button class="btn btn-primary btn-block">New Work Order</button>
+      <button class="btn btn-primary btn-block">Save Plan</button>
     </div>
-    <div class="col-sm-2">
-      <button class="btn btn-primary btn-block">Select Work Order</button>
-    </div>
-  </div>
-  <div class="row">
-
+  </div> 
+  <div class="row" style="margin-top: 10px;">
+      <p-schedule [height]=500 [events]="woEvents" [header]="header" [eventLimit]="4" [editable]="true" [slotEventOverlap]="false" (onEventClick)="handleEventClick($event)"
+        [slotDuration]="slot" (onViewRender)="dateRangeChanged($event)"></p-schedule>
   </div>
 </div>

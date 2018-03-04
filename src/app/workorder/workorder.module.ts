@@ -9,6 +9,7 @@ import { WorkorderListComponent } from './workorder-list/workorder-list.componen
 import { DateTimePickerModule } from 'ng-pick-datetime';
 import { WorkOrderService } from '../core/services/workorders.service';
 import { WorkorderTeamComponent } from './workorder-team/workorder-team.component';
+import { WorkorderSelectorComponent } from './workorder-selector/workorder-selector.component';
 
 @NgModule({  
     imports: [
@@ -30,7 +31,8 @@ import { WorkorderTeamComponent } from './workorder-team/workorder-team.componen
         WoPlannerComponent,
         WorkorderFormComponent,
         WorkorderListComponent,
-        WorkorderTeamComponent
+        WorkorderTeamComponent,
+        WorkorderSelectorComponent
        ],
     providers:[
         WorkOrderService

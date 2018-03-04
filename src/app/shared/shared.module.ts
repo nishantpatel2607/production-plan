@@ -11,6 +11,7 @@ import {DropdownModule} from 'primeng/dropdown';
 import { HomeComponent } from './home/home.component';
 import {KeyFilterModule} from 'primeng/keyfilter';
 import {InputTextModule} from 'primeng/inputtext';
+import {ScheduleModule} from 'primeng/schedule';
 
 @NgModule({
   imports: [ CommonModule,
@@ -20,7 +21,9 @@ import {InputTextModule} from 'primeng/inputtext';
     DropdownModule,
     CheckboxModule,
     KeyFilterModule,
-    InputTextModule 
+    InputTextModule,
+    ScheduleModule
+ 
    
   ],
   exports : [
@@ -32,7 +35,8 @@ import {InputTextModule} from 'primeng/inputtext';
     DropdownModule, 
     SummaryPipe,  
     KeyFilterModule,
-    InputTextModule
+    InputTextModule,
+    ScheduleModule
  ],
   declarations: [ HomeComponent, SummaryPipe ]
 })

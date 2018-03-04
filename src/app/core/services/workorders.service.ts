@@ -10,6 +10,7 @@ import { IVMWorkOrderListItem, IVMWorkOrder } from '../../model/viewModel/workor
 import { IWorkOrder } from '../../model/workOrder';
 import { IVMWorkOrderSuitableEmployee } from '../../model/viewModel/workorderModels/vmWorkOrderSuitableEmployee';
 import { IVMWorkOrderTeam } from '../../model/viewModel/workorderModels/vmWorkOrderTeam';
+import { IVMWorkOrderPlan } from '../../model/viewModel/workorderModels/vmWorkOrderPlan';
 
 
 @Injectable()
@@ -18,7 +19,7 @@ export class WorkOrderService{
     private workOrders = "./assets/workorder.json"; 
     private workOrderSuitableEmployees = "./assets/workOrderSuitableEmployees.json"
     private workOrderTeamMembers = "./assets/workOrderTeamMembers.json"
-
+    private workOrderPlan="./assets/vmworkorderPlan.json";
 
     constructor(private _http: Http){}
 
@@ -58,6 +59,14 @@ export class WorkOrderService{
 
     saveTeamMembers(teamMembers:IVMWorkOrderTeam[]){
         
+        
+    }
+
+    //get the work orders planned between the given dates 
+    getWorkOrderPlan(startDate: string, endDate: string): Observable<IVMWorkOrderPlan[]>{
+        return this._http.get(this.workOrderPlan)
+        .map((response: Response) => <IVMWorkOrderPlan[]> response.json())
+        .catch(this.handleError);
     }
 
     private handleError(error: Response) {

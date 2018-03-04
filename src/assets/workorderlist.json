@@ -7,7 +7,7 @@
     "qty": 2
 },
 {
-    "id":2,
+    "id":2, 
     "workOrderNo": "A0002",
     "workOrderDate": "01/02/2018",
     "machineName":"",
