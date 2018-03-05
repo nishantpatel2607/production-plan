@@ -26,7 +26,7 @@ export class WorkorderFormComponent implements OnInit {
 
   errorMessage;
 
-  constructor(fb: FormBuilder,
+  constructor(fb: FormBuilder, 
     private assemblyService: AssemblyService,
     private machineService: MachineService,
     private activateRoute: ActivatedRoute,

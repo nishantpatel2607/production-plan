@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <home></home>
 
-  <div class='panel panel-primary'>
+  <div class='panel panel-primary'> 
     <div class='panel-heading' style="height: 60px">
       Work Orders
 
@@ -39,7 +39,7 @@
               <th class="col-md-2" (click)="sort('machineName')">Machine
                 <span class="glyphicon sort-icon" *ngIf="key =='machineName'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
               </th>
-              <th class="col-md-2" (click)="sort('machineName')">Qty
+              <th class="col-md-2" (click)="sort('qty')">Qty
                 <span class="glyphicon sort-icon" *ngIf="key =='qty'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
               </th>
               <th class="col-md-1">Team</th>
@@ -90,3 +90,4 @@
       </ul>
     </div>
   </div>
+</div>

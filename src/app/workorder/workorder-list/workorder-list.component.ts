@@ -90,7 +90,7 @@ export class WorkorderListComponent implements OnInit {
   }
 
   openWOTeam(id:number){
-    this.route.navigate(['workorderteam/'+id])
+    this.route.navigate(['workorderteam/'+id]) 
   }
 
 }

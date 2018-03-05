@@ -12,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 import {KeyFilterModule} from 'primeng/keyfilter';
 import {InputTextModule} from 'primeng/inputtext';
 import {ScheduleModule} from 'primeng/schedule';
+import {DialogModule} from 'primeng/dialog';
 
 @NgModule({
   imports: [ CommonModule,
@@ -22,7 +23,8 @@ import {ScheduleModule} from 'primeng/schedule';
     CheckboxModule,
     KeyFilterModule,
     InputTextModule,
-    ScheduleModule
+    ScheduleModule,
+    DialogModule
  
    
   ],
@@ -36,7 +38,8 @@ import {ScheduleModule} from 'primeng/schedule';
     SummaryPipe,  
     KeyFilterModule,
     InputTextModule,
-    ScheduleModule
+    ScheduleModule,
+    DialogModule
  ],
   declarations: [ HomeComponent, SummaryPipe ]
 })

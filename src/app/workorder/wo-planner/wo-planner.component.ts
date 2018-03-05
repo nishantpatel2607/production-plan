@@ -16,6 +16,7 @@ export class WoPlannerComponent implements OnInit {
   woEvents: IVMWorkOrderEvent[]=[]; //displayed on schedule control
   woPlans: IVMWorkOrderPlan[]=[]; //loaded from DB 
   header: any;
+  showWOSelector:boolean = false;
   //defaultDate;
   slot = '00:15:00';
 
@@ -94,5 +95,20 @@ export class WoPlannerComponent implements OnInit {
   pad(n) {
     return (n < 10) ? ("0" + n) : n;
   }
+
+  showSelector(){
+    this.showWOSelector = true;
+  }
+
+  hideWOSelector(){
+   
+    this.showWOSelector = false;
+  }
+
+  selectWO(){
+    this.showWOSelector = false;
+  }
+
+
 
 }

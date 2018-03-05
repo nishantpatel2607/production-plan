@@ -1,3 +1,102 @@
-<p>
-  workorder-selector works!
-</p>
+<div class="row">
+  <div class="col-md-8">
+    <div class='panel panel-primary'>
+      <div class='panel-body'>
+        <div class='row'>
+          <div class='col-md-4'>
+            <form class="form-inline">
+              <input type="text" name="search" class="form-control" placeholder="Search" [ngModel]='listFilter' (ngModelChange)="filterRecords($event)">
+            </form>
+          </div>
+        </div>
+
+        <div class='table-responsive'>
+          <table class='table table-hover'>
+            <thead>
+              <tr>
+                <th class="col-md-2" (click)="sort('workOrderNo')">Work Order No.
+                  <span class="glyphicon sort-icon" *ngIf="key =='workOrderNo'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                </th>
+                <th class="col-md-2" (click)="sort('workOrderDate')">Date
+                  <span class="glyphicon sort-icon" *ngIf="key =='workOrderDate'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                </th>
+                <th class="col-md-2" (click)="sort('assemblyName')">Assembly
+                  <span class="glyphicon sort-icon" *ngIf="key =='assemblyName'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                </th>
+                <th class="col-md-2" (click)="sort('machineName')">Machine
+                  <span class="glyphicon sort-icon" *ngIf="key =='machineName'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                </th>
+                <th class="col-md-2" (click)="sort('qty')">Qty
+                  <span class="glyphicon sort-icon" *ngIf="key =='qty'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let workorder of pagedItems | orderBy: key : reverse;let i=index" (click)="setSelectedRow(i)" [ngClass]="{'rowSelected':i==selectedRow,
+              'rowNotSelected':i!=selectedRow}">
+
+                <td>
+                  <a [routerLink]="['/workorder', workorder.id]">{{workorder.workOrderNo}}</a>
+                </td>
+                <td>{{workorder.workOrderDate}}</td>
+                <td>{{workorder.assemblyName}}</td>
+                <td>{{workorder.machineName}}</td>
+                <td>{{workorder.qty}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel-footer clearfix list-footer">
+        <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+          <li [ngClass]="{disabled:pager.currentPage === 1}">
+            <a (click)="setPage(1)">First</a>
+          </li>
+          <li [ngClass]="{disabled:pager.currentPage === 1}">
+            <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+          </li>
+          <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+            <a (click)="setPage(page)">{{page}}</a>
+          </li>
+          <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+            <a (click)="setPage(pager.currentPage + 1)">Next</a>
+          </li>
+          <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+            <a (click)="setPage(pager.totalPages)">Last</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class='panel panel-primary'>
+      <div class='panel-body'>
+        <div class="form-group">
+          <label for="planDate">Plan Date</label>
+          <br>
+          <p-calendar class="noBorder" dateFormat="dd/mm/yy" dataType="string" [(ngModel)]="plannedDate"></p-calendar>
+        </div>
+        <div class="form-group">
+          <label for="startTime">Start Time</label>
+          <br>
+          <p-calendar class="noBorder" [timeOnly]="true" dataType="string" [(ngModel)]="timeFrom"></p-calendar>
+        </div>
+        <div class="form-group">
+          <label for="startTime">End Time</label>
+          <br>
+          <p-calendar class="noBorder" [timeOnly]="true" dataType="string" [(ngModel)]="timeTo"></p-calendar>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-6">
+    <button class="btn btn-primary btn-block" (click)="okForm()">OK</button>
+  </div>
+  <div class="col-sm-6">
+    <div class="hidden-lg hidden-md hidden-sm">&nbsp;</div>
+    <button class="btn btn-block" (click)="cancelForm()">Cancel</button>
+  </div>
+</div>
