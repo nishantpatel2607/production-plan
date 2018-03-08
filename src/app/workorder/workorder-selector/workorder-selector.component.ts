@@ -31,6 +31,11 @@ export class WorkorderSelectorComponent implements OnInit {
   timeFrom = "";
   timeTo = "";
 
+  NoDateError = true;
+  NoStartTimeError = true;
+  NoEndTimeError = true;
+  NoWorkOrderSelectedError = true;
+
   //sorting
   key: string = 'workOrderNo'; //set default
   reverse: boolean = false;
@@ -58,13 +63,17 @@ export class WorkorderSelectorComponent implements OnInit {
       actualEndTime: ""
     }
     this.selectedRow = -1;
-   
+    this.NoDateError = true;
+  this.NoStartTimeError = true;
+  this.NoEndTimeError = true;
+  this.NoWorkOrderSelectedError = true;
+
   }
-  
+
 
   constructor(private workorderService: WorkOrderService,
     private pagerService: PagerService) {
-      //console.log('constructor');
+    //console.log('constructor');
     this.selectedWorkOrder = {
       id: 0,
       workOrderId: 0,
@@ -88,9 +97,7 @@ export class WorkorderSelectorComponent implements OnInit {
     this.getWorkOrderList();
   }
 
-  getWorkOrderList(){
-    
-   
+  getWorkOrderList() {
     this.workorderService.getWorkOrderList()
       .subscribe(woData => {
         this.workOrders = woData;
@@ -112,7 +119,7 @@ export class WorkorderSelectorComponent implements OnInit {
 
   }
 
-  setSelectedRow(i,workorder:IVMWorkOrderListItem) {
+  setSelectedRow(i, workorder: IVMWorkOrderListItem) {
     //console.log(i);
     this.selectedRow = i;
     this.selectedWorkOrder.id = 0;
@@ -121,6 +128,7 @@ export class WorkorderSelectorComponent implements OnInit {
     this.selectedWorkOrder.assemblyName = workorder.assemblyName;
     this.selectedWorkOrder.machineName = workorder.machineName;
     this.selectedWorkOrder.qty = workorder.qty;
+    this.NoWorkOrderSelectedError = true;
   }
 
 
@@ -145,32 +153,70 @@ export class WorkorderSelectorComponent implements OnInit {
 
   cancelForm() { this.onCancel.emit(); }
 
-  okForm() {
-    //console.log("Dt" + this.selectedWorkOrder.plannedStartDate);
-    let dt: string[] = this.selectedWorkOrder.plannedStartDate.split('/');
-    //console.log(dt);
-    dt = dt.reverse();
-    let str = dt.join("-");
-    //console.log(str);
+  planDateChange(){
+    this.NoDateError = true;
+  }
 
-    let selectedWorkOrderTemp : IVMWorkOrderPlan = {
-      id: 0,
-      workOrderId: this.selectedWorkOrder.workOrderId,
-      workOrderNo: this.selectedWorkOrder.workOrderNo,
-      machineName: this.selectedWorkOrder.machineName,
-      assemblyName: this.selectedWorkOrder.assemblyName,
-      qty: this.selectedWorkOrder.qty,
-      plannedStartDate: str,
-      plannedEndDate: str,
-      plannedStartTime: this.selectedWorkOrder.plannedStartTime,
-      plannedEndTime: this.selectedWorkOrder.plannedEndTime,
-      actualStartDate: "",
-      actualEndDate: "",
-      actualStartTime: "",
-      actualEndTime: ""
+  plannedStartTimeChanged(){
+    this.NoStartTimeError = true;
+  }
+
+  plannedEndTimeChanged(){
+    this.NoEndTimeError = true;
+  }
+
+  okForm() {
+    let bValid = true;
+    if (this.selectedWorkOrder.workOrderId == 0) {
+      bValid = false;
+      this.NoWorkOrderSelectedError = false;
     }
 
-    this.onSelect.emit(selectedWorkOrderTemp);
+    //console.log(this.selectedWorkOrder.plannedStartDate);
+    if (this.selectedWorkOrder.plannedStartDate == "" || this.selectedWorkOrder.plannedStartDate == null ) {
+      bValid = false;
+      this.NoDateError = false;
+      //console.log(this.NoDateError);
+    }
+
+    if (this.selectedWorkOrder.plannedStartTime == "" || this.selectedWorkOrder.plannedStartTime == null ) {
+      bValid = false;
+      this.NoStartTimeError = false;
+    }
+
+    if (this.selectedWorkOrder.plannedEndTime == "" || this.selectedWorkOrder.plannedEndTime == null) {
+      bValid = false;
+      this.NoEndTimeError= false;
+    }
+
+    if (Date.parse('01/01/2011 ' + this.selectedWorkOrder.plannedStartTime) >
+      Date.parse('01/01/2011 ' + this.selectedWorkOrder.plannedEndTime)) {
+      bValid = false;
+    }
+
+    if (bValid) {
+      let dt: string[] = this.selectedWorkOrder.plannedStartDate.split('/');
+      dt = dt.reverse();
+      let str = dt.join("-");
+      let selectedWorkOrderTemp: IVMWorkOrderPlan = {
+        id: 0,
+        workOrderId: this.selectedWorkOrder.workOrderId,
+        workOrderNo: this.selectedWorkOrder.workOrderNo,
+        machineName: this.selectedWorkOrder.machineName,
+        assemblyName: this.selectedWorkOrder.assemblyName,
+        qty: this.selectedWorkOrder.qty,
+        plannedStartDate: str,
+        plannedEndDate: str,
+        plannedStartTime: this.selectedWorkOrder.plannedStartTime,
+        plannedEndTime: this.selectedWorkOrder.plannedEndTime,
+        actualStartDate: "",
+        actualEndDate: "",
+        actualStartTime: "",
+        actualEndTime: ""
+      }
+
+      this.onSelect.emit(selectedWorkOrderTemp);
+    }
   }
 
 

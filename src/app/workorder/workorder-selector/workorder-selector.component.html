@@ -29,9 +29,9 @@
                 <th class="col-md-2" (click)="sort('qty')">Qty
                   <span class="glyphicon sort-icon" *ngIf="key =='qty'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
                 </th>
-              </tr> 
+              </tr>
             </thead>
-            <tbody> 
+            <tbody>
               <tr *ngFor="let workorder of pagedItems | orderBy: key : reverse;let i=index" (click)="setSelectedRow(i,workorder)" [ngClass]="{'rowSelected':i==selectedRow,
               'rowNotSelected':i!=selectedRow}">
 
@@ -68,6 +68,11 @@
         </ul>
       </div>
     </div>
+    <div [hidden]="NoWorkOrderSelectedError" class="alert alert-danger" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Error:</span>
+      Select a work order.
+    </div>
   </div>
   <div class="col-md-4">
     <div class='panel panel-primary'>
@@ -75,17 +80,35 @@
         <div class="form-group">
           <label for="planDate">Plan Date</label>
           <br>
-          <p-calendar class="noBorder" dateFormat="dd/mm/yy" dataType="string" [(ngModel)]="selectedWorkOrder.plannedStartDate"></p-calendar>
+          <p-calendar class="noBorder" dateFormat="dd/mm/yy" dataType="string" [(ngModel)]="selectedWorkOrder.plannedStartDate" (onSelect)="planDateChange()"
+            (onInput)="planDateChange()"></p-calendar>
+          <div [hidden]="NoDateError" class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            Enter a valid date.
+          </div>
         </div>
         <div class="form-group">
           <label for="startTime">Start Time</label>
           <br>
-          <p-calendar class="noBorder" [timeOnly]="true" dataType="string" [(ngModel)]="selectedWorkOrder.plannedStartTime"></p-calendar>
+          <p-calendar class="noBorder" [timeOnly]="true" dataType="string" [(ngModel)]="selectedWorkOrder.plannedStartTime" (onInput)="plannedStartTimeChanged()"
+            (onSelect)="plannedStartTimeChanged()"></p-calendar>
+          <div [hidden]="NoStartTimeError" class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            Enter a valid start time.
+          </div>
         </div>
         <div class="form-group">
           <label for="startTime">End Time</label>
           <br>
-          <p-calendar class="noBorder" [timeOnly]="true" dataType="string" [(ngModel)]="selectedWorkOrder.plannedEndTime"></p-calendar>
+          <p-calendar class="noBorder" [timeOnly]="true" dataType="string" [(ngModel)]="selectedWorkOrder.plannedEndTime" (onInput)="plannedEndTimeChanged()"
+            (onSelect)="plannedEndTimeChanged()"></p-calendar>
+          <div [hidden]="NoEndTimeError" class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            Enter a valid end time.
+          </div>
         </div>
       </div>
     </div>
