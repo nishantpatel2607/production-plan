@@ -4,7 +4,7 @@
     <div class="col-sm-2">
       <button class="btn btn-primary btn-block" (click)="showSelector()">Add Work Order</button>
     </div>
-    <div class="col-sm-2">
+    <div class="col-sm-2"> 
       <button class="btn btn-primary btn-block">Save Plan</button>
     </div>
   </div>
@@ -13,6 +13,6 @@
       (onEventClick)="handleEventClick($event)" [slotDuration]="slot" (onViewRender)="dateRangeChanged($event)"></p-schedule>
   </div>
   <p-dialog header="Title" [(visible)]="showWOSelector" [width]="800" [modal] = "true" header="Select Work Order">
-    <workorder-selector (onCancel)="hideWOSelector()" (onSelect)="selectWO()"></workorder-selector>
+    <workorder-selector [InitializeObject] = "initializeFlag" (onCancel)="hideWOSelector()" (onSelect)="selectWO($event)"></workorder-selector>
   </p-dialog>
 </div>
