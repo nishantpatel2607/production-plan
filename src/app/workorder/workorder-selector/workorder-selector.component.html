@@ -1,6 +1,9 @@
 <div class="row">
   <div class="col-md-8">
     <div class='panel panel-primary'>
+      <div class='panel-heading'>
+        Select Work Order
+      </div>
       <div class='panel-body'>
         <div class='row'>
           <div class='col-md-4'>
@@ -48,7 +51,7 @@
         </div>
       </div>
 
-      <div class="panel-footer clearfix list-footer">
+      <div class="panel-footer clearfix list-footer" style="height: 60px">
         <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
           <li [ngClass]="{disabled:pager.currentPage === 1}">
             <a (click)="setPage(1)">First</a>
@@ -68,11 +71,7 @@
         </ul>
       </div>
     </div>
-    <div [hidden]="NoWorkOrderSelectedError" class="alert alert-danger" role="alert">
-      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-      <span class="sr-only">Error:</span>
-      Select a work order.
-    </div>
+
   </div>
   <div class="col-md-4">
     <div class='panel panel-primary'>
@@ -80,8 +79,8 @@
         <div class="form-group">
           <label for="planDate">Plan Date</label>
           <br>
-          <p-calendar class="noBorder" dateFormat="dd/mm/yy" dataType="string" [(ngModel)]="selectedWorkOrder.plannedStartDate" (onSelect)="planDateChange()"
-            (onInput)="planDateChange()"></p-calendar>
+          <p-calendar class="noBorder" dateFormat="dd/mm/yy" dataType="string" [minDate]="currentDate" [(ngModel)]="selectedWorkOrder.plannedStartDate"
+            (onSelect)="planDateChange()" (onInput)="planDateChange()" ></p-calendar>
           <div [hidden]="NoDateError" class="alert alert-danger" role="alert">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             <span class="sr-only">Error:</span>
@@ -111,6 +110,11 @@
           </div>
         </div>
       </div>
+    </div>
+    <div [hidden]="NoWorkOrderSelectedError" class="alert alert-danger" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Error:</span>
+      Select a work order.
     </div>
   </div>
 </div>

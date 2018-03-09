@@ -10,9 +10,10 @@
   </div>
   <div class="row" style="margin-top: 10px;">
     <p-schedule [height]=500 [events]="woEvents" [header]="header" [eventLimit]="4" [editable]="true" [slotEventOverlap]="false"
-      (onEventClick)="handleEventClick($event)" [slotDuration]="slot" (onViewRender)="dateRangeChanged($event)"></p-schedule>
+      (onEventClick)="handleEventClick($event)" [slotDuration]="slot" (onViewRender)="dateRangeChanged($event)"
+      (onEventResize)="changeEventDuration($event)" (onEventDrop)="changeEventDuration($event)">  </p-schedule>
   </div>
-  <p-dialog header="Title" [(visible)]="showWOSelector" [width]="800" [modal] = "true" header="Select Work Order">
+  <p-dialog header="Title" [(visible)]="showWOSelector" [width]="800"  [modal] = "true"  [showHeader] = "false"  header="Select Work Order">
     <workorder-selector [InitializeObject] = "initializeFlag" (onCancel)="hideWOSelector()" (onSelect)="selectWO($event)"></workorder-selector>
   </p-dialog>
 </div>

@@ -30,6 +30,7 @@ export class WorkorderSelectorComponent implements OnInit {
   plannedDate = "";
   timeFrom = "";
   timeTo = "";
+  currentDate:Date;
 
   NoDateError = true;
   NoStartTimeError = true;
@@ -90,6 +91,7 @@ export class WorkorderSelectorComponent implements OnInit {
       actualStartTime: "",
       actualEndTime: ""
     }
+    this.currentDate = new Date();
   }
 
 

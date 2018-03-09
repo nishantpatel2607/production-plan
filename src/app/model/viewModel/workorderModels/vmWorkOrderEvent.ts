@@ -9,5 +9,6 @@ export interface IVMWorkOrderEvent {
     start:string; //start date time format:'yyyy-MM-ddTHH:mm:ss'
     end:string; //end date time format:'yyyy-MM-ddTHH:mm:ss'
     color:string; //color of work order to be visible on the planner control
-    textColor:string
+    textColor:string;
+    isDirty:boolean; //true if new event is added or existing is changed
 }

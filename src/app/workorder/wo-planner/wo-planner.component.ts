@@ -82,8 +82,11 @@ export class WoPlannerComponent implements OnInit {
       start: plan.plannedStartDate + "T" + plan.plannedStartTime,
       end: plan.plannedEndDate + "T" + plan.plannedEndTime,
       color: '',
-      textColor:'black'
+      textColor:'black',
+      isDirty:false
     }
+
+    if (woEvent.id == 0) woEvent.isDirty = true; //new plan added
     
     //find if work order with the id is already added
     let arWo = this.woEvents.filter(w => w.id == plan.id && w.id > 0);
@@ -97,10 +100,33 @@ export class WoPlannerComponent implements OnInit {
       } else {
         woEvent.color = wo[0].color;
       }
-      console.log(woEvent);
-      this.woEvents.push(woEvent);
+
+      //check if work order id and same start date time already exist then do not add
+      let index = this.woEvents.findIndex(w => w.workOrderId == woEvent.workOrderId && w.start == woEvent.start);
+      if (index < 0){
+        this.woEvents.push(woEvent);
+        console.log(woEvent); 
+      }
+      
+      
     }
   }
+
+  changeEventDuration(event){
+    
+    if (event.event.id > 0){
+      let index = this.woEvents.findIndex(w => w.id == event.event.id);
+      if (index >= 0){
+        this.woEvents[index].isDirty = true;
+      }
+      event.event.isDirty = true;
+    
+    console.log(event.event);
+    console.log(this.woEvents);
+  }
+  }
+
+
   pad(n) {
     return (n < 10) ? ("0" + n) : n;
   }
