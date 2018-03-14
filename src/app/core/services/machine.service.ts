@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Response, Http } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
@@ -10,6 +10,7 @@ import 'rxjs/add/observable/throw';
 import {IMachine} from "../../model/machine";
 import { IVMMachine, IVMMachineListItem } from '../../model/viewModel/machineViewModels/vmMachine';
 import { IMachineDesignation } from '../../model/machineDesignation';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class MachineService{

@@ -33,13 +33,13 @@ import {DialogModule} from 'primeng/dialog';
     HomeComponent,  
     TableModule,
     CalendarModule, 
-    CheckboxModule,
+    CheckboxModule, 
     DropdownModule, 
     SummaryPipe,  
     KeyFilterModule,
     InputTextModule,
     ScheduleModule,
-    DialogModule
+    DialogModule 
  ],
   declarations: [ HomeComponent, SummaryPipe ]
 })

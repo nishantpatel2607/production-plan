@@ -1,6 +1,6 @@
 export interface IVMWorkOrderEvent {
     id:number;
-    workOrderId: number;
+    workOrderId: number; 
     workOrderNo: string;  
     machineName:string;
     assemblyName: string;

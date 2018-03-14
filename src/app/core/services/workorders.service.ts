@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Response, Http } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
@@ -11,6 +11,7 @@ import { IWorkOrder } from '../../model/workOrder';
 import { IVMWorkOrderSuitableEmployee } from '../../model/viewModel/workorderModels/vmWorkOrderSuitableEmployee';
 import { IVMWorkOrderTeam } from '../../model/viewModel/workorderModels/vmWorkOrderTeam';
 import { IVMWorkOrderPlan } from '../../model/viewModel/workorderModels/vmWorkOrderPlan';
+import { HttpClient } from '@angular/common/http';
 
 
 @Injectable()

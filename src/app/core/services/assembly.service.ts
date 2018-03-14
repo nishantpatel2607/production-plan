@@ -1,6 +1,6 @@
 import { observable } from 'rxjs/symbol/observable';
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Response, Http } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
@@ -12,6 +12,7 @@ import {IAssembly} from "../../model/assembly";
 import {IAssemblyDesignation} from "../../model/assemblyDesignations";
 import { IDesignation } from '../../model/designation';
 import { IVMAssembly, IVMAssemblyListItem } from '../../model/viewModel/assemblyViewModels/vmAssembly';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class AssemblyService{
@@ -44,6 +45,7 @@ export class AssemblyService{
     //get the list of designations suitable for supplied assembly
     getAssemblyDesignations(assemblyId:number):Observable<IAssemblyDesignation[]>{
         return this._http.get(this._assemblyDesignationUrl)
+        
         .map((response: Response) => (<IAssemblyDesignation[]> response.json())
         .filter(response => response.assemblyId == assemblyId))
         //.do(data => console.log('All: ' +  JSON.stringify(data)))
@@ -53,7 +55,7 @@ export class AssemblyService{
     //get the list of top level assemblies
     getTopLevelAssemblies():Observable<IAssembly[]>{
         return this._http.get(this._topAssemblyUrl)
-        .map((response: Response) => (<IAssembly[]> response.json()))
+        //.map((response: Response) => (<IAssembly[]> response.json()))
         //.do(data => console.log('All: ' +  JSON.stringify(data)))
         .catch(this.handleError);
     }

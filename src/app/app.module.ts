@@ -2,7 +2,7 @@ import { HomeComponent } from './shared/home/home.component';
 import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule,Routes } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { Component, NgModule } from '@angular/core';
@@ -18,6 +18,7 @@ import { AssembliesModule } from './assemblies/assemblies.module';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { WorkOrderModule } from './workorder/workorder.module';
 import {MomentModule} from 'angular2-moment/moment.module';
+import { HttpModule } from '@angular/http';
 const app_routes: Routes = [
   {path: '',  component: LoginFormComponent},
   {path: 'home',   component: HomeComponent}
@@ -37,6 +38,7 @@ const app_routes: Routes = [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     HttpModule,
     RouterModule.forRoot(app_routes),
     BrowserAnimationsModule,
