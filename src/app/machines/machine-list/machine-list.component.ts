@@ -9,6 +9,8 @@ import { Component, OnInit } from '@angular/core';
 import { IMachine } from '../../model/machine';
 import { PagerService } from '../../core/services/pager.service';
 import { MachineService } from '../../core/services/machine.service';
+import { DialogService } from 'ng2-bootstrap-modal';
+import { MessageType, MessageBoxComponent } from '../../shared/message-box/message-box.component';
 
 @Component({
   selector: 'machine-list',
@@ -40,7 +42,8 @@ sort(key){
     private route: Router,
     private machineService: MachineService,
     private machineCategoryService: MachineCategoryService,
-    private pagerService: PagerService) { }
+    private pagerService: PagerService,
+    private dialogService: DialogService) { }
 
   ngOnInit() {
     this.machineCategoryService.getMachineCategories()
@@ -125,6 +128,16 @@ sort(key){
     //console.log(this.filteredItems);
     this.setPage(1);
 
+  }
+
+  showMessage(messageType: MessageType, title: string, message: string) {
+
+    let disposable = this.dialogService.addDialog(MessageBoxComponent, {
+      title: title,
+      messageType: messageType,
+      message: message
+
+    }).subscribe((isConfirmed) => { });
   }
 
 }

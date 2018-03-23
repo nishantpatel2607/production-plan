@@ -16,6 +16,11 @@ import { IAssembly } from '../../model/assembly';
 import { IDesignation } from '../../model/designation';
 import { DesignationService } from '../../core/services/designation.service';
 import { IVMMachineDesignation } from '../../model/viewModel/machineViewModels/vmMachineDesignation';
+import { DialogService } from 'ng2-bootstrap-modal';
+import { MessageType, MessageBoxComponent } from '../../shared/message-box/message-box.component';
+import { AppError } from '../../errorhandlers/app-error';
+import { NotFoundError } from '../../errorhandlers/not-found-error';
+import { BadRequestError } from '../../errorhandlers/bad-request-error';
 
 //import { mcall } from 'q';
 interface ISelectionListItem{
@@ -77,7 +82,8 @@ export class MachineFormComponent implements OnInit {
     private activateRoute: ActivatedRoute, 
     private machineService: MachineService,
     private designationService: DesignationService,
-    private machineCategoryService: MachineCategoryService
+    private machineCategoryService: MachineCategoryService,
+    private dialogService: DialogService
   ) {
     this.form = fb.group({
       machineName: ['', Validators.required],
@@ -234,9 +240,23 @@ export class MachineFormComponent implements OnInit {
   getAllDesignations(){
     this.designationService.getDesignations().subscribe(
       designationData => {
-        this.desigListFromServer = designationData;
+        if (designationData.Success) {
+          this.desigListFromServer = designationData.data;
+         
+        } else {
+          this.showMessage(MessageType.Error, "Error", designationData.Message);
+        }
       },
-      error => this.errorMessage = <any>error,
+      (error: AppError) => {
+        //this.loading = false;
+        if (error instanceof NotFoundError) {
+          this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+        }
+        else if (error instanceof BadRequestError) {
+          this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+        }
+        else throw error;
+      },
       ()=>{
         //console.log(this.designationsList);
         this.desigListFromServer.forEach(desig => {
@@ -248,6 +268,16 @@ export class MachineFormComponent implements OnInit {
         });
      }
     )
+  }
+
+  showMessage(messageType: MessageType, title: string, message: string) {
+
+    let disposable = this.dialogService.addDialog(MessageBoxComponent, {
+      title: title,
+      messageType: messageType,
+      message: message
+
+    }).subscribe((isConfirmed) => { });
   }
 
 }

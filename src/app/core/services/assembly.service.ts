@@ -13,6 +13,9 @@ import {IAssemblyDesignation} from "../../model/assemblyDesignations";
 import { IDesignation } from '../../model/designation';
 import { IVMAssembly, IVMAssemblyListItem } from '../../model/viewModel/assemblyViewModels/vmAssembly';
 import { HttpClient } from '@angular/common/http';
+import { NotFoundError } from '../../errorhandlers/not-found-error';
+import { BadRequestError } from '../../errorhandlers/bad-request-error';
+import { AppError } from '../../errorhandlers/app-error';
 
 @Injectable()
 export class AssemblyService{
@@ -21,7 +24,7 @@ export class AssemblyService{
     private _assemblyDesignationUrl = "./assets/assemblyDesignations.json";
     private _vmAssemblyUrl = "./assets/vmAssemblies.json";
     private _topAssemblyUrl="";
-
+ 
     constructor(private _http: Http){}
 
 
@@ -43,22 +46,22 @@ export class AssemblyService{
     }
 
     //get the list of designations suitable for supplied assembly
-    getAssemblyDesignations(assemblyId:number):Observable<IAssemblyDesignation[]>{
+    /* getAssemblyDesignations(assemblyId:number):Observable<IAssemblyDesignation[]>{
         return this._http.get(this._assemblyDesignationUrl)
         
         .map((response: Response) => (<IAssemblyDesignation[]> response.json())
         .filter(response => response.assemblyId == assemblyId))
         //.do(data => console.log('All: ' +  JSON.stringify(data)))
         .catch(this.handleError); 
-    }
+    } */
 
     //get the list of top level assemblies
-    getTopLevelAssemblies():Observable<IAssembly[]>{
+    /* getTopLevelAssemblies():Observable<IAssembly[]>{
         return this._http.get(this._topAssemblyUrl)
         //.map((response: Response) => (<IAssembly[]> response.json()))
         //.do(data => console.log('All: ' +  JSON.stringify(data)))
         .catch(this.handleError);
-    }
+    } */
 
     //get assembly by Id
     getAssembly(id: number): Observable<IVMAssembly>{
@@ -83,7 +86,13 @@ export class AssemblyService{
     
 
     private handleError(error: Response) {
-        console.error(error);
-        return Observable.throw(error.json().error || 'Server error');
+        if (error.status === 404) {
+            return Observable.throw(new NotFoundError());
+        }
+        if (error.status === 400) {
+            return Observable.throw(new BadRequestError(error.json()));
+        }
+
+        return Observable.throw(new AppError(error));
     }
 }

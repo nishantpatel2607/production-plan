@@ -153,11 +153,7 @@ export class WoPlannerComponent implements OnInit {
     if (woPlans.length > 0){ 
       console.log(woPlans);
       //call service to save the events and redraw events
-      //returned from the server. 
-
-
-
-
+      //returned from the server.
     }
   }
 

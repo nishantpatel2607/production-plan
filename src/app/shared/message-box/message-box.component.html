@@ -1,0 +1,17 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header" [ngClass]="getClass()" >
+      <button type="button" class="close" (click)="close()">&times;</button>
+      <h4 class="modal-title title-color"  >{{title}}</h4>
+    </div>
+    <div class="modal-body">
+      {{message}}
+    </div>
+    <div class="modal-footer modal-footer-color">
+      <button type="button" *ngIf="!isQuestion" class="btn btn-primary" (click)="close()">OK</button>
+      <button type="button" *ngIf="isQuestion" class="btn btn-default" (click)="confirm()">Yes</button>
+      <button type="button" *ngIf="isQuestion" class="btn btn-default" (click)="close()">No</button>
+      
+    </div>
+  </div>
+</div>

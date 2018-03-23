@@ -3,6 +3,11 @@ import { PagerService } from '../../core/services/pager.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { IDesignation } from '../../model/designation';
+import { MessageType, MessageBoxComponent } from '../../shared/message-box/message-box.component';
+import { DialogService } from 'ng2-bootstrap-modal';
+import { AppError } from '../../errorhandlers/app-error';
+import { NotFoundError } from '../../errorhandlers/not-found-error';
+import { BadRequestError } from '../../errorhandlers/bad-request-error';
 
 @Component({
   selector: 'designation-list',
@@ -16,8 +21,7 @@ export class DesignationListComponent implements OnInit {
 
   selectedDesignation: IDesignation = {
     id: 0,
-    title: "",
-    passcode: false
+    title: ""
   }
   newTitle: IDesignation; //used to store new designation added
   title: string = ""; //stores title texbox value
@@ -30,7 +34,8 @@ export class DesignationListComponent implements OnInit {
   constructor(private activeRoute: ActivatedRoute,
     private route: Router,
     private pagerService: PagerService,
-    private designationService: DesignationService) { }
+    private designationService: DesignationService,
+    private dialogService: DialogService) { }
 
   ngOnInit() {
     this.getDesignations();
@@ -39,11 +44,24 @@ export class DesignationListComponent implements OnInit {
   getDesignations() {
     this.designationService.getDesignations()
       .subscribe(designationData => {
-        this.titles = designationData;
-        this.titleFilteredItems = designationData;
-        this.setTitlesPage(1);
+        if (designationData.Success) {
+          this.titles = designationData.data;
+          this.titleFilteredItems = designationData.data;
+          this.setTitlesPage(1);
+        } else {
+          this.showMessage(MessageType.Error, "Error", designationData.Message);
+        }
       },
-      error => this.errorMessage = <any>error);
+        (error: AppError) => {
+          //this.loading = false;
+          if (error instanceof NotFoundError) {
+            this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+          }
+          else if (error instanceof BadRequestError) {
+            this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+          }
+          else throw error;
+        })
   }
 
   setTitlesPage(page: number) {
@@ -75,7 +93,7 @@ export class DesignationListComponent implements OnInit {
 
   clearTitlePanel() {
     this.title = "";
-    this.selectedDesignation = { id: 0, title: "", passcode: false };
+    this.selectedDesignation = { id: 0, title: "" };
   }
 
   addOrUpdateTitle() {
@@ -93,8 +111,8 @@ export class DesignationListComponent implements OnInit {
       //new title
       this.newTitle = {
         id: -1,
-        title: titleVal,
-        passcode: false
+        title: titleVal
+
       }
       this.designationService.createDesignation(this.newTitle)
       //ToDo:  remove following code and call getMachineCategories
@@ -122,9 +140,18 @@ export class DesignationListComponent implements OnInit {
     }
   }
 
-  setSelectedTitle(designation:IDesignation){
+  setSelectedTitle(designation: IDesignation) {
     this.title = designation.title;
     this.selectedDesignation = designation;
   }
 
+  showMessage(messageType: MessageType, title: string, message: string) {
+
+    let disposable = this.dialogService.addDialog(MessageBoxComponent, {
+      title: title,
+      messageType: messageType,
+      message: message
+
+    }).subscribe((isConfirmed) => { });
+  }
 }

@@ -10,6 +10,9 @@ import 'rxjs/add/observable/throw';
 
 import { IEmployee } from '../../model/employee';
 import { HttpClient } from '@angular/common/http';
+import { NotFoundError } from '../../errorhandlers/not-found-error';
+import { BadRequestError } from '../../errorhandlers/bad-request-error';
+import { AppError } from '../../errorhandlers/app-error';
 
 
 
@@ -42,8 +45,13 @@ export class EmployeeService{
     
 
     private handleError(error: Response) {
-        
-        console.error(error);
-        return Observable.throw(error.json().error || 'Server error');
+        if (error.status === 404) {
+            return Observable.throw(new NotFoundError());
+        }
+        if (error.status === 400) {
+            return Observable.throw(new BadRequestError(error.json()));
+        }
+
+        return Observable.throw(new AppError(error));
     }
 }

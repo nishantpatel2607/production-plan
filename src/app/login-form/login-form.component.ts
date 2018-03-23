@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class LoginFormComponent implements OnInit {
 
+  
   form; 
   
   constructor(fb: FormBuilder,private router: Router) {
@@ -33,4 +34,6 @@ export class LoginFormComponent implements OnInit {
   get passWord(){
     return this.form.get("passWord");
   }
+
+  
 }

@@ -13,6 +13,7 @@ import {KeyFilterModule} from 'primeng/keyfilter';
 import {InputTextModule} from 'primeng/inputtext';
 import {ScheduleModule} from 'primeng/schedule';
 import {DialogModule} from 'primeng/dialog';
+import { MessageBoxComponent } from './message-box/message-box.component';
 
 @NgModule({
   imports: [ CommonModule,
@@ -39,8 +40,12 @@ import {DialogModule} from 'primeng/dialog';
     KeyFilterModule,
     InputTextModule,
     ScheduleModule,
-    DialogModule 
+    DialogModule,
+    MessageBoxComponent 
  ],
-  declarations: [ HomeComponent, SummaryPipe ]
+  declarations: [ HomeComponent, SummaryPipe,MessageBoxComponent ],
+  entryComponents: [
+    MessageBoxComponent
+  ]
 })
 export class SharedModule { }

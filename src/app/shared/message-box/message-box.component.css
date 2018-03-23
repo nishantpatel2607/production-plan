@@ -1,0 +1,21 @@
+.modal-footer-color {
+    background-color: #F5F5F5;
+}
+
+.information{
+    background-color: #31B0D5;
+}
+
+.warning{
+    background-color: #EC971F;
+}
+.question{
+    background-color: #449D44;
+}
+.error{
+    background-color: #C9302C;
+}
+
+.title-color{
+    color: white;
+}

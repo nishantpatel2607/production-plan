@@ -7,6 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IMachineCategory } from '../../model/machineCategory';
 
 import { PagerService } from '../../core/services/pager.service';
+import { DialogService } from 'ng2-bootstrap-modal';
+import { MessageType, MessageBoxComponent } from '../../shared/message-box/message-box.component';
 
 @Component({
   selector: 'machine-category',
@@ -46,7 +48,8 @@ export class MachineCategoryComponent implements OnInit {
   constructor(private activeRoute: ActivatedRoute,
     private route: Router,
     private pagerService: PagerService,
-    private machineCategoryService: MachineCategoryService) { }
+    private machineCategoryService: MachineCategoryService,
+    private dialogService: DialogService) { }
     //private machineModelService: MachineModelService) { }
 
   ngOnInit() {
@@ -188,6 +191,16 @@ export class MachineCategoryComponent implements OnInit {
       this.machineCategoryService.deleteMachineCategory(category.id);
       this.setCategoriesPage(1);
     }
+  }
+
+  showMessage(messageType: MessageType, title: string, message: string) {
+
+    let disposable = this.dialogService.addDialog(MessageBoxComponent, {
+      title: title,
+      messageType: messageType,
+      message: message
+
+    }).subscribe((isConfirmed) => { });
   }
 
 

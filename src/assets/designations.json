@@ -2,53 +2,43 @@
     
     {
         "id":1,
-        "title":"Accountant", 
-        "passcode":false
+        "title":"Accountant"
     },
     {
         "id":2,
-        "title":"Head Fitter", 
-        "passcode":true
+        "title":"Head Fitter"
     },
     {
         "id":3,
-        "title":"Buffer",
-        "passcode":true
+        "title":"Buffer"
     },
     {
         "id":4,
-        "title":"Fitter",
-        "passcode":true
+        "title":"Fitter"
     },
     {
         "id":5,
-        "title":"Welder",
-        "passcode":true
+        "title":"Welder"
     },
     {
         "id":6,
-        "title":"Skilled Helper",
-        "passcode":true
+        "title":"Skilled Helper"
     },
     {
         "id":7,
-        "title":"Helper",
-        "passcode":true
+        "title":"Helper"
     },
     {
         "id":8, 
-        "title":"Turning Assistant",
-        "passcode":true
+        "title":"Turning Assistant"
     },
     {
         "id":9,
-        "title":"supervisor",
-        "passcode":true
+        "title":"supervisor"
     },
     {
         "id":10,
-        "title":"Manager",
-        "passcode":false
+        "title":"Manager"
     }
 
 ]

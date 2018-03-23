@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule,Routes } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
-import { Component, NgModule } from '@angular/core';
+import { Component, NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MachinesModule } from './machines/machines.module';
@@ -19,6 +19,8 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
 import { WorkOrderModule } from './workorder/workorder.module';
 import {MomentModule} from 'angular2-moment/moment.module';
 import { HttpModule } from '@angular/http';
+import { AppErrorHandler } from './errorhandlers/global-error-handler';
+import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 const app_routes: Routes = [
   {path: '',  component: LoginFormComponent},
   {path: 'home',   component: HomeComponent}
@@ -45,10 +47,11 @@ const app_routes: Routes = [
     AssembliesModule,
     AngularMultiSelectModule,
     WorkOrderModule,
-    MomentModule
+    MomentModule,
+    BootstrapModalModule
     
   ],
-  providers: [],
+  providers: [  { provide: ErrorHandler, useClass: AppErrorHandler}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
