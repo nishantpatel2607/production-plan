@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Response,Http } from '@angular/http';
+import { Response,Http, RequestOptions, RequestMethod, Headers } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
@@ -40,8 +40,28 @@ export class DesignationService {
         
     } */
 
-    createDesignation(newDesignation: IDesignation) {
+    createDesignation(newDesignation: IDesignation): Observable<IResponse> {
+        //let headers =  {headers: new  Headers({ 'Content-Type': 'application/json'})};
+        //let options = new RequestOptions(); 
+        //options.headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
+        //options.headers = new Headers({ 'Content-Type': 'application/json'});
+        const options = this.GetOptions();
+        
+        
+        //let body = this.serializeObj(newDesignation);
+        let body = JSON.stringify(newDesignation);
+        return this._http.post(Global.apiUrl + "postdesignation",body,options)
+            .map((response: Response) => <IResponse>response.json())
+            .do(data => console.log(data.data))
+            .catch(this.handleError);
+    }
 
+    private serializeObj(obj) {
+        var result = [];
+        for (var property in obj)
+            result.push(encodeURIComponent(property) + "=" + encodeURIComponent(obj[property]));
+    
+        return result.join("&");
     }
 
     updateDesignation(designation: IDesignation) {
@@ -57,7 +77,15 @@ export class DesignationService {
         if (error.status === 400) {
             return Observable.throw(new BadRequestError(error.json()));
         }
-        console.log(error);
+        console.log("Error: " + error);
         return Observable.throw(new AppError(error));
     }
+
+
+    private GetOptions(): RequestOptions {
+        
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return new RequestOptions({ headers: headers });
+      }
 }

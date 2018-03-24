@@ -105,7 +105,7 @@ export class DesignationListComponent implements OnInit {
       if (this.titles
         .find(c => c.title.toUpperCase().trim() == titleVal.toUpperCase().trim())) {
         //ToDo: show message designation already exist 
-
+          this.showMessage(MessageType.Information,'Information','The specified designation already exist.');
         return;
       }
       //new title
@@ -114,10 +114,18 @@ export class DesignationListComponent implements OnInit {
         title: titleVal
 
       }
-      this.designationService.createDesignation(this.newTitle)
-      //ToDo:  remove following code and call getMachineCategories
-      this.titles.push(this.newTitle);
-
+      this.designationService.createDesignation(this.newTitle).subscribe(
+        responseData => {
+          if (responseData.Success){
+            this.newTitle.id = responseData.data[0];
+            this.titles.push(this.newTitle);
+            console.log(this.newTitle);
+          } else {
+            this.showMessage(MessageType.Error,'Error','The specified designation already exist.');
+            return;
+          }
+        }
+      )
     }
     else {
       //update category
