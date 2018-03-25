@@ -23,14 +23,14 @@ export class DesignationListComponent implements OnInit {
     id: 0,
     title: ""
   }
-  newTitle: IDesignation; //used to store new designation added
+
   title: string = ""; //stores title texbox value
   titleListFilter: string = "";//stores title filter texbox value
   titles: IDesignation[];
   titlePager: any = {};
   titlePagedItems: IDesignation[];
   titleFilteredItems: IDesignation[];
-
+  messageConfirm:boolean = false;
   constructor(private activeRoute: ActivatedRoute,
     private route: Router,
     private pagerService: PagerService,
@@ -97,55 +97,97 @@ export class DesignationListComponent implements OnInit {
   }
 
   addOrUpdateTitle() {
-    //console.log(this.title);
+
     if (this.title.trim() === "") return;
     var titleVal = this.title.trim();
     if (this.selectedDesignation.id === 0) {
       //Check if designation already exist
-      if (this.titles
-        .find(c => c.title.toUpperCase().trim() == titleVal.toUpperCase().trim())) {
-        //ToDo: show message designation already exist 
-          this.showMessage(MessageType.Information,'Information','The specified designation already exist.');
+      let titleFound: IDesignation = null;
+      titleFound = this.titles.find(c => c.title.toUpperCase().trim() == titleVal.toUpperCase().trim());
+      console.log(titleFound);
+      if (titleFound !== undefined) {
+        this.showMessage(MessageType.Information, 'Information', 'The specified designation already exist.');
         return;
       }
+      let newTitle: IDesignation; //used to store new designation added
       //new title
-      this.newTitle = {
+      newTitle = {
         id: -1,
         title: titleVal
 
       }
-      this.designationService.createDesignation(this.newTitle).subscribe(
+      this.designationService.createDesignation(newTitle).subscribe(
         responseData => {
-          if (responseData.Success){
-            this.newTitle.id = responseData.data[0];
-            this.titles.push(this.newTitle);
-            console.log(this.newTitle);
+          if (responseData.Success) {
+
+            newTitle.id = responseData.data[0];
+            this.titles.push(newTitle);
+            this.clearTitlePanel();
+            this.setTitlesPage(1);
+            //console.log(this.newTitle);
           } else {
-            this.showMessage(MessageType.Error,'Error','The specified designation already exist.');
+            this.showMessage(MessageType.Error, 'Error', 'The specified designation already exist.');
             return;
           }
         }
       )
-    }
-    else {
+    } else {
       //update category
-      this.selectedDesignation.title = titleVal;
+      let updateTitle: IDesignation; //used to update designation
+      //new title
+      updateTitle = {
+        id: this.selectedDesignation.id,
+        title: titleVal
 
-      this.designationService.updateDesignation(this.selectedDesignation);
+      }
+      
+      this.designationService.updateDesignation(updateTitle).subscribe(
+        responseData => {
+          
+          if (responseData.Success == true) {
+            console.log(responseData);  
+            this.selectedDesignation.title = titleVal;
+            this.clearTitlePanel();
+            this.setTitlesPage(1);
+          } else {
+            this.showMessage(MessageType.Error, 'Error', responseData.Message);
+            return;
+          }
+        });
 
     }
-    this.clearTitlePanel();
-    this.setTitlesPage(1);
+   
   }
 
   deleteTitle(designation: IDesignation) {
     //console.log(designation);
-    var index = this.titles.findIndex(c => c.id === designation.id);
-    if (index >= 0) {
-      this.titles.splice(index, 1);
-      this.designationService.deleteDesignation(designation.id);
-      this.setTitlesPage(1);
-    }
+
+    let disposable = this.dialogService.addDialog(MessageBoxComponent, {
+      title: "Delete?",
+      messageType: MessageType.Question,
+      message: "Do you want to delete selected designation?"
+
+    }).subscribe((isConfirmed) => {if (isConfirmed){
+      //console.log(isConfirmed);
+      var index = this.titles.findIndex(c => c.id === designation.id); 
+      if (index >= 0) {
+        
+        this.designationService.deleteDesignation(designation.id).subscribe(
+          responseData => {
+            if (responseData.Success){
+              this.titles.splice(index, 1);
+            }else {
+              this.showMessage(MessageType.Error, 'Error', responseData.Message);
+              return;
+            }
+          }
+        )
+        this.clearTitlePanel();
+        this.setTitlesPage(1);
+      }
+    }});
+    
+    
   }
 
   setSelectedTitle(designation: IDesignation) {
@@ -160,6 +202,6 @@ export class DesignationListComponent implements OnInit {
       messageType: messageType,
       message: message
 
-    }).subscribe((isConfirmed) => { });
+    }).subscribe((isConfirmed) => { this.messageConfirm = isConfirmed;});
   }
 }

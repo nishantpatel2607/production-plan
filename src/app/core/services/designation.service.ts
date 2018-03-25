@@ -24,7 +24,7 @@ export class DesignationService {
     //Get all designations
     getDesignations(): Observable<IResponse> {
         
-        return this._http.get(Global.apiUrl + "getDesignations")
+        return this._http.get(Global.apiUrl + "designations")
             .map((response: Response) => <IResponse>response.json())
             //.do(data => console.log(data.data))
             .catch(this.handleError);
@@ -50,9 +50,9 @@ export class DesignationService {
         
         //let body = this.serializeObj(newDesignation);
         let body = JSON.stringify(newDesignation);
-        return this._http.post(Global.apiUrl + "postdesignation",body,options)
+        return this._http.post(Global.apiUrl + "designations",body,options)
             .map((response: Response) => <IResponse>response.json())
-            .do(data => console.log(data.data))
+            .do(data => console.log(data))
             .catch(this.handleError);
     }
 
@@ -65,10 +65,21 @@ export class DesignationService {
     }
 
     updateDesignation(designation: IDesignation) {
-
+        const options = this.GetOptions();
+        let body = JSON.stringify(designation);
+        return this._http.put(Global.apiUrl + "designations/" + designation.id,body,options)
+            .map((response: Response) => <IResponse>response.json())
+            .do(data => console.log(data))
+            .catch(this.handleError);
     }
 
-    deleteDesignation(id: number) { }
+    deleteDesignation(id: number) {
+        const options = this.GetOptions();
+        return this._http.delete(Global.apiUrl + "designations/" + id,options)
+            .map((response: Response) => <IResponse>response.json())
+            .do(data => console.log(data))
+            .catch(this.handleError);
+     }
 
     private handleError(error: Response) {
         if (error.status === 404) {
