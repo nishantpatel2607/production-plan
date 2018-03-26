@@ -15,6 +15,7 @@ import {ScheduleModule} from 'primeng/schedule';
 import {DialogModule} from 'primeng/dialog';
 import { MessageBoxComponent } from './message-box/message-box.component';
 
+
 @NgModule({
   imports: [ CommonModule,
     RouterModule,
@@ -26,7 +27,7 @@ import { MessageBoxComponent } from './message-box/message-box.component';
     InputTextModule,
     ScheduleModule,
     DialogModule
- 
+    
    
   ],
   exports : [
