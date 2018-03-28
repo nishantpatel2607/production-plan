@@ -13,9 +13,9 @@ import {KeyFilterModule} from 'primeng/keyfilter';
 import {InputTextModule} from 'primeng/inputtext';
 import {ScheduleModule} from 'primeng/schedule';
 import {DialogModule} from 'primeng/dialog';
+
 import { MessageBoxComponent } from './message-box/message-box.component';
-
-
+ 
 @NgModule({
   imports: [ CommonModule,
     RouterModule,
@@ -27,8 +27,6 @@ import { MessageBoxComponent } from './message-box/message-box.component';
     InputTextModule,
     ScheduleModule,
     DialogModule
-    
-   
   ],
   exports : [
     CommonModule, 
@@ -42,7 +40,7 @@ import { MessageBoxComponent } from './message-box/message-box.component';
     InputTextModule,
     ScheduleModule,
     DialogModule,
-    MessageBoxComponent 
+    MessageBoxComponent
  ],
   declarations: [ HomeComponent, SummaryPipe,MessageBoxComponent ],
   entryComponents: [

@@ -1,3 +1,6 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '0px' }">
+</ngx-loading>
+
 <div class="container-fluid">
   <home></home>
   <div class="row">
@@ -34,7 +37,7 @@
             <label for="designation">Designation</label>
             <select id="designation" 
             formControlName="designation"
-            [(ngModel)] = "selectedDesignation" 
+            [(ngModel)] = "selectedDesignation"  
             class="form-control">
               <option *ngFor="let designation of designations" [ngValue]="designation">{{designation.title}}</option>
             </select>

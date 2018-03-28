@@ -21,6 +21,7 @@ import {MomentModule} from 'angular2-moment/moment.module';
 import { HttpModule } from '@angular/http';
 import { AppErrorHandler } from './errorhandlers/global-error-handler';
 import { BootstrapModalModule } from 'ng2-bootstrap-modal';
+import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
 const app_routes: Routes = [
   {path: '',  component: LoginFormComponent},
   {path: 'home',   component: HomeComponent}
@@ -48,7 +49,8 @@ const app_routes: Routes = [
     AngularMultiSelectModule,
     WorkOrderModule,
     MomentModule,
-    BootstrapModalModule
+    BootstrapModalModule,
+     
     
   ],
   providers: [  { provide: ErrorHandler, useClass: AppErrorHandler}],

@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
+import { Response,Http, RequestOptions, RequestMethod, Headers } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
@@ -9,40 +9,60 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 
 import { IEmployee } from '../../model/employee';
-import { HttpClient } from '@angular/common/http';
+//import { HttpClient } from '@angular/common/http';
 import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
 import { AppError } from '../../errorhandlers/app-error';
+import { IResponse } from './IResponse';
+import { Global } from './global';
 
+@Injectable()
+export class EmployeeService {
+    private _employeesUrl = "./assets/employees.json";
 
-
-
-
-@Injectable() 
-export class EmployeeService{
-    private _employeesUrl = "./assets/employees.json"; 
-    
-    constructor(private _http: HttpClient){}
+    constructor(private _http: Http) { }
 
     //Get all employees - join query to get designation names
-    getEmployees(): Observable<IEmployee[]>{
-        return this._http.get(this._employeesUrl)
-        //.map((response: Response) => <IEmployee[]> response.json())
-        //.do(data => console.log('All: ' +  JSON.stringify(data)))
-        .catch(this.handleError); 
+    getEmployees(): Observable<IResponse> {
+        return this._http.get(Global.apiUrl + "getEmployeesNoUsername")
+            .map((response: Response) => <IResponse>response.json())
+            //.do(data => console.log(data.data))
+            .catch(this.handleError);
     }
 
     //get employee by Id - join query to get designation name
-    getEmployee(id: number) :Observable<IEmployee> {
-        let employee: Observable<IEmployee>;
-        employee= this.getEmployees()
-        .map((employees: IEmployee[])=> employees.find(m => m.id === id))
-        //.do(data => console.log('MAC: ' + JSON.stringify(data)))
-        return employee;
+    getEmployee(id: number): Observable<IResponse> {
+        return this._http.get(Global.apiUrl + "Employees/" + id)
+            .map((response: Response) => <IResponse>response.json())
+            //.do(data => console.log(data.data))
+            .catch(this.handleError);
     }
 
-    
-    
+    deleteEmployee(id: number) : Observable<IResponse>{
+        const options = this.GetOptions();
+        return this._http.delete(Global.apiUrl + "employees/" + id,options)
+            .map((response: Response) => <IResponse>response.json())
+            .do(data => console.log(data))
+            .catch(this.handleError);
+     }
+
+     createEmployee(employee: IEmployee): Observable<IResponse> {
+        const options = this.GetOptions();
+        let body = JSON.stringify(employee);
+        return this._http.post(Global.apiUrl + "Employees",body,options)
+            .map((response: Response) => <IResponse>response.json())
+            //.do(data => console.log(data.data))
+            .catch(this.handleError);
+    }
+
+    updateEmployee(employee: IEmployee) : Observable<IResponse> {
+        const options = this.GetOptions();
+        let body = JSON.stringify(employee);
+        return this._http.put(Global.apiUrl + "employees/" + employee.id,body,options)
+            .map((response: Response) => <IResponse>response.json())
+            .do(data => console.log(data))
+            .catch(this.handleError);
+    }
 
     private handleError(error: Response) {
         if (error.status === 404) {
@@ -53,5 +73,11 @@ export class EmployeeService{
         }
 
         return Observable.throw(new AppError(error));
+    }
+
+    private GetOptions(): RequestOptions {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return new RequestOptions({ headers: headers });
     }
 }

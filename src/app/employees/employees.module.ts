@@ -9,6 +9,7 @@ import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { DesignationListComponent } from './designation-list/designation-list.component';
 import { DesignationService } from '../core/services/designation.service';
 import { Ng2OrderModule } from 'ng2-order-pipe';
+import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
 
 @NgModule({
     imports: [
@@ -21,14 +22,20 @@ import { Ng2OrderModule } from 'ng2-order-pipe';
             { path: 'employees', component: EmployeeListComponent},
             { path: 'employees/new', component: EmployeeFormComponent},
             { path: 'employee/:id',component: EmployeeFormComponent}
-        ])
+        ]),
+        LoadingModule.forRoot({
+            animationType: ANIMATION_TYPES.threeBounce,
+              backdropBackgroundColour: 'rgba(0,0,0,0.1)', 
+              backdropBorderRadius: '0px',
+              primaryColour: 'red', 
+              secondaryColour: 'green', 
+              tertiaryColour: 'blue'
+          })  
     ],
     declarations:[
         EmployeeFormComponent,
         EmployeeListComponent,
         DesignationListComponent
-        
-       
     ],
     providers: [
         EmployeeService,

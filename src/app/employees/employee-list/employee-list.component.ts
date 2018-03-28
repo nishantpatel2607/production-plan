@@ -5,6 +5,11 @@ import { PagerService } from '../../core/services/pager.service';
 
 import { EmployeeService } from '../../core/services/employee.service';
 import { IEmployee } from '../../model/employee';
+import { MessageBoxComponent, MessageType } from '../../shared/message-box/message-box.component';
+import { DialogService } from 'ng2-bootstrap-modal';
+import { AppError } from '../../errorhandlers/app-error';
+import { NotFoundError } from '../../errorhandlers/not-found-error';
+import { BadRequestError } from '../../errorhandlers/bad-request-error';
 
 @Component({
   selector: 'employee-list',
@@ -16,55 +21,93 @@ export class EmployeeListComponent implements OnInit {
   employees: IEmployee[];
   errorMessage: string;
   listFilter: string = "";
-  
+
   pager: any = {};
   pagedItems: IEmployee[];
   filteredItems: IEmployee[];
-  
+
   checkedItems: IEmployee[];
-  
+  loading: boolean = false;
+  messageConfirm: boolean = false;
   constructor(private activeRoute: ActivatedRoute,
-     private route: Router,
-      private employeeService: EmployeeService,
-      private pagerService: PagerService) { }
+    private route: Router,
+    private employeeService: EmployeeService,
+    private pagerService: PagerService,
+    private dialogService: DialogService) { }
 
   //sorting
   key: string = 'firstName'; //set default
   reverse: boolean = false;
-  sort(key){
+  sort(key) {
     this.key = key;
-    this.reverse = !this.reverse;  
+    this.reverse = !this.reverse;
   }
 
   ngOnInit() {
+    this.loading = true;
     this.employeeService.getEmployees()
-    .subscribe(employeesData => {
-    this.employees = employeesData;
-    this.filteredItems = employeesData;
-      this.setPage(1);
-    },
-    error => this.errorMessage = <any>error);
+      .subscribe(employeesData => {
+        if (employeesData.Success) {
+          this.employees = employeesData.data;
+          this.filteredItems = employeesData.data;
+          this.setPage(1);
+          this.loading = false;
+        } else {
+          this.loading = false;
+          this.showMessage(MessageType.Error, "Error", employeesData.Message);
+        }
+      },
+        (error: AppError) => {
+          this.loading = false;
+          if (error instanceof NotFoundError) {
+            this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+          }
+          else if (error instanceof BadRequestError) {
+            this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+          }
+          else throw error;
+        });
   }
 
   newEmployee() {
     this.route.navigate(['employees/new']);
   }
 
-  deleteEmployees() {
-    if (this.checkedItems.length > 0) {
-      //alert(this.checkedItems.length);
-      for (let employee of this.checkedItems) {
-        let index = this.filteredItems.indexOf(employee);
-        if (index !== -1)
-          this.filteredItems.splice(index, 1);
-        index = this.employees.indexOf(employee);
-        if (index !== -1)
-          this.checkedItems.splice(index, 1);
+  deleteEmployee(employee: IEmployee) {
+    let disposable = this.dialogService.addDialog(MessageBoxComponent, {
+      title: "Delete?",
+      messageType: MessageType.Question,
+      message: "Do you want to delete selected employee?"
+
+    }).subscribe((isConfirmed) => {
+      if (isConfirmed) {
+        //console.log(isConfirmed);
+        var index = this.employees.findIndex(c => c.id === employee.id);
+        if (index >= 0) {
+          this.loading = true;
+          this.employeeService.deleteEmployee(employee.id).subscribe(
+            responseData => {
+              if (responseData.Success) {
+                //console.log(index);
+                this.employees.splice(index, 1);
+                this.filteredItems = this.employees;
+                this.setPage(1);
+                this.loading = false;
+
+              } else {
+                this.loading = false;
+                this.showMessage(MessageType.Error, 'Error', responseData.Message);
+                return;
+              }
+            }
+          )
+
+
+        }
       }
-      this.setPage(1);
-    }
+    });
   }
-  
+
   selectedItem(employee, event) {
     if (event.target.checked) {
       this.checkedItems.push(employee);
@@ -82,6 +125,7 @@ export class EmployeeListComponent implements OnInit {
 
     // get current page of items
     this.pagedItems = this.filteredItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
+   
     this.checkedItems = [];
   }
 
@@ -94,7 +138,7 @@ export class EmployeeListComponent implements OnInit {
         if (employee.firstName.toUpperCase().indexOf(valueToSearch) >= 0
           || employee.lastName.toUpperCase().indexOf(valueToSearch) >= 0
           || employee.designation.toUpperCase().indexOf(valueToSearch) >= 0
-       ) {
+        ) {
           this.filteredItems.push(employee);
         }
       });
@@ -104,6 +148,16 @@ export class EmployeeListComponent implements OnInit {
     // console.log(this.filteredItems);
     this.setPage(1);
 
+  }
+
+  showMessage(messageType: MessageType, title: string, message: string) {
+
+    let disposable = this.dialogService.addDialog(MessageBoxComponent, {
+      title: title,
+      messageType: messageType,
+      message: message
+
+    }).subscribe((isConfirmed) => { this.messageConfirm = isConfirmed; });
   }
 
 }

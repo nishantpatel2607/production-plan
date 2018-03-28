@@ -1,3 +1,6 @@
+
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '0px' }">
+</ngx-loading>
 <div class="container-fluid">
     <home></home>
     <div class='panel panel-primary'>
@@ -5,7 +8,7 @@
             {{pageTitle}}
             <form class="form-inline pull-right">
                 <button class="btn btn-default" (click)="newEmployee()">New</button>
-                <button class="btn btn-danger" (click)="deleteEmployees()">Delete</button>
+                <!-- <button class="btn btn-danger" (click)="deleteEmployees()">Delete</button> -->
             </form>
         </div>
 
@@ -23,7 +26,7 @@
                 <table class='table table-hover'>
                     <thead>
                         <tr>
-                            <th class="col-md-1"></th>
+                            <!-- <th class="col-md-1"></th> -->
                             <th class="col-md-4" (click)="sort('firstName')">First Name
                                 <span class="glyphicon sort-icon" *ngIf="key =='firstName'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
                             </th>
@@ -33,19 +36,22 @@
                             <th class="col-md-4" (click)="sort('designation')">Designation
                                 <span class="glyphicon sort-icon" *ngIf="key =='designation'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
                             </th>
+                            <th></th>
 
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let employee of pagedItems | orderBy: key : reverse"> 
-                            <td>
-                                <input type="checkbox" id="delSel" value="1" (change)="selectedItem(employee,$event)" /> </td>
+                            <!-- <td>
+                                <input type="checkbox" id="delSel" value="1" (change)="selectedItem(employee,$event)" /> </td> -->
                             <td>
                                 <a [routerLink]="['/employee', employee.id]">{{employee.firstName}}</a>
                             </td>
                             <td>{{employee.lastName}}</td>
                             <td>{{employee.designation}}</td>
-
+                            <td>
+                                <button class="btn btn-danger" (click)="deleteEmployee(employee)">Delete</button>
+                              </td>
                         </tr>
                     </tbody>
                 </table>

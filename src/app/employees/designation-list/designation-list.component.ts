@@ -31,6 +31,8 @@ export class DesignationListComponent implements OnInit {
   titlePagedItems: IDesignation[];
   titleFilteredItems: IDesignation[];
   messageConfirm:boolean = false;
+  loading: boolean = false;
+
   constructor(private activeRoute: ActivatedRoute,
     private route: Router,
     private pagerService: PagerService,
@@ -42,18 +44,21 @@ export class DesignationListComponent implements OnInit {
   }
 
   getDesignations() {
+    this.loading = true;
     this.designationService.getDesignations()
       .subscribe(designationData => {
         if (designationData.Success) {
           this.titles = designationData.data;
           this.titleFilteredItems = designationData.data;
           this.setTitlesPage(1);
+          this.loading = false;
         } else {
+          this.loading = false;
           this.showMessage(MessageType.Error, "Error", designationData.Message);
         }
       },
         (error: AppError) => {
-          //this.loading = false;
+          this.loading = false;
           if (error instanceof NotFoundError) {
             this.showMessage(MessageType.Error, "Error", "Requested data not found.");
           }
@@ -116,6 +121,7 @@ export class DesignationListComponent implements OnInit {
         title: titleVal
 
       }
+      this.loading = true;
       this.designationService.createDesignation(newTitle).subscribe(
         responseData => {
           if (responseData.Success) {
@@ -125,7 +131,9 @@ export class DesignationListComponent implements OnInit {
             this.clearTitlePanel();
             this.setTitlesPage(1);
             //console.log(this.newTitle);
+            this.loading = false;
           } else {
+            this.loading = false;
             this.showMessage(MessageType.Error, 'Error', 'The specified designation already exist.');
             return;
           }
@@ -140,7 +148,7 @@ export class DesignationListComponent implements OnInit {
         title: titleVal
 
       }
-      
+      this.loading = true;
       this.designationService.updateDesignation(updateTitle).subscribe(
         responseData => {
           
@@ -149,7 +157,9 @@ export class DesignationListComponent implements OnInit {
             this.selectedDesignation.title = titleVal;
             this.clearTitlePanel();
             this.setTitlesPage(1);
+            this.loading = false;
           } else {
+            this.loading = false;
             this.showMessage(MessageType.Error, 'Error', responseData.Message);
             return;
           }
@@ -161,7 +171,7 @@ export class DesignationListComponent implements OnInit {
 
   deleteTitle(designation: IDesignation) {
     //console.log(designation);
-
+    
     let disposable = this.dialogService.addDialog(MessageBoxComponent, {
       title: "Delete?",
       messageType: MessageType.Question,
@@ -171,12 +181,14 @@ export class DesignationListComponent implements OnInit {
       //console.log(isConfirmed);
       var index = this.titles.findIndex(c => c.id === designation.id); 
       if (index >= 0) {
-        
+        this.loading = true;    
         this.designationService.deleteDesignation(designation.id).subscribe(
           responseData => {
             if (responseData.Success){
               this.titles.splice(index, 1);
+              this.loading = false;
             }else {
+              this.loading = false;
               this.showMessage(MessageType.Error, 'Error', responseData.Message);
               return;
             }

@@ -17,7 +17,7 @@ import { Global } from './global';
 @Injectable()
 export class DesignationService { 
 
-    private _designationsUrl = "./assets/designations.json";
+    //private _designationsUrl = "./assets/designations.json";
 
     constructor(private _http: Http) { } 
 
@@ -73,7 +73,7 @@ export class DesignationService {
             .catch(this.handleError);
     }
 
-    deleteDesignation(id: number) {
+    deleteDesignation(id: number) : Observable<IResponse> {
         const options = this.GetOptions();
         return this._http.delete(Global.apiUrl + "designations/" + id,options)
             .map((response: Response) => <IResponse>response.json())
@@ -93,8 +93,7 @@ export class DesignationService {
     }
 
 
-    private GetOptions(): RequestOptions {
-        
+    private GetOptions(): RequestOptions { 
         const headers = new Headers();
         headers.append('Content-Type', 'application/json');
         return new RequestOptions({ headers: headers });
