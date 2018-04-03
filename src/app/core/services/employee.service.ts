@@ -18,7 +18,7 @@ import { Global } from './global';
 
 @Injectable()
 export class EmployeeService {
-    private _employeesUrl = "./assets/employees.json";
+    private _employeesUrl = "./assets/employees.json"; 
 
     constructor(private _http: Http) { }
 

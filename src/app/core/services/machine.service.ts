@@ -22,7 +22,7 @@ export class MachineService{
     private _machineDesignationUrl = "./assets/machineDesignations.json"; 
     private _machineListUrl = "./assets/machinesList.json"; 
     
-    constructor(private _http: Http){}
+    constructor(private _http: Http){} 
 
     //get all machines
     getMachines(): Observable<IMachine[]>{

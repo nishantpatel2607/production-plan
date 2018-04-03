@@ -1,3 +1,5 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '0px' }">
+</ngx-loading>
 <div class="container-fluid">
   <home></home>
   <div class="row">
@@ -24,7 +26,7 @@
             <div class="col-sm-6">
               <div class="form-group">
                 <label for="durationInMins">Duration (in mins)</label>
-                <input formControlName="durationInMins" id="durationInMins" type="text" class="form-control" [(ngModel)]="assembly.durationInMins"
+                <input formControlName="durationInMins" id="durationInMins" type="text" class="form-control" [(ngModel)]="assembly.duration"
                 />
               </div>
             </div>

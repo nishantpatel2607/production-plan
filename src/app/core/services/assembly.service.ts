@@ -1,7 +1,6 @@
 import { observable } from 'rxjs/symbol/observable';
 import { Injectable } from '@angular/core';
-import { Response, Http } from '@angular/http';
-
+import { Response,Http, RequestOptions, RequestMethod, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
@@ -16,6 +15,9 @@ import { HttpClient } from '@angular/common/http';
 import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
 import { AppError } from '../../errorhandlers/app-error';
+import { IResponse } from './IResponse';
+import { Global } from './global';
+
 
 @Injectable()
 export class AssemblyService{
@@ -29,19 +31,20 @@ export class AssemblyService{
 
 
     //get the list of assemblies
-    getAssemblies():Observable<IAssembly[]>{
-        return this._http.get(this._assemblyUrl)
-        .map((response: Response) => <IAssembly[]> response.json())
-        //.do(data => console.log('All: ' +  JSON.stringify(data)))
-        .catch(this.handleError);
+    getAssemblies():Observable<IResponse>{
+        return this._http.get(Global.apiUrl + "getAssemblies")
+            .map((response: Response) => <IResponse>response.json())
+            //.do(data => console.log(data.data))
+            .catch(this.handleError);
     }
 
 
     //get the list of assemblies (id and assembly name only)
-    getAssemblyList():Observable<IVMAssemblyListItem[]>{
-       return this._http.get(this._assemblyListUrl)
-        .map((response: Response) => <IVMAssemblyListItem[]> response.json())
-        //.do(data => console.log('All: ' +  JSON.stringify(data)))
+    //IVMAssemblyListItem[]
+    getAssemblyList():Observable<IResponse>{
+        return this._http.get(Global.apiUrl + "getAssemblylist")
+        .map((response: Response) => <IResponse>response.json())
+        //.do(data => console.log(data.data))
         .catch(this.handleError);
     }
 
@@ -64,24 +67,42 @@ export class AssemblyService{
     } */
 
     //get assembly by Id
-    getAssembly(id: number): Observable<IVMAssembly>{
-        let assembly: Observable<IVMAssembly>;
-        assembly = (this._http.get(this._vmAssemblyUrl)
-        .map((response: Response) => <IVMAssembly[]> response.json()))
-        .map((assemblies: IVMAssembly[])=> assemblies.find(a => a.id === id));
-        return assembly;
+    //IVMAssembly
+    getAssembly(id: number): Observable<IResponse>{
+        return this._http.get(Global.apiUrl + "Assembly/" + id)
+        .map((response: Response) => <IResponse>response.json())
+        //.do(data => console.log(data.data))
+        .catch(this.handleError);
     }
 
     //create new assembly 
-    createAssembly(assembly:IVMAssembly){
-
+    createAssembly(assembly:IVMAssembly) : Observable<IResponse>{
+        const options = this.GetOptions();
+        let body = JSON.stringify(assembly);
+        return this._http.post(Global.apiUrl + "assembly",body,options)
+            .map((response: Response) => <IResponse>response.json())
+            //.do(data => console.log(data.data))
+            .catch(this.handleError);
     }
 
     //update existing Assembly
-    updateAssembly(assembly:IVMAssembly){}
+    updateAssembly(assembly:IVMAssembly) : Observable<IResponse> {
+        const options = this.GetOptions();
+        let body = JSON.stringify(assembly);
+        return this._http.put(Global.apiUrl + "assembly",body,options)
+            .map((response: Response) => <IResponse>response.json())
+            //.do(data => console.log(data.data))
+            .catch(this.handleError);
+    }
 
     //delete existing Assembly
-    deleteAssembly(assemblyId:number){}
+    deleteAssembly(assemblyId:number) : Observable<IResponse> {
+        const options = this.GetOptions();
+        return this._http.delete(Global.apiUrl + "assembly/" + assemblyId,options)
+            .map((response: Response) => <IResponse>response.json())
+            .do(data => console.log(data))
+            .catch(this.handleError);
+    }
 
     
 
@@ -94,5 +115,11 @@ export class AssemblyService{
         }
 
         return Observable.throw(new AppError(error));
+    }
+
+    private GetOptions(): RequestOptions {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return new RequestOptions({ headers: headers });
     }
 }

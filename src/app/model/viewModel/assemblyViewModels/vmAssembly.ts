@@ -5,7 +5,7 @@ export interface IVMAssembly {
     id: number;
     assemblyName: string;
     assemblyDescription: string;
-    durationInMins: number;
+    duration: number;
     assemblyDesignations:IVMAssemblyDesignation[];
     subAssemblies:IVMSubAssembly[];
  }

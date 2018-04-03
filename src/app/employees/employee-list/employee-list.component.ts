@@ -54,7 +54,7 @@ export class EmployeeListComponent implements OnInit {
           this.loading = false;
         } else {
           this.loading = false;
-          this.showMessage(MessageType.Error, "Error", employeesData.Message);
+          this.showMessage(MessageType.Error, "Error", employeesData.Message); 
         }
       },
         (error: AppError) => {

@@ -9,7 +9,7 @@ import { AssemblyService } from '../core/services/assembly.service';
 import { AssemblySelectorComponent } from './assembly-selector/assembly-selector.component';
 import { AssemblyFormComponent } from './assembly-form/assembly-form.component';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
-
+import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
  
  
 @NgModule({
@@ -24,7 +24,15 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
       { path: 'assemblies', component: AssemblyListComponent},
       { path: 'assemblies/new', component: AssemblyFormComponent},
       { path: 'assembly/:id', component: AssemblyFormComponent}
-  ])
+  ]),
+  LoadingModule.forRoot({
+    animationType: ANIMATION_TYPES.threeBounce,
+      backdropBackgroundColour: 'rgba(0,0,0,0.1)', 
+      backdropBorderRadius: '0px',
+      primaryColour: 'red', 
+      secondaryColour: 'green', 
+      tertiaryColour: 'blue'
+  }) 
   ],
   declarations: [AssemblyListComponent, AssemblySelectorComponent, AssemblyFormComponent],
   providers:[AssemblyService],

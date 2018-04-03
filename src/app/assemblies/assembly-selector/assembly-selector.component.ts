@@ -2,6 +2,11 @@ import { Component, OnInit, EventEmitter,Output, Input } from '@angular/core';
 import { AssemblyService } from '../../core/services/assembly.service';
 import { PagerService } from '../../core/services/pager.service';
 import { IAssembly } from '../../model/assembly';
+import { MessageType, MessageBoxComponent } from '../../shared/message-box/message-box.component';
+import { DialogService } from 'ng2-bootstrap-modal';
+import { AppError } from '../../errorhandlers/app-error';
+import { NotFoundError } from '../../errorhandlers/not-found-error';
+import { BadRequestError } from '../../errorhandlers/bad-request-error';
 
 @Component({
   selector: 'assembly-selector',
@@ -12,7 +17,7 @@ export class AssemblySelectorComponent implements OnInit {
   assemblies: IAssembly[];
   errorMessage: string;
   listFilter: string = "";
-
+  loading: boolean = false;
   pager: any = {};
   pagedItems: IAssembly[];
   filteredItems: IAssembly[];
@@ -29,7 +34,8 @@ export class AssemblySelectorComponent implements OnInit {
   @Output('ItemSelected') ItemSelected = new EventEmitter();
 
   constructor(private assemblyService: AssemblyService,
-    private pagerService: PagerService) { }
+    private pagerService: PagerService,
+    private dialogService: DialogService) { }
 
   ngOnInit() {
     this.loadAssemblies();
@@ -38,11 +44,27 @@ export class AssemblySelectorComponent implements OnInit {
   loadAssemblies(){
     this.assemblyService.getAssemblies()
     .subscribe(assemblyData => {
-      this.assemblies = assemblyData;
-      this.filteredItems = this.assemblies; 
-      this.setPage(1);
+      if (assemblyData.Success){
+        this.assemblies = assemblyData.data;
+        this.filteredItems = this.assemblies;
+        
+          this.setPage(1);
+          this.loading = false;
+        }else {
+          this.loading = false;
+          this.showMessage(MessageType.Error, "Error", assemblyData.Message);
+        }
     },
-      error => this.errorMessage = <any>error);
+    (error: AppError) => {
+      this.loading = false;
+      if (error instanceof NotFoundError) {
+        this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+      }
+      else if (error instanceof BadRequestError) {
+        this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+      }
+      else throw error;
+    });
   }
 
   setPage(page: number) {
@@ -80,6 +102,16 @@ export class AssemblySelectorComponent implements OnInit {
   selectAssembly(assembly : IAssembly){
     if (assembly.assemblyName !== this.disabledAssembly)
       this.ItemSelected.emit(assembly);
+  }
+
+  showMessage(messageType: MessageType, title: string, message: string) {
+
+    let disposable = this.dialogService.addDialog(MessageBoxComponent, {
+      title: title,
+      messageType: messageType,
+      message: message
+
+    }).subscribe((isConfirmed) => { });
   }
 
 }

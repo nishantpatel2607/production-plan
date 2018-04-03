@@ -6,7 +6,7 @@ export interface IVMMachine {
     machineName: string;
     categoryId:number;
     modelNo:string;
-    installationType:string;
+    installationType:string; 
     orientation: string;
     shape: string;
     doorType: string;

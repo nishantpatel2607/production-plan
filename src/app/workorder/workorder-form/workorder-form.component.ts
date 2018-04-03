@@ -67,7 +67,7 @@ export class WorkorderFormComponent implements OnInit {
       this.machineList = list;
     }, () => { }, () => {
       this.assemblyService.getAssemblyList().subscribe(list => {
-        this.assemblyList = list;
+        //this.assemblyList = list;
       });
     });
   }

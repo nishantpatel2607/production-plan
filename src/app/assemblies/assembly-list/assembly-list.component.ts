@@ -3,6 +3,11 @@ import { AssemblyService } from '../../core/services/assembly.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IAssembly } from '../../model/assembly';
 import { PagerService } from '../../core/services/pager.service';
+import { AppError } from '../../errorhandlers/app-error';
+import { NotFoundError } from '../../errorhandlers/not-found-error';
+import { BadRequestError } from '../../errorhandlers/bad-request-error';
+import { MessageType, MessageBoxComponent } from '../../shared/message-box/message-box.component';
+import { DialogService } from 'ng2-bootstrap-modal';
 
 
 @Component({
@@ -15,7 +20,7 @@ export class AssemblyListComponent implements OnInit {
   assemblies: IAssembly[];
   errorMessage: string;
   listFilter: string = ""; 
-
+  loading: boolean = false;
   pager: any = {};
   pagedItems: IAssembly[];
   filteredItems: IAssembly[];
@@ -32,35 +37,71 @@ export class AssemblyListComponent implements OnInit {
   constructor(private assemblyService: AssemblyService,
     private activeRoute: ActivatedRoute,
     private route: Router,
-    private pagerService: PagerService) { }
+    private pagerService: PagerService,
+    private dialogService: DialogService) { }
 
   ngOnInit() {
+    this.loading = true;
     this.assemblyService.getAssemblies()
     .subscribe(assemblyData =>{
-      this.assemblies = assemblyData;
+      if (assemblyData.Success){
+      this.assemblies = assemblyData.data;
       this.filteredItems = this.assemblies;
       this.checkedItems = [];
         this.setPage(1);
+        this.loading = false;
+      }else {
+        this.loading = false;
+        this.showMessage(MessageType.Error, "Error", assemblyData.Message);
+      }
     },
-    error => this.errorMessage = <any>error);
+    (error: AppError) => {
+      this.loading = false;
+      if (error instanceof NotFoundError) {
+        this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+      }
+      else if (error instanceof BadRequestError) {
+        this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+      }
+      else throw error;
+    });
   }
 
   newAssembly() {
     this.route.navigate(['assemblies/new']);
   }
 
-  deleteAssembly() {
-    if (this.checkedItems.length > 0) {
-      for (let assembly of this.checkedItems) {
-        let index = this.filteredItems.indexOf(assembly);
-        if (index !== -1)
-          this.filteredItems.splice(index, 1);
-        index = this.assemblies.indexOf(assembly);
-        if (index !== -1)
-          this.checkedItems.splice(index, 1);
+  deleteAssembly(assembly: IAssembly) {
+    let disposable = this.dialogService.addDialog(MessageBoxComponent, {
+      title: "Delete?",
+      messageType: MessageType.Question,
+      message: "Do you want to delete selected assembly?"
+
+    }).subscribe((isConfirmed) => {
+      if (isConfirmed) {
+        //console.log(isConfirmed);
+        var index = this.assemblies.findIndex(c => c.id === assembly.id);
+        if (index >= 0) {
+          this.loading = true;
+          this.assemblyService.deleteAssembly(assembly.id).subscribe(
+            responseData => {
+              if (responseData.Success) {
+                //console.log(index);
+                this.assemblies.splice(index, 1);
+                this.filteredItems = this.assemblies;
+                this.setPage(1);
+                this.loading = false;
+
+              } else {
+                this.loading = false;
+                this.showMessage(MessageType.Error, 'Error', responseData.Message);
+                return;
+              }
+            }
+          )
+        }
       }
-      this.setPage(1);
-    }
+    });
   }
 
   selectedItem(assembly, event) {
@@ -101,5 +142,15 @@ export class AssemblyListComponent implements OnInit {
     }
     //console.log(this.filteredItems);
     this.setPage(1);
+  }
+
+  showMessage(messageType: MessageType, title: string, message: string) {
+
+    let disposable = this.dialogService.addDialog(MessageBoxComponent, {
+      title: title,
+      messageType: messageType,
+      message: message
+
+    }).subscribe((isConfirmed) => { });
   }
 }

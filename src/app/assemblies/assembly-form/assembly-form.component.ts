@@ -16,9 +16,9 @@ import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
 
 
-interface ISelectionListItem{
-  id:number,
-  itemName:string
+interface ISelectionListItem {
+  id: number,
+  itemName: string
 }
 
 @Component({
@@ -31,124 +31,183 @@ export class AssemblyFormComponent implements OnInit {
 
   form: FormGroup;
   private sub: Subscription;
+  loading: boolean = false;
   assembly: IVMAssembly = {
     "id": 0,
     "assemblyName": "",
     "assemblyDescription": "",
-    "durationInMins": 0,
-    "assemblyDesignations":[],
-    "subAssemblies":[]
+    "duration": 0,
+    "assemblyDesignations": [],
+    "subAssemblies": []
   }
-  
+
   designationsList: ISelectionListItem[] = [];
   selectedDesignations: ISelectionListItem[] = [];
   dropdownSettings = {};
-  errorMessage: string; 
-  desigListFromServer:IDesignation[];
-  
+  errorMessage: string;
+  desigListFromServer: IDesignation[];
+
   constructor(private fb: FormBuilder,
     private designationService: DesignationService,
     private assemblyService: AssemblyService,
     private router: Router,
     private activateRoute: ActivatedRoute,
     private dialogService: DialogService) {
-    this.form = fb.group({ 
+    this.form = fb.group({
       assemblyName: ['', Validators.required],
       assemblyDescription: [],
       durationInMins: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       assemblyDesignations: [[]],
       subAssemblies: [[]]
     });
-    
+
   }
 
   ngOnInit() {
+    let id = 0;
     this.dropdownSettings = {
       text: "Select Designations",
       enableCheckAll: false,
-      classes:"noBorder",
+      classes: "noBorder",
       showCheckbox: true
     };
     this.sub = this.activateRoute.params.subscribe(
       params => {
-        let id = +params['id'];
+        id = +params['id'];
         if (Number.isNaN(id) == false) {
           this.getAssembly(id);
         }
       });
-    this.getAllDesignations();
+      if (Number.isNaN(id)){
+      this.getAllDesignations();
+      }
+    
   }
 
   addSubAssembly(asm) {
     //alert(assembly.assemblyName);
     //console.log(assembly.id);
     let subAssembly: IVMSubAssembly = {
-      "assemblyId":this.assembly.id,
-      "subAssemblyId":asm.id,
-      "subAssemblyName":asm.assemblyName,
-      "qty":1
+      "assemblyId": this.assembly.id,
+      "subAssemblyId": asm.id,
+      "subAssemblyName": asm.assemblyName,
+      "qty": 1
     }
     let subAssemblyFound = this.assembly.subAssemblies.find(a => a.subAssemblyId == asm.id)
-    
-    if (subAssemblyFound === undefined ){
-        this.assembly.subAssemblies.push(subAssembly);
+
+    if (subAssemblyFound === undefined) {
+      this.assembly.subAssemblies.push(subAssembly);
     } else {
-        subAssemblyFound.qty = subAssemblyFound.qty + 1;
+      subAssemblyFound.qty = subAssemblyFound.qty + 1;
     }
   }
 
-  removeSubAssembly(asm){
-    
+  removeSubAssembly(asm) {
+
     let index = this.assembly.subAssemblies.findIndex(a => a.subAssemblyId == asm.subAssemblyId);
-    if (index >=0){
-      this.assembly.subAssemblies.splice(index,1);
+    if (index >= 0) {
+      this.assembly.subAssemblies.splice(index, 1);
     }
   }
 
   getAssembly(id: number): void {
+    this.loading = true;
     this.assemblyService.getAssembly(id)
-    .subscribe(a => {this.assembly = a; },
-      error => this.errorMessage = <any>error,()=>{
-        this.assembly.assemblyDesignations.forEach(desig =>{
-          let designationItem:ISelectionListItem = {
-            id : desig.designationId,
-            itemName : desig.title
-          }
-          this.selectedDesignations.push(designationItem);
-        })
-      });
+      .subscribe(responseData => {
+        if (responseData.Success) {
+          this.assembly = (<IVMAssembly>responseData.data[0]);
+          //console.log(this.assembly);
+          this.getAllDesignations();
+          this.loading = false;
+        }
+        else {
+          this.loading = false;
+          this.showMessage(MessageType.Error, "Error", responseData.Message);
+        }
+      }),
+      (error: AppError) => {
+        this.loading = false;
+        if (error instanceof NotFoundError) {
+          this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+        }
+        else if (error instanceof BadRequestError) {
+          this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+        }
+        else throw error;
+      }
   }
 
   get assemblyName() { return this.form.get("assemblyName"); }
   get assemblyDescription() { return this.form.get("assemblyDescription"); }
   get durationInMins() { return this.form.get("durationInMins"); }
-  get assemblyDesignations(){return this.form.get('assemblyDesignations') }
+  get assemblyDesignations() { return this.form.get('assemblyDesignations') }
 
-  saveForm(){
+  saveForm() {
+    this.assembly.assemblyDesignations = [];
     this.selectedDesignations.forEach(desig => {
       let selDesig: IVMAssemblyDesignation = {
-        assemblyId:this.assembly.id,
+        assemblyId: this.assembly.id,
         designationId: desig.id,
         title: desig.itemName
       }
       this.assembly.assemblyDesignations.push(selDesig);
     });
-    if (this.assembly.id > 0){
-      this.assemblyService.updateAssembly(this.assembly);
-    } else {this.assemblyService.createAssembly(this.assembly);}
-    //console.log(this.assembly);
+    if (this.assembly.id > 0) {
+      this.assemblyService.updateAssembly(this.assembly)
+      .subscribe(revData => {
+        if (revData.Success){
+          this.loading = false;
+        } else {
+          this.loading = false;
+          this.showMessage(MessageType.Error, "Error", revData.Message);
+        }
+      }),
+      (error: AppError) => {
+        this.loading = false;
+        if (error instanceof NotFoundError) {
+          this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+        }
+        else if (error instanceof BadRequestError) {
+          this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+        }
+        else throw error;
+      } 
+    } else { 
+      this.loading = true;
+      this.assemblyService.createAssembly(this.assembly)
+      .subscribe(revData => {
+        if (revData.Success){
+          this.assembly.id = revData.data[0];
+          this.loading = false;
+        } else {
+          this.loading = false;
+          this.showMessage(MessageType.Error, "Error", revData.Message);
+        }
+      }),
+      (error: AppError) => {
+        this.loading = false;
+        if (error instanceof NotFoundError) {
+          this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+        }
+        else if (error instanceof BadRequestError) {
+          this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+        }
+        else throw error;
+      } 
+    }
+    
   }
 
-  cancelForm(){
+  cancelForm() {
     this.router.navigate(['/assemblies']);
   }
 
-  getAllDesignations(){
+  getAllDesignations() {
     this.designationService.getDesignations().subscribe(
       designationData => {
         if (designationData.Success) {
           this.desigListFromServer = designationData.data;
-         
+
         } else {
           this.showMessage(MessageType.Error, "Error", designationData.Message);
         }
@@ -163,16 +222,28 @@ export class AssemblyFormComponent implements OnInit {
         }
         else throw error;
       },
-      ()=>{
+      () => {
         //console.log(this.designationsList);
+        this.designationsList = [];
         this.desigListFromServer.forEach(desig => {
-          let designation:ISelectionListItem = {
+          let designation: ISelectionListItem = {
             id: desig.id,
             itemName: desig.title
           }
           this.designationsList.push(designation);
         });
-     }
+        if (this.assembly.id > 0) {
+          this.selectedDesignations = [];
+          this.assembly.assemblyDesignations.forEach(desig => {
+            let designationItem: ISelectionListItem = {
+              id: desig.designationId,
+              itemName: desig.title
+            }
+            this.selectedDesignations.push(designationItem);
+          })
+
+        }
+      }
     )
   }
 

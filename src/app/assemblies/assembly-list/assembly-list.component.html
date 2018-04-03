@@ -1,3 +1,6 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '0px' }">
+</ngx-loading>
+
 <div class="container-fluid"> 
   <home></home>
 
@@ -8,7 +11,7 @@
         <form class="form-inline pull-right">
 
             <button class="btn btn-default" (click)="newAssembly()">New</button>
-            <button class="btn btn-danger" (click)="deleteAssembly()">Delete</button>
+            <!-- <button class="btn btn-danger" (click)="deleteAssembly()">Delete</button> -->
         </form>
     </div>
 
@@ -26,23 +29,27 @@
           <table class='table table-hover'>
               <thead>
                   <tr>
-                      <th class="col-md-1"></th>
+                      <!-- <th class="col-md-1"></th> -->
                       <th class="col-md-4" (click)="sort('assemblyName')">Assembly Name
                           <span class="glyphicon sort-icon" *ngIf="key =='assemblyName'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
                       </th>
                       <th class="col-md-7" (click)="sort('assemblyDescription')">Description
                           <span class="glyphicon sort-icon" *ngIf="key =='assemblyDescription'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
                       </th>
+                      <th class="col-md-1"></th>
                   </tr>
               </thead>
               <tbody>
                   <tr *ngFor="let assembly of pagedItems | orderBy: key : reverse">
-                      <td>
-                          <input type="checkbox" id="delSel" value="1" (change)="selectedItem(assembly,$event)"/> </td>
+                      <!-- <td>
+                          <input type="checkbox" id="delSel" value="1" (change)="selectedItem(assembly,$event)"/> </td> -->
                       <td>
                           <a [routerLink]="['/assembly', assembly.id]">{{assembly.assemblyName}}</a>
                       </td>
                       <td>{{assembly.assemblyDescription|summary:100}}</td>
+                      <td>
+                        <button class="btn btn-danger" (click)="deleteAssembly(assembly)">Delete</button>
+                      </td>
                   </tr>
 
               </tbody>
