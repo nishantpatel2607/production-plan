@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { Response, Http } from '@angular/http';
+import { Response,Http, RequestOptions, RequestMethod, Headers } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
@@ -12,7 +12,8 @@ import { HttpClient } from '@angular/common/http';
 import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
 import { AppError } from '../../errorhandlers/app-error';
-
+import { IResponse } from './IResponse';
+import { Global } from './global';
 
 @Injectable()
 export class MachineCategoryService{
@@ -21,31 +22,44 @@ export class MachineCategoryService{
     constructor(private _http: Http){}
 
     //get all categories
-    getMachineCategories(): Observable<IMachineCategory[]>{
-        return this._http.get(this._machineCategoryUrl)
-        .map((response: Response) => <IMachineCategory[]> response.json())
-        //.do(data => console.log('All: ' +  JSON.stringify(data)))
-        .catch(this.handleError); 
+    getMachineCategories(): Observable<IResponse>{
+        return this._http.get(Global.apiUrl + "MachineCategories")
+        .map((response: Response) => <IResponse>response.json())
+        .catch(this.handleError);
     }
 
     //get machine category based on Id
-    getMachineCategory(id: number) :Observable<IMachineCategory> {
-        let machine: Observable<IMachineCategory>;
-        machine= this.getMachineCategories()
-        .map((machineCategories: IMachineCategory[])=> machineCategories.find(m => m.id === id))
-        //.do(data => console.log('MAC: ' + JSON.stringify(data)))
-        return machine;
+    getMachineCategory(id: number) :Observable<IResponse> {
+        return this._http.get(Global.apiUrl + "MachineCategories/" + id)
+        .map((response: Response) => <IResponse>response.json())
+        .catch(this.handleError);
     }
 
-    createMachineCategory(newMachineCategory:IMachineCategory){
-
+    createMachineCategory(newMachineCategory:IMachineCategory) : Observable<IResponse> {
+        const options = this.GetOptions();
+        let body = JSON.stringify(newMachineCategory);
+        return this._http.post(Global.apiUrl + "MachineCategories",body,options)
+            .map((response: Response) => <IResponse>response.json())
+            //.do(data => console.log(data.data))
+            .catch(this.handleError);
     }
 
-    updateMachineCategory(machineCategory:IMachineCategory){
-
+    updateMachineCategory(machineCategory:IMachineCategory) : Observable<IResponse>{
+        const options = this.GetOptions();
+        let body = JSON.stringify(machineCategory);
+        return this._http.put(Global.apiUrl + "MachineCategories/" + machineCategory.id,body,options)
+            .map((response: Response) => <IResponse>response.json())
+            .do(data => console.log(data))
+            .catch(this.handleError);
     }
 
-    deleteMachineCategory(id:number){}
+    deleteMachineCategory(id:number) : Observable<IResponse>{
+        const options = this.GetOptions();
+        return this._http.delete(Global.apiUrl + "MachineCategories/" + id,options)
+            .map((response: Response) => <IResponse>response.json())
+            .do(data => console.log(data))
+            .catch(this.handleError);
+    }
 
     private handleError(error: Response) {
         if (error.status === 404) {
@@ -56,5 +70,11 @@ export class MachineCategoryService{
         }
 
         return Observable.throw(new AppError(error));
+    }
+
+    private GetOptions(): RequestOptions {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return new RequestOptions({ headers: headers });
     }
 }

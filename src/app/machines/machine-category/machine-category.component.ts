@@ -9,6 +9,9 @@ import { IMachineCategory } from '../../model/machineCategory';
 import { PagerService } from '../../core/services/pager.service';
 import { DialogService } from 'ng2-bootstrap-modal';
 import { MessageType, MessageBoxComponent } from '../../shared/message-box/message-box.component';
+import { AppError } from '../../errorhandlers/app-error';
+import { NotFoundError } from '../../errorhandlers/not-found-error';
+import { BadRequestError } from '../../errorhandlers/bad-request-error';
 
 @Component({
   selector: 'machine-category',
@@ -31,7 +34,7 @@ export class MachineCategoryComponent implements OnInit {
   categoryPager: any = {};
   categoryPagedItems: IMachineCategory[];
   categoryFilteredItems: IMachineCategory[];
-
+  loading: boolean = false;
   // selectedModel: IMachineModel = {
   //   id: 0,
   //   categoryId: 0,
@@ -50,24 +53,38 @@ export class MachineCategoryComponent implements OnInit {
     private pagerService: PagerService,
     private machineCategoryService: MachineCategoryService,
     private dialogService: DialogService) { }
-    //private machineModelService: MachineModelService) { }
+  //private machineModelService: MachineModelService) { }
 
   ngOnInit() {
     this.getMachineCategories();
   }
 
   getMachineCategories() {
+    this.loading = true;
     this.machineCategoryService.getMachineCategories()
       .subscribe(categoriesData => {
-        this.categories = categoriesData;
-        this.categoryFilteredItems = categoriesData;
-
-        this.setCategoriesPage(1);
+        if (categoriesData.Success) {
+          this.categories = categoriesData.data;
+          this.categoryFilteredItems = categoriesData.data;
+          this.setPage(1);
+        }else {
+          this.loading = false;
+          this.showMessage(MessageType.Error, "Error", categoriesData.Message); 
+        }
       },
-      error => this.errorMessage = <any>error);
+      (error: AppError) => {
+        this.loading = false;
+        if (error instanceof NotFoundError) {
+          this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+        }
+        else if (error instanceof BadRequestError) {
+          this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+        }
+        else throw error;
+      });
   }
 
-  setCategoriesPage(page: number) {
+  setPage(page: number) {
     if (this.categoryFilteredItems.length > 0 && this.categoryPager.totalPages == 0) { this.categoryPager.totalPages = 1; }
     if (page < 1 || page > this.categoryPager.totalPages) {
       return;
@@ -78,30 +95,7 @@ export class MachineCategoryComponent implements OnInit {
     this.categoryPagedItems = this.categoryFilteredItems.slice(this.categoryPager.startIndex, this.categoryPager.endIndex + 1);
   }
 
-  // setModelsPage(page: number) {
-  //   if (this.modelFilteredItems.length > 0 && this.modelPager.totalPages == 0) { this.modelPager.totalPages = 1; }
-  //   if (page < 1 || page > this.modelPager.totalPages) {
-  //     return;
-  //   }
-  //   // get pager object from service
-  //   this.modelPager = this.pagerService.getPager(this.modelFilteredItems.length, page, this.pagesize);
-  //   // get current page of items
-  //   this.modelPagedItems = this.modelFilteredItems.slice(this.modelPager.startIndex, this.modelPager.endIndex + 1);
-  // }
-
-  // getModels(category: IMachineCategory) {
-  //   this.clearModelPanel();
-  //   this.categoryName = category.categoryName;
-  //   this.selectedCategory = category;
-  //   this.machineModelService.getMachineModelsByCategory(category.id)
-  //     .subscribe(modelData => {
-  //       this.models = modelData;
-  //       this.modelFilteredItems = modelData;
-  //       //console.log(this.modelFilteredItems); 
-  //       this.setModelsPage(1);
-  //     },
-  //     error => this.errorMessage = <any>error);
-  // }
+  
 
   filterCategoryRecords(value) {
     this.categoryListFilter = value;
@@ -116,30 +110,10 @@ export class MachineCategoryComponent implements OnInit {
     } else {
       this.categoryFilteredItems = this.categories;
     }
-    this.setCategoriesPage(1);
+    this.setPage(1);
   }
 
-  // filterModelRecords(value) {
-  //   this.modelListFilter = value;
-  //   var valueToSearch = this.modelListFilter.toUpperCase().trim();
-  //   this.modelFilteredItems = [];
-  //   if (this.modelListFilter != "") {
-  //     this.models.forEach(model => {
-  //       if (model.modelName.toUpperCase().indexOf(valueToSearch) >= 0) {
-  //         this.modelFilteredItems.push(model);
-  //       }
-  //     });
-  //   } else {
-  //     this.modelFilteredItems = this.models; 
-  //   }
-  //   this.setModelsPage(1);
-  // }
-
-  // clearModelPanel() {
-  //   this.modelListFilter = "";
-  //   this.modelName = "";
-  //   this.selectedModel = { id: 0, categoryId: 0, modelName: "" };
-  // }
+  
 
   clearCategoryPanel() {
     this.categoryName = "";
@@ -158,38 +132,86 @@ export class MachineCategoryComponent implements OnInit {
     if (this.selectedCategory.id === 0) {
       //Check if category already exist
       if (this.categories
-        .find(c=>c.categoryName.toUpperCase().trim() == categoryVal.toUpperCase().trim())){
-          //ToDo: show message category already exist 
-          return;
+        .find(c => c.categoryName.toUpperCase().trim() == categoryVal.toUpperCase().trim())) {
+        //ToDo: show message category already exist 
+        return;
       }
       //new category
       this.newCategory = {
         id: -1,
         categoryName: categoryVal
       }
+      this.loading = true;
       this.machineCategoryService.createMachineCategory(this.newCategory)
-      //ToDo:  remove following code and call getMachineCategories
-      this.categories.push(this.newCategory);
+      .subscribe(
+        responseData => {
+          if (responseData.Success) {
 
+            this.newCategory.id = responseData.data[0];
+            this.categories.push(this.newCategory);
+            this.clearCategoryPanel();
+            this.setPage(1);
+            this.loading = false;
+          } else {
+            this.loading = false;
+            this.showMessage(MessageType.Error, 'Error', 'The specified category already exist.');
+            return;
+          }
+        }
+      )
+      //ToDo:  remove following code and call getMachineCategories
+      //this.categories.push(this.newCategory);
     }
     else {
       //update category
-      this.selectedCategory.categoryName = categoryVal;
-
-      this.machineCategoryService.updateMachineCategory(this.selectedCategory);
-
+      let updateCategory: IMachineCategory;
+      updateCategory = {
+        id: this.selectedCategory.id,
+        categoryName: categoryVal
+      }
+      
+      this.loading = true;
+      this.machineCategoryService.updateMachineCategory(updateCategory)
+      .subscribe(
+        responseData => {
+          
+          if (responseData.Success) {
+            //console.log(responseData);  
+            this.selectedCategory.categoryName = categoryVal;
+            this.clearCategoryPanel();
+            this.setPage(1);
+            this.loading = false;
+          } else {
+            this.loading = false;
+            this.showMessage(MessageType.Error, 'Error', responseData.Message);
+            return;
+          }
+        });
     }
     this.clearCategoryPanel();
-    this.setCategoriesPage(1);
+    this.setPage(1);
   }
 
   deleteCategory(category: IMachineCategory) {
 
     var index = this.categories.findIndex(c => c.id === category.id);
     if (index >= 0) {
-      this.categories.splice(index, 1);
-      this.machineCategoryService.deleteMachineCategory(category.id);
-      this.setCategoriesPage(1);
+      
+      this.machineCategoryService.deleteMachineCategory(category.id)
+      .subscribe(
+        responseData => {
+          if (responseData.Success){
+            this.categories.splice(index, 1);
+            this.loading = false;
+          }else {
+            this.loading = false;
+            this.showMessage(MessageType.Error, 'Error', responseData.Message);
+            return;
+          }
+        }
+      )
+      this.clearCategoryPanel();
+      this.setPage(1);
     }
   }
 
@@ -202,48 +224,4 @@ export class MachineCategoryComponent implements OnInit {
 
     }).subscribe((isConfirmed) => { });
   }
-
-
-  // addOrUpdateModel() {
-  //   if (this.modelName.trim() === "") return;
-  //   var modelVal = this.modelName.trim();
-  //   if (this.selectedModel.id === 0) {
-  //     //check if model exists
-  //     if (this.models
-  //       .find(m=>m.modelName.toUpperCase().trim() == modelVal.toUpperCase().trim())){
-  //         //ToDo: Show message Model already exists
-  //         return;
-  //       }
-  //     //new model
-  //     this.newModel = {
-  //       id: -1,
-  //       categoryId: this.selectedCategory.id,
-  //       modelName: modelVal
-  //     }
-  //     this.machineModelService.createMachineModel(this.newModel);
-  //     //ToDo: remove following code and call getModels
-  //     this.models.push(this.newModel);
-  //   }
-  //   else {
-  //     //update model
-  //     this.selectedModel.modelName = modelVal;
-  //     this.machineModelService.updateMachineModel(this.selectedModel);
-  //   }
-  //   this.clearModelPanel();
-  //   this.setModelsPage(1);
-  // }
-
-  // deleteModel(model: IMachineModel) {
-  //   var index = this.models.findIndex(m => m.id === model.id);
-  //   if (index >= 0) {
-  //     this.models.splice(index, 1);
-  //     this.machineModelService.deleteMachineModel(model.id);
-  //     this.setModelsPage(1);
-  //   }
-  // }
-
-  // setSelectedModel(model: IMachineModel) {
-  //   this.selectedModel = model;
-  //   this.modelName = model.modelName;
-  // }
 }

@@ -130,7 +130,6 @@ export class DesignationListComponent implements OnInit {
             this.titles.push(newTitle);
             this.clearTitlePanel();
             this.setTitlesPage(1);
-            //console.log(this.newTitle);
             this.loading = false;
           } else {
             this.loading = false;
@@ -179,7 +178,7 @@ export class DesignationListComponent implements OnInit {
 
     }).subscribe((isConfirmed) => {if (isConfirmed){
       //console.log(isConfirmed);
-      var index = this.titles.findIndex(c => c.id === designation.id); 
+      var index = this.titles.findIndex(c => c.id === designation.id);  
       if (index >= 0) {
         this.loading = true;    
         this.designationService.deleteDesignation(designation.id).subscribe(
