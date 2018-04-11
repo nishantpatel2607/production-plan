@@ -4,13 +4,17 @@ import { IMachineCategory } from '../../model/machineCategory';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
- 
+
 
 import { IMachine } from '../../model/machine';
 import { PagerService } from '../../core/services/pager.service';
 import { MachineService } from '../../core/services/machine.service';
 import { DialogService } from 'ng2-bootstrap-modal';
 import { MessageType, MessageBoxComponent } from '../../shared/message-box/message-box.component';
+import { AppError } from '../../errorhandlers/app-error';
+import { NotFoundError } from '../../errorhandlers/not-found-error';
+import { BadRequestError } from '../../errorhandlers/bad-request-error';
+import { IVMMachine } from '../../model/viewModel/machineViewModels/vmMachine';
 
 @Component({
   selector: 'machine-list',
@@ -20,24 +24,24 @@ import { MessageType, MessageBoxComponent } from '../../shared/message-box/messa
 export class MachineListComponent implements OnInit {
   pageTitle: string = "Machines";
 
-  machines: IMachine[];
+  machines: IVMMachine[];
   errorMessage: string;
   listFilter: string = "";
-
+  loading: boolean = false;
   pager: any = {};
-  pagedItems: IMachine[];
-  filteredItems: IMachine[];
+  pagedItems: IVMMachine[];
+  filteredItems: IVMMachine[];
 
-  checkedItems: IMachine[];
+  checkedItems: IVMMachine[];
   machineCategories: IMachineCategory[];
 
-//sorting
-key: string = 'machineName'; //set default
-reverse: boolean = false;
-sort(key){
-  this.key = key;
-  this.reverse = !this.reverse; 
-}
+  //sorting
+  key: string = 'machineName'; //set default
+  reverse: boolean = false;
+  sort(key) {
+    this.key = key;
+    this.reverse = !this.reverse;
+  }
   constructor(private activeRoute: ActivatedRoute,
     private route: Router,
     private machineService: MachineService,
@@ -46,46 +50,79 @@ sort(key){
     private dialogService: DialogService) { }
 
   ngOnInit() {
-    this.machineCategoryService.getMachineCategories()
-    .subscribe(categories => {
-      this.machineCategories = categories;
-    },
-    error => this.errorMessage = <any>error);
 
+    /*  this.machineCategoryService.getMachineCategories()
+       .subscribe(categories => {
+         if (categories.Success) {
+           this.machineCategories = categories.data;
+         }
+       },
+         (error: AppError) => {
+           this.loading = false;
+           if (error instanceof NotFoundError) {
+             this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+           }
+           else if (error instanceof BadRequestError) {
+             this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+           }
+           else throw error;
+         }); */
+    this.loading = true;
     this.machineService.getMachines()
       .subscribe(machinesData => {
-        this.machines = machinesData;
-        this.filteredItems = machinesData;
-        this.checkedItems = [];
-        this.setPage(1);
+        if (machinesData.Success) {
+          this.machines = machinesData.data;
+          this.filteredItems = machinesData.data;
+          this.checkedItems = [];
+          this.setPage(1);
+          this.loading = false;
+        }else {
+          this.loading = false;
+          this.showMessage(MessageType.Error, "Error", machinesData.Message); 
+        }
       },
-      error => this.errorMessage = <any>error);
-    
+      (error: AppError) => {
+        this.loading = false;
+        if (error instanceof NotFoundError) {
+          this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+        }
+        else if (error instanceof BadRequestError) {
+          this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+        }
+        else throw error;
+      });
+
   }
 
-  getCategoryName(Id:number): string{
-    let categoryName:string = "";
-    let category:IMachineCategory = this.machineCategories.find(c=>c.id === Id);
+  /* getCategoryName(Id: number): string {
+    let categoryName: string = "";
+    let category: IMachineCategory = this.machineCategories.find(c => c.id === Id);
     if (category != undefined)
       categoryName = category.categoryName;
     return categoryName;
-  }
+  } */
 
   newMachine() {
     this.route.navigate(['machines/new']);
   }
 
-  deleteMachine() {
-    if (this.checkedItems.length > 0) {
-      //alert(this.checkedItems.length);
-      for (let machine of this.checkedItems) {
-        let index = this.filteredItems.indexOf(machine);
-        if (index !== -1)
-          this.filteredItems.splice(index, 1);
-        index = this.machines.indexOf(machine);
-        if (index !== -1)
-          this.checkedItems.splice(index, 1);
-      }
+  deleteMachine(machine:IVMMachine) {
+    var index = this.machines.findIndex(c => c.id === machine.id);
+    if (index >= 0) {
+      this.loading = true;
+      this.machineService.deleteMachine(machine.id)
+      .subscribe(
+        responseData => {
+          if (responseData.Success){
+            this.machines.splice(index, 1);
+            this.loading = false;
+          }else {
+            this.loading = false;
+            this.showMessage(MessageType.Error, 'Error', responseData.Message);
+            return;
+          }
+        }
+      )
       this.setPage(1);
     }
   }
@@ -117,8 +154,8 @@ sort(key){
       this.machines.forEach(machine => {
         if (machine.machineName.toUpperCase().indexOf(valueToSearch) >= 0
           || machine.modelNo.toUpperCase().indexOf(valueToSearch) >= 0
-          || this.getCategoryName(machine.categoryId).toUpperCase().indexOf(valueToSearch) >= 0
-         ) {
+          || machine.categoryName.toUpperCase().indexOf(valueToSearch) >= 0
+        ) {
           this.filteredItems.push(machine);
         }
       });

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Response, Http } from '@angular/http';
+import { Response,Http, RequestOptions, RequestMethod, Headers } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
@@ -14,6 +14,8 @@ import { HttpClient } from '@angular/common/http';
 import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
 import { AppError } from '../../errorhandlers/app-error';
+import { IResponse } from './IResponse';
+import { Global } from './global';
 
 @Injectable()
 export class MachineService{
@@ -25,48 +27,65 @@ export class MachineService{
     constructor(private _http: Http){} 
 
     //get all machines
-    getMachines(): Observable<IMachine[]>{
-        return this._http.get(this._machineUrl)
-        .map((response: Response) => <IMachine[]> response.json())
-        //.do(data => console.log('All: ' +  JSON.stringify(data)))
+    //IVMMachine[]
+    getMachines(): Observable<IResponse>{
+        return this._http.get(Global.apiUrl + "machines")
+        .map((response: Response) => <IResponse>response.json())
         .catch(this.handleError);
     }
-
+ 
     //get all machines
-    getMachineList(): Observable<IVMMachineListItem[]>{
-        return this._http.get(this._machineListUrl)
-        .map((response: Response) => <IVMMachineListItem[]> response.json())
-        //.do(data => console.log('All: ' +  JSON.stringify(data)))
+    //IVMMachineListItem[]
+    getMachineList(): Observable<IResponse>{
+        return this._http.get(Global.apiUrl + "machines/list")
+        .map((response: Response) => <IResponse>response.json())
         .catch(this.handleError);
     }
     
 
     //get machine by Id
-    getMachine(id: number) :Observable<IVMMachine> {
-        let machine: Observable<IVMMachine>; 
-        machine= (this._http.get(this._vmMachineUrl)
-        .map((response: Response) => <IVMMachine[]> response.json()))
-        .map((machines: IVMMachine[])=> machines.find(m => m.id === id))
-        //.do(data => console.log('MAC: ' + JSON.stringify(data)))
-        return machine;
+    getMachine(id: number) :Observable<IResponse> {
+        return this._http.get(Global.apiUrl + "machines/" + id)
+        .map((response: Response) => <IResponse>response.json())
+        .catch(this.handleError);
     }
 
     //get the list of designations suitable for supplied assembly
-    getMachineDesignations(machineId:number):Observable<IMachineDesignation[]>{
-        return this._http.get(this._machineDesignationUrl)
-        .map((response: Response) => (<IMachineDesignation[]> response.json())
-        .filter(response => response.machineId == machineId))
-        //.do(data => console.log('All: ' +  JSON.stringify(data)))
-        .catch(this.handleError); 
-    }
+    // getMachineDesignations(machineId:number):Observable<IMachineDesignation[]>{
+    //     return this._http.get(this._machineDesignationUrl)
+    //     .map((response: Response) => (<IMachineDesignation[]> response.json())
+    //     .filter(response => response.machineId == machineId))
+    //     //.do(data => console.log('All: ' +  JSON.stringify(data)))
+    //     .catch(this.handleError); 
+    // }
 
     
 
-    createMachine(machine:IVMMachine){}
+    createMachine(machine:IVMMachine) :Observable<IResponse>{
+        const options = this.GetOptions();
+        let body = JSON.stringify(machine);
+        return this._http.post(Global.apiUrl + "machines",body,options)
+            .map((response: Response) => <IResponse>response.json())
+            //.do(data => console.log(data.data))
+            .catch(this.handleError);
+    }
 
-    updateMachine(machine:IVMMachine){}
+    updateMachine(machine:IVMMachine) :Observable<IResponse>{
+        const options = this.GetOptions();
+        let body = JSON.stringify(machine);
+        return this._http.put(Global.apiUrl + "machines",body,options)
+            .map((response: Response) => <IResponse>response.json())
+            //.do(data => console.log(data.data))
+            .catch(this.handleError);
+    }
 
-    deleteMachine(id: number){}
+    deleteMachine(id: number) :Observable<IResponse> {
+        const options = this.GetOptions();
+        return this._http.delete(Global.apiUrl + "machines/" + id,options)
+            .map((response: Response) => <IResponse>response.json())
+            .do(data => console.log(data))
+            .catch(this.handleError);
+    }
 
     private handleError(error: Response) {
         if (error.status === 404) {
@@ -77,5 +96,11 @@ export class MachineService{
         }
 
         return Observable.throw(new AppError(error));
+    }
+
+    private GetOptions(): RequestOptions {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return new RequestOptions({ headers: headers });
     }
 }

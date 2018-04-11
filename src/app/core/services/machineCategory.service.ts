@@ -17,7 +17,7 @@ import { Global } from './global';
 
 @Injectable()
 export class MachineCategoryService{
-    private _machineCategoryUrl = "./assets/machineCategories.json"; 
+    //private _machineCategoryUrl = "./assets/machineCategories.json"; 
     
     constructor(private _http: Http){}
 

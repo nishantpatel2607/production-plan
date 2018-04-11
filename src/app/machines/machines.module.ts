@@ -15,6 +15,7 @@ import { MachineCategoryService } from '../core/services/machineCategory.service
 import { Ng2OrderModule } from 'ng2-order-pipe';
 import { AssembliesModule } from '../assemblies/assemblies.module';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
 @NgModule({  
     imports: [
         FormsModule,
@@ -28,7 +29,15 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
             { path: 'machines/new', component: MachineFormComponent},
             { path: 'machine/:id',component: MachineFormComponent},
             { path: 'machinecat',component: MachineCategoryComponent}
-        ])
+        ]),
+        LoadingModule.forRoot({
+            animationType: ANIMATION_TYPES.threeBounce,
+              backdropBackgroundColour: 'rgba(0,0,0,0.1)', 
+              backdropBorderRadius: '0px',
+              primaryColour: 'red', 
+              secondaryColour: 'green', 
+              tertiaryColour: 'blue'
+          })  
     ],
     declarations:[
         MachineFormComponent,

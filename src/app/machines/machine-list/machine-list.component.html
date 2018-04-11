@@ -1,3 +1,5 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '0px' }">
+</ngx-loading>
 <div class="container-fluid">
     <home></home> 
     <div class='panel panel-primary'> 
@@ -7,7 +9,7 @@
             <form class="form-inline pull-right">
 
                 <button class="btn btn-default" (click)="newMachine()">New</button>
-                <button class="btn btn-danger" (click)="deleteMachine()">Delete</button>
+                
             </form>
         </div> 
 
@@ -26,7 +28,7 @@
                 <table class='table table-hover'>
                     <thead>
                         <tr>
-                            <th class="col-md-1"></th>
+                            
                             <th class="col-md-4" (click)="sort('machineName')">Machine Name
                                 <span class="glyphicon sort-icon" *ngIf="key =='machineName'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
                             </th>
@@ -36,6 +38,7 @@
                             <th class="col-md-4" (click)="sort('getCategoryName(machine.categoryId)')">Category
                                 <span class="glyphicon sort-icon" *ngIf="key =='getCategoryName(machine.categoryId)'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
                             </th>
+                            <th class="col-md-1"></th>
                             <!-- <th class="col-md-2">Orientation</th>
                             <th class="col-md-2">Shape</th>
                             <th class="col-md-1">Door</th>
@@ -50,8 +53,8 @@
                                 <a [routerLink]="['/machine', machine.id]">{{machine.machineName}}</a>
                             </td>
                             <td>{{machine.modelNo}}</td>
-                            <td>{{getCategoryName(machine.categoryId)}}</td>
-                            
+                            <td>{{machine.categoryName}}</td>
+                            <td><button class="btn btn-danger" (click)="deleteMachine(machine)">Delete</button></td>
                         </tr>
 
                     </tbody>

@@ -67,21 +67,27 @@ export class MachineCategoryComponent implements OnInit {
           this.categories = categoriesData.data;
           this.categoryFilteredItems = categoriesData.data;
           this.setPage(1);
-        }else {
           this.loading = false;
-          this.showMessage(MessageType.Error, "Error", categoriesData.Message); 
+        } else {
+          this.loading = false;
+          this.showMessage(MessageType.Error, "Error", categoriesData.Message);
         }
       },
-      (error: AppError) => {
-        this.loading = false;
-        if (error instanceof NotFoundError) {
-          this.showMessage(MessageType.Error, "Error", "Requested data not found.");
-        }
-        else if (error instanceof BadRequestError) {
-          this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
-        }
-        else throw error;
-      });
+        (error: AppError) => {
+          this.loading = false;
+          if (error instanceof NotFoundError) {
+            this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+          }
+          else if (error instanceof BadRequestError) {
+            this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+          }
+          else throw error;
+        });
+  }
+
+  setSelectedCategory(category: IMachineCategory) {
+    this.categoryName = category.categoryName;
+    this.selectedCategory = category;
   }
 
   setPage(page: number) {
@@ -95,7 +101,7 @@ export class MachineCategoryComponent implements OnInit {
     this.categoryPagedItems = this.categoryFilteredItems.slice(this.categoryPager.startIndex, this.categoryPager.endIndex + 1);
   }
 
-  
+
 
   filterCategoryRecords(value) {
     this.categoryListFilter = value;
@@ -113,7 +119,7 @@ export class MachineCategoryComponent implements OnInit {
     this.setPage(1);
   }
 
-  
+
 
   clearCategoryPanel() {
     this.categoryName = "";
@@ -143,22 +149,24 @@ export class MachineCategoryComponent implements OnInit {
       }
       this.loading = true;
       this.machineCategoryService.createMachineCategory(this.newCategory)
-      .subscribe(
-        responseData => {
-          if (responseData.Success) {
+        .subscribe(
+          responseData => {
+            if (responseData.Success) {
 
-            this.newCategory.id = responseData.data[0];
-            this.categories.push(this.newCategory);
-            this.clearCategoryPanel();
-            this.setPage(1);
-            this.loading = false;
-          } else {
-            this.loading = false;
-            this.showMessage(MessageType.Error, 'Error', 'The specified category already exist.');
-            return;
+              /* this.newCategory.id = responseData.data[0];
+              this.categories.push(this.newCategory);
+              this.categoryFilteredItems = this.categories;
+              this.clearCategoryPanel();
+              this.setPage(1); */
+              this.getMachineCategories();
+              this.loading = false;
+            } else {
+              this.loading = false;
+              this.showMessage(MessageType.Error, 'Error', 'The specified category already exist.');
+              return;
+            }
           }
-        }
-      )
+        )
       //ToDo:  remove following code and call getMachineCategories
       //this.categories.push(this.newCategory);
     }
@@ -169,51 +177,62 @@ export class MachineCategoryComponent implements OnInit {
         id: this.selectedCategory.id,
         categoryName: categoryVal
       }
-      
+
       this.loading = true;
       this.machineCategoryService.updateMachineCategory(updateCategory)
-      .subscribe(
-        responseData => {
-          
-          if (responseData.Success) {
-            //console.log(responseData);  
-            this.selectedCategory.categoryName = categoryVal;
-            this.clearCategoryPanel();
-            this.setPage(1);
-            this.loading = false;
-          } else {
-            this.loading = false;
-            this.showMessage(MessageType.Error, 'Error', responseData.Message);
-            return;
-          }
-        });
+        .subscribe(
+          responseData => {
+
+            if (responseData.Success) {
+              //console.log(responseData);  
+              //this.selectedCategory.categoryName = categoryVal;
+              this.clearCategoryPanel();
+              this.getMachineCategories();
+              //this.setPage(1);
+              this.loading = false;
+            } else {
+              this.loading = false;
+              this.showMessage(MessageType.Error, 'Error', responseData.Message);
+              return;
+            }
+          });
     }
     this.clearCategoryPanel();
     this.setPage(1);
   }
 
   deleteCategory(category: IMachineCategory) {
-
     var index = this.categories.findIndex(c => c.id === category.id);
     if (index >= 0) {
-      
-      this.machineCategoryService.deleteMachineCategory(category.id)
-      .subscribe(
-        responseData => {
-          if (responseData.Success){
-            this.categories.splice(index, 1);
-            this.loading = false;
-          }else {
-            this.loading = false;
-            this.showMessage(MessageType.Error, 'Error', responseData.Message);
-            return;
-          }
-        }
-      )
-      this.clearCategoryPanel();
-      this.setPage(1);
-    }
+    let disposable = this.dialogService.addDialog(MessageBoxComponent, {
+      title: "Delete?",
+      messageType: MessageType.Question,
+      message: "Do you want to delete selected category?"
+
+    }).subscribe((isConfirmed) => {
+      if (isConfirmed) {
+          this.machineCategoryService.deleteMachineCategory(category.id)
+            .subscribe(
+              responseData => {
+                if (responseData.Success) {
+                  /* this.categories.splice(index, 1);
+                  this.categoryFilteredItems = this.categories;
+                  this.setPage(1); */
+                  this.getMachineCategories();
+                  this.loading = false;
+                } else {
+                  this.loading = false;
+                  this.showMessage(MessageType.Error, 'Error', responseData.Message);
+                  return;
+                }
+              })
+          this.clearCategoryPanel();
+          this.setPage(1);
+        
+      }
+    })
   }
+}
 
   showMessage(messageType: MessageType, title: string, message: string) {
 

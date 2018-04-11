@@ -23,9 +23,9 @@ import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
 
 //import { mcall } from 'q';
-interface ISelectionListItem{
-  id:number,
-  itemName:string
+interface ISelectionListItem {
+  id: number,
+  itemName: string
 }
 
 @Component({
@@ -61,6 +61,7 @@ export class MachineFormComponent implements OnInit {
     "id": 0,
     "machineName": "",
     "categoryId": 0,
+    "categoryName": '',
     "modelNo": "",
     "installationType": "",
     "orientation": "",
@@ -68,18 +69,18 @@ export class MachineFormComponent implements OnInit {
     "doorType": "",
     "machineType": "",
     "machineAssemblies": [],
-    "machineDesignations":[],
+    "machineDesignations": [],
   }
   designationsList: ISelectionListItem[] = [];
   selectedDesignations: ISelectionListItem[] = [];
   dropdownSettings = {};
-  errorMessage: string; 
-  desigListFromServer:IDesignation[];
-
+  errorMessage: string;
+  desigListFromServer: IDesignation[];
+  loading: boolean = false;
 
   constructor(fb: FormBuilder,
-    private router: Router, 
-    private activateRoute: ActivatedRoute, 
+    private router: Router,
+    private activateRoute: ActivatedRoute,
     private machineService: MachineService,
     private designationService: DesignationService,
     private machineCategoryService: MachineCategoryService,
@@ -110,23 +111,38 @@ export class MachineFormComponent implements OnInit {
         }
 
       });
-      this.getAllDesignations();
+    this.getAllDesignations();
   }
 
   //retrive selected machine values
   getMachine(id: number) {
+    this.loading = true;
     this.machineService.getMachine(id).subscribe(
       mac => {
-        this.machine = mac;
-        //this.getModelNamefromId();
-        this.getMachineCategory(); 
+        if (mac.Success) {
+          this.machine = mac.data[0];
+          this.getMachineCategory();
+          this.loading = false;
+        } else {
+          this.loading = false;
+          this.showMessage(MessageType.Error, "Error", mac.Message);
+        }
       },
-      error => this.errorMessage = <any>error,
-      ()=>{
-        this.machine.machineDesignations.forEach(desig =>{
-          let designationItem:ISelectionListItem = {
-            id : desig.designationId,
-            itemName : desig.title
+      (error: AppError) => {
+        this.loading = false;
+        if (error instanceof NotFoundError) {
+          this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+        }
+        else if (error instanceof BadRequestError) {
+          this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+        }
+        else throw error;
+      },
+      () => {
+        this.machine.machineDesignations.forEach(desig => {
+          let designationItem: ISelectionListItem = {
+            id: desig.designationId,
+            itemName: desig.title
           }
           this.selectedDesignations.push(designationItem);
         });
@@ -134,20 +150,52 @@ export class MachineFormComponent implements OnInit {
   }
 
   getMachineCategory() {
+    this.loading = true;
     this.machineCategoryService.getMachineCategory(this.machine.categoryId).subscribe(
       mCategory => {
-        this.selectedMachineCategory = this.machineCategories.find(c => c.id === mCategory.id);
+        if (mCategory.Success) {
+          this.selectedMachineCategory = this.machineCategories.find(c => c.id === mCategory.data[0].id);
+          this.loading = false;
+        }else {
+          this.loading = false;
+          this.showMessage(MessageType.Error, "Error", mCategory.Message);
+        }
       },
-      error => this.errorMessage = <any>error);
+      (error: AppError) => {
+        this.loading = false;
+        if (error instanceof NotFoundError) {
+          this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+        }
+        else if (error instanceof BadRequestError) {
+          this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+        }
+        else throw error;
+      });
   }
 
   //get all machine categories
   getAllMachineCategories() {
+    this.loading = true;
     this.machineCategoryService.getMachineCategories().subscribe(
       categoriesData => {
-        this.machineCategories = categoriesData;
+        if (categoriesData.Success) {
+          this.machineCategories = categoriesData.data;
+          this.loading = false;
+        } else {
+          this.loading = false;
+          this.showMessage(MessageType.Error, "Error", categoriesData.Message);
+        }
       },
-      error => this.errorMessage = <any>error);
+      (error: AppError) => {
+        this.loading = false;
+        if (error instanceof NotFoundError) {
+          this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+        }
+        else if (error instanceof BadRequestError) {
+          this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+        }
+        else throw error;
+      });
   }
 
   setCategory(category: IMachineCategory) {
@@ -163,14 +211,14 @@ export class MachineFormComponent implements OnInit {
 
   saveForm() {
     //if (this.machine.id != 0) {
-      this.selectedDesignations.forEach(desig => {
-        let selDesig: IVMMachineDesignation = {
-          machineId:this.machine.id,
-          designationId: desig.id,
-          title: desig.itemName
-        }
-        this.machine.machineDesignations.push(selDesig);
-      });
+    this.selectedDesignations.forEach(desig => {
+      let selDesig: IVMMachineDesignation = {
+        machineId: this.machine.id,
+        designationId: desig.id,
+        title: desig.itemName
+      }
+      this.machine.machineDesignations.push(selDesig);
+    });
     this.machine.categoryId = this.selectedMachineCategory.id;
     console.log(this.machine);
     //}
@@ -209,10 +257,10 @@ export class MachineFormComponent implements OnInit {
     return this.form.get("machineCategory");
   }
 
-  get machineDesignations(){return this.form.get('machineDesignations') }
+  get machineDesignations() { return this.form.get('machineDesignations') }
 
   addAssembly(asm: IAssembly) {
-    
+
     let subAssembly: IVMMachineAssembly = {
       "machineId": this.machine.id,
       "assemblyId": asm.id,
@@ -237,12 +285,12 @@ export class MachineFormComponent implements OnInit {
   }
 
 
-  getAllDesignations(){
+  getAllDesignations() {
     this.designationService.getDesignations().subscribe(
       designationData => {
         if (designationData.Success) {
           this.desigListFromServer = designationData.data;
-         
+
         } else {
           this.showMessage(MessageType.Error, "Error", designationData.Message);
         }
@@ -257,16 +305,16 @@ export class MachineFormComponent implements OnInit {
         }
         else throw error;
       },
-      ()=>{
+      () => {
         //console.log(this.designationsList);
         this.desigListFromServer.forEach(desig => {
-          let designation:ISelectionListItem = {
+          let designation: ISelectionListItem = {
             id: desig.id,
             itemName: desig.title
           }
           this.designationsList.push(designation);
         });
-     }
+      }
     )
   }
 

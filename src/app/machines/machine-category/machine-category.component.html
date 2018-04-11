@@ -1,3 +1,5 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '0px' }">
+</ngx-loading>
 <div class="container-fluid">
   <home></home>
 
@@ -31,7 +33,7 @@
                   </td>
                 </tr>
                 <tr *ngFor="let category of categoryPagedItems">
-                  <td class="col-md-11" > <!-- (click)="getModels(category)"> -->
+                  <td class="col-md-11" (click) = "setSelectedCategory(category)" >  <!-- (click)="getModels(category)"> -->
                     {{category.categoryName}}
                   </td>
                   <td>
@@ -45,19 +47,19 @@
         <div class="panel-footer clearfix list-footer">
           <ul *ngIf="categoryPager.pages && categoryPager.pages.length" class="pagination">
             <li [ngClass]="{disabled:categoryPager.currentPage === 1}">
-              <a (click)="setCategoriesPage(1)">First</a>
+              <a (click)="setPage(1)">First</a>
             </li>
             <li [ngClass]="{disabled:categoryPager.currentPage === 1}">
-              <a (click)="setCategoriesPage(categoryPager.currentPage - 1)">Previous</a>
+              <a (click)="setPage(categoryPager.currentPage - 1)">Previous</a>
             </li>
             <li *ngFor="let page of categoryPager.pages" [ngClass]="{active:categoryPager.currentPage === page}">
-              <a (click)="setCategoriesPage(page)">{{page}}</a>
+              <a (click)="setPage(page)">{{page}}</a>
             </li>
             <li [ngClass]="{disabled:categoryPager.currentPage === categoryPager.totalPages}">
-              <a (click)="setCategoriesPage(categoryPager.currentPage + 1)">Next</a>
+              <a (click)="setPage(categoryPager.currentPage + 1)">Next</a>
             </li>
             <li [ngClass]="{disabled:categoryPager.currentPage === categoryPager.totalPages}">
-              <a (click)="setCategoriesPage(categoryPager.totalPages)">Last</a>
+              <a (click)="setPage(categoryPager.totalPages)">Last</a>
             </li>
           </ul>
         </div>
