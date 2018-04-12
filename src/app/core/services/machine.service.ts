@@ -50,16 +50,7 @@ export class MachineService{
         .catch(this.handleError);
     }
 
-    //get the list of designations suitable for supplied assembly
-    // getMachineDesignations(machineId:number):Observable<IMachineDesignation[]>{
-    //     return this._http.get(this._machineDesignationUrl)
-    //     .map((response: Response) => (<IMachineDesignation[]> response.json())
-    //     .filter(response => response.machineId == machineId))
-    //     //.do(data => console.log('All: ' +  JSON.stringify(data)))
-    //     .catch(this.handleError); 
-    // }
-
-    
+      
 
     createMachine(machine:IVMMachine) :Observable<IResponse>{
         const options = this.GetOptions();

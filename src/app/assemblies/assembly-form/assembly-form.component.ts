@@ -158,7 +158,7 @@ export class AssemblyFormComponent implements OnInit {
         if (revData.Success){
           this.loading = false;
         } else {
-          this.loading = false;
+          this.loading = false; 
           this.showMessage(MessageType.Error, "Error", revData.Message);
         }
       }),

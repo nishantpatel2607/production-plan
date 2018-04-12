@@ -220,8 +220,49 @@ export class MachineFormComponent implements OnInit {
       this.machine.machineDesignations.push(selDesig);
     });
     this.machine.categoryId = this.selectedMachineCategory.id;
-    console.log(this.machine);
-    //}
+    if (this.machine.id > 0) {
+      this.machineService.updateMachine(this.machine)
+      .subscribe(revData => {
+        if (revData.Success){
+          this.loading = false;
+        } else {
+          this.loading = false; 
+          this.showMessage(MessageType.Error, "Error", revData.Message);
+        }
+      }),
+      (error: AppError) => {
+        this.loading = false;
+        if (error instanceof NotFoundError) {
+          this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+        }
+        else if (error instanceof BadRequestError) {
+          this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+        }
+        else throw error;
+      } 
+    } else { 
+      this.loading = true;
+      this.machineService.createMachine(this.machine)
+      .subscribe(revData => {
+        if (revData.Success){
+          this.machine.id = revData.data[0];
+          this.loading = false;
+        } else {
+          this.loading = false;
+          this.showMessage(MessageType.Error, "Error", revData.Message);
+        }
+      }),
+      (error: AppError) => {
+        this.loading = false;
+        if (error instanceof NotFoundError) {
+          this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+        }
+        else if (error instanceof BadRequestError) {
+          this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+        }
+        else throw error;
+      } 
+    }
   }
 
 
@@ -263,11 +304,11 @@ export class MachineFormComponent implements OnInit {
 
     let subAssembly: IVMMachineAssembly = {
       "machineId": this.machine.id,
-      "assemblyId": asm.id,
-      "assemblyName": asm.assemblyName,
+      "subAssemblyId": asm.id,
+      "subAssemblyName": asm.assemblyName,
       "qty": 1
     }
-    let assemblyFound = this.machine.machineAssemblies.find(a => a.assemblyId == asm.id)
+    let assemblyFound = this.machine.machineAssemblies.find(a => a.subAssemblyId == asm.id)
 
     if (assemblyFound === undefined) {
       this.machine.machineAssemblies.push(subAssembly);
@@ -278,7 +319,7 @@ export class MachineFormComponent implements OnInit {
 
   removeSubAssembly(asm: IVMMachineAssembly) {
 
-    let index = this.machine.machineAssemblies.findIndex(a => a.assemblyId == asm.assemblyId);
+    let index = this.machine.machineAssemblies.findIndex(a => a.subAssemblyId == asm.subAssemblyId);
     if (index >= 0) {
       this.machine.machineAssemblies.splice(index, 1);
     }

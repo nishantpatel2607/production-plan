@@ -112,6 +112,7 @@ export class AssemblyListComponent implements OnInit {
   }
 
   setPage(page: number) {
+    if (this.filteredItems.length > 0 && this.pager.totalPages == 0) { this.pager.totalPages = 1; }
     if (page < 1 || page > this.pager.totalPages) {
       return;
     }

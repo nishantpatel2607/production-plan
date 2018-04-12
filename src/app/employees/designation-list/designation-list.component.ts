@@ -127,9 +127,10 @@ export class DesignationListComponent implements OnInit {
           if (responseData.Success) {
 
             newTitle.id = responseData.data[0];
-            this.titles.push(newTitle);
+            // this.titles.push(newTitle);
             this.clearTitlePanel();
-            this.setTitlesPage(1);
+            // this.setTitlesPage(1);
+            this.getDesignations();
             this.loading = false;
           } else {
             this.loading = false;
@@ -152,10 +153,11 @@ export class DesignationListComponent implements OnInit {
         responseData => {
           
           if (responseData.Success == true) {
-            console.log(responseData);  
+            //console.log(responseData);  
             this.selectedDesignation.title = titleVal;
             this.clearTitlePanel();
-            this.setTitlesPage(1);
+           //this.setTitlesPage(1);
+           this.getDesignations();
             this.loading = false;
           } else {
             this.loading = false;
@@ -184,8 +186,9 @@ export class DesignationListComponent implements OnInit {
         this.designationService.deleteDesignation(designation.id).subscribe(
           responseData => {
             if (responseData.Success){
-              this.titles.splice(index, 1);
+              //this.titles.splice(index, 1);
               this.loading = false;
+              this.getDesignations();
             }else {
               this.loading = false;
               this.showMessage(MessageType.Error, 'Error', responseData.Message);
@@ -210,7 +213,7 @@ export class DesignationListComponent implements OnInit {
 
     let disposable = this.dialogService.addDialog(MessageBoxComponent, {
       title: title,
-      messageType: messageType,
+      messageType: messageType, 
       message: message
 
     }).subscribe((isConfirmed) => { this.messageConfirm = isConfirmed;});

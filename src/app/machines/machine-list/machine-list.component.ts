@@ -51,22 +51,12 @@ export class MachineListComponent implements OnInit {
 
   ngOnInit() {
 
-    /*  this.machineCategoryService.getMachineCategories()
-       .subscribe(categories => {
-         if (categories.Success) {
-           this.machineCategories = categories.data;
-         }
-       },
-         (error: AppError) => {
-           this.loading = false;
-           if (error instanceof NotFoundError) {
-             this.showMessage(MessageType.Error, "Error", "Requested data not found.");
-           }
-           else if (error instanceof BadRequestError) {
-             this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
-           }
-           else throw error;
-         }); */
+    this.getMachines();
+
+
+  }
+
+  getMachines() {
     this.loading = true;
     this.machineService.getMachines()
       .subscribe(machinesData => {
@@ -76,55 +66,57 @@ export class MachineListComponent implements OnInit {
           this.checkedItems = [];
           this.setPage(1);
           this.loading = false;
-        }else {
+        } else {
           this.loading = false;
-          this.showMessage(MessageType.Error, "Error", machinesData.Message); 
+          this.showMessage(MessageType.Error, "Error", machinesData.Message);
         }
       },
-      (error: AppError) => {
-        this.loading = false;
-        if (error instanceof NotFoundError) {
-          this.showMessage(MessageType.Error, "Error", "Requested data not found.");
-        }
-        else if (error instanceof BadRequestError) {
-          this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
-        }
-        else throw error;
-      });
-
+        (error: AppError) => {
+          this.loading = false;
+          if (error instanceof NotFoundError) {
+            this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+          }
+          else if (error instanceof BadRequestError) {
+            this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+          }
+          else throw error;
+        });
   }
 
-  /* getCategoryName(Id: number): string {
-    let categoryName: string = "";
-    let category: IMachineCategory = this.machineCategories.find(c => c.id === Id);
-    if (category != undefined)
-      categoryName = category.categoryName;
-    return categoryName;
-  } */
+  
 
   newMachine() {
     this.route.navigate(['machines/new']);
   }
 
-  deleteMachine(machine:IVMMachine) {
-    var index = this.machines.findIndex(c => c.id === machine.id);
-    if (index >= 0) {
-      this.loading = true;
-      this.machineService.deleteMachine(machine.id)
-      .subscribe(
-        responseData => {
-          if (responseData.Success){
-            this.machines.splice(index, 1);
-            this.loading = false;
-          }else {
-            this.loading = false;
-            this.showMessage(MessageType.Error, 'Error', responseData.Message);
-            return;
-          }
+  deleteMachine(machine: IVMMachine) {
+    let disposable = this.dialogService.addDialog(MessageBoxComponent, {
+      title: "Delete?",
+      messageType: MessageType.Question,
+      message: "Do you want to delete selected designation?"
+
+    }).subscribe((isConfirmed) => {
+      if (isConfirmed) {
+        var index = this.machines.findIndex(c => c.id === machine.id);
+        if (index >= 0) {
+          this.loading = true;
+          this.machineService.deleteMachine(machine.id)
+            .subscribe(
+              responseData => {
+                if (responseData.Success) {
+                  this.getMachines();
+                  this.loading = false;
+                } else {
+                  this.loading = false;
+                  this.showMessage(MessageType.Error, 'Error', responseData.Message);
+                  return;
+                }
+              }
+            )
+          this.setPage(1);
         }
-      )
-      this.setPage(1);
-    }
+      }
+    });
   }
 
   selectedItem(machine, event) {
@@ -134,6 +126,7 @@ export class MachineListComponent implements OnInit {
     }
   }
   setPage(page: number) {
+    if (this.filteredItems.length > 0 && this.pager.totalPages == 0) { this.pager.totalPages = 1; }
     if (page < 1 || page > this.pager.totalPages) {
       return;
     }
@@ -161,8 +154,9 @@ export class MachineListComponent implements OnInit {
       });
     } else {
       this.filteredItems = this.machines;
+      //console.log(this.filteredItems);
     }
-    //console.log(this.filteredItems);
+    console.log(this.filteredItems);
     this.setPage(1);
 
   }

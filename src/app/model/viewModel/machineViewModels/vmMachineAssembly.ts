@@ -1,6 +1,6 @@
 export interface IVMMachineAssembly { 
     machineId: number;
-    assemblyId: number;
-    assemblyName: string;
+    subAssemblyId: number;
+    subAssemblyName: string;
     qty: number;
 }

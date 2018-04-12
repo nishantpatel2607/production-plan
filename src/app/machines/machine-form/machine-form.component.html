@@ -112,7 +112,7 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let subAssembly of machine.machineAssemblies">
-                        <td>{{subAssembly.assemblyName}}</td>
+                        <td>{{subAssembly.subAssemblyName}}</td>
                         <td>{{subAssembly.qty}}</td>
                         <td>
                           <button class="btn btn-danger btn-xs" (click)="removeSubAssembly(subAssembly)">
