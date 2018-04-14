@@ -11,6 +11,7 @@ import { DialogService } from 'ng2-bootstrap-modal';
 import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { AppError } from '../../errorhandlers/app-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
+import { Global } from '../../core/services/global';
 
 @Component({
   selector: 'employee-form',
@@ -34,7 +35,7 @@ export class EmployeeFormComponent implements OnInit {
     "password": ""
   }
 
-  loading: boolean = false;
+  //loading: boolean = false;
   errorMessage: string;
   constructor(fb: FormBuilder,
     private router: Router,
@@ -67,7 +68,7 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   getAllDesignations() {
-    this.loading = true;
+    Global.setLoadingFlag(true);
     this.designationService.getDesignations()
       .subscribe(designationData => {
         if (designationData.Success) {
@@ -76,14 +77,14 @@ export class EmployeeFormComponent implements OnInit {
             this.getEmployee(this.employeeId);
             
           }
-          this.loading = false;
+          Global.setLoadingFlag(false);
         } else {
-          this.loading = false;
+          Global.setLoadingFlag(false);
           this.showMessage(MessageType.Error, "Error", designationData.Message);
         }
       },
         (error: AppError) => {
-          this.loading = false;
+          Global.setLoadingFlag(false);
           if (error instanceof NotFoundError) {
             this.showMessage(MessageType.Error, "Error", "Requested data not found.");
           }
@@ -95,20 +96,20 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   getEmployee(id: number) {
-    this.loading = true;
+    Global.setLoadingFlag(true);
     this.employeeService.getEmployee(id).subscribe(
       emp => {
         if (emp.Success) {
           this.employee = emp.data[0];
           this.getEmployeeDesignation();
-          this.loading = false;
+          Global.setLoadingFlag(false);
         } else {
-          this.loading = false;
+          Global.setLoadingFlag(false);
           this.showMessage(MessageType.Error, "Error", emp.Message);
         }
       },
       (error: AppError) => {
-        this.loading = false;
+        Global.setLoadingFlag(false);
         if (error instanceof NotFoundError) {
           this.showMessage(MessageType.Error, "Error", "Requested data not found.");
         }
@@ -128,7 +129,7 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   saveForm() {
-    this.loading = true;
+    Global.setLoadingFlag(true);
     this.employee.designationId = this.selectedDesignation.id;
     if (this.employee.id == 0) {
       this.employeeService.createEmployee(this.employee).subscribe(
@@ -136,13 +137,13 @@ export class EmployeeFormComponent implements OnInit {
           if (responseData.Success) {
             
             this.employee.id = responseData.data[0];
-            this.loading = false;
+            Global.setLoadingFlag(false);
           } else {
-            this.loading = false;
+            Global.setLoadingFlag(false);
             this.showMessage(MessageType.Error, "Error", responseData.Message);
           }
         }, (error: AppError) => {
-          this.loading = false;
+          Global.setLoadingFlag(false);
           if (error instanceof NotFoundError) {
             this.showMessage(MessageType.Error, "Error", "Requested data not found.");
           }
@@ -156,13 +157,13 @@ export class EmployeeFormComponent implements OnInit {
       this.employeeService.updateEmployee(this.employee).subscribe(
         responseData => {
           if (responseData.Success) {           
-            this.loading = false;
+            Global.setLoadingFlag(false);
           } else {
-            this.loading = false;
+            Global.setLoadingFlag(false);
             this.showMessage(MessageType.Error, "Error", responseData.Message);
           }
         }, (error: AppError) => {
-          this.loading = false;
+          Global.setLoadingFlag(false);
           if (error instanceof NotFoundError) {
             this.showMessage(MessageType.Error, "Error", "Requested data not found.");
           }
@@ -194,4 +195,6 @@ export class EmployeeFormComponent implements OnInit {
   get designation() {
     return this.form.get("designation");
   }
+
+  
 }

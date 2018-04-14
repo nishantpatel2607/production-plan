@@ -12,6 +12,7 @@ import { MessageType, MessageBoxComponent } from '../../shared/message-box/messa
 import { AppError } from '../../errorhandlers/app-error';
 import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
+import { Global } from '../../core/services/global';
 
 @Component({
   selector: 'machine-category',
@@ -34,7 +35,7 @@ export class MachineCategoryComponent implements OnInit {
   categoryPager: any = {};
   categoryPagedItems: IMachineCategory[];
   categoryFilteredItems: IMachineCategory[];
-  loading: boolean = false;
+  //loading: boolean = false;
   // selectedModel: IMachineModel = {
   //   id: 0,
   //   categoryId: 0,
@@ -60,21 +61,21 @@ export class MachineCategoryComponent implements OnInit {
   }
 
   getMachineCategories() {
-    this.loading = true;
+    Global.setLoadingFlag(true);
     this.machineCategoryService.getMachineCategories()
       .subscribe(categoriesData => {
         if (categoriesData.Success) {
           this.categories = categoriesData.data;
           this.categoryFilteredItems = categoriesData.data;
           this.setPage(1);
-          this.loading = false;
+          Global.setLoadingFlag(false);
         } else {
-          this.loading = false;
+          Global.setLoadingFlag(false);
           this.showMessage(MessageType.Error, "Error", categoriesData.Message);
         }
       },
         (error: AppError) => {
-          this.loading = false;
+          Global.setLoadingFlag(false);
           if (error instanceof NotFoundError) {
             this.showMessage(MessageType.Error, "Error", "Requested data not found.");
           }
@@ -147,7 +148,7 @@ export class MachineCategoryComponent implements OnInit {
         id: -1,
         categoryName: categoryVal
       }
-      this.loading = true;
+      Global.setLoadingFlag(true);
       this.machineCategoryService.createMachineCategory(this.newCategory)
         .subscribe(
           responseData => {
@@ -159,9 +160,9 @@ export class MachineCategoryComponent implements OnInit {
               this.clearCategoryPanel();
               this.setPage(1); */
               this.getMachineCategories();
-              this.loading = false;
+              Global.setLoadingFlag(false);
             } else {
-              this.loading = false;
+              Global.setLoadingFlag(false);
               this.showMessage(MessageType.Error, 'Error', 'The specified category already exist.');
               return;
             }
@@ -178,7 +179,7 @@ export class MachineCategoryComponent implements OnInit {
         categoryName: categoryVal
       }
 
-      this.loading = true;
+      Global.setLoadingFlag(true);
       this.machineCategoryService.updateMachineCategory(updateCategory)
         .subscribe(
           responseData => {
@@ -189,9 +190,9 @@ export class MachineCategoryComponent implements OnInit {
               this.clearCategoryPanel();
               this.getMachineCategories();
               //this.setPage(1);
-              this.loading = false;
+              Global.setLoadingFlag(false);
             } else {
-              this.loading = false;
+              Global.setLoadingFlag(false);
               this.showMessage(MessageType.Error, 'Error', responseData.Message);
               return;
             }
@@ -219,9 +220,9 @@ export class MachineCategoryComponent implements OnInit {
                   this.categoryFilteredItems = this.categories;
                   this.setPage(1); */
                   this.getMachineCategories();
-                  this.loading = false;
+                  Global.setLoadingFlag(false);
                 } else {
-                  this.loading = false;
+                  Global.setLoadingFlag(false);
                   this.showMessage(MessageType.Error, 'Error', responseData.Message);
                   return;
                 }

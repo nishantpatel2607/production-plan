@@ -24,15 +24,15 @@ import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
       { path: 'assemblies', component: AssemblyListComponent},
       { path: 'assemblies/new', component: AssemblyFormComponent},
       { path: 'assembly/:id', component: AssemblyFormComponent}
-  ]),
-  LoadingModule.forRoot({
+  ])
+  /* LoadingModule.forRoot({
     animationType: ANIMATION_TYPES.threeBounce,
       backdropBackgroundColour: 'rgba(0,0,0,0.1)', 
       backdropBorderRadius: '0px',
       primaryColour: 'red', 
       secondaryColour: 'green', 
       tertiaryColour: 'blue'
-  }) 
+  })  */
   ],
   declarations: [AssemblyListComponent, AssemblySelectorComponent, AssemblyFormComponent],
   providers:[AssemblyService],

@@ -10,6 +10,7 @@ import { DialogService } from 'ng2-bootstrap-modal';
 import { AppError } from '../../errorhandlers/app-error';
 import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
+import { Global } from '../../core/services/global';
 
 @Component({
   selector: 'employee-list',
@@ -44,21 +45,21 @@ export class EmployeeListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loading = true;
+    Global.setLoadingFlag(true); // Global.loadingFlag = true;
     this.employeeService.getEmployees()
       .subscribe(employeesData => {
         if (employeesData.Success) {
           this.employees = employeesData.data;
           this.filteredItems = employeesData.data;
           this.setPage(1);
-          this.loading = false;
+          Global.setLoadingFlag(false); // Global.loadingFlag = true;
         } else {
-          this.loading = false;
+          Global.setLoadingFlag(false); // Global.loadingFlag = true;
           this.showMessage(MessageType.Error, "Error", employeesData.Message); 
         }
       },
         (error: AppError) => {
-          this.loading = false;
+          Global.setLoadingFlag(false); // Global.loadingFlag = true;
           if (error instanceof NotFoundError) {
             this.showMessage(MessageType.Error, "Error", "Requested data not found.");
           }
@@ -84,7 +85,7 @@ export class EmployeeListComponent implements OnInit {
         //console.log(isConfirmed);
         var index = this.employees.findIndex(c => c.id === employee.id);
         if (index >= 0) {
-          this.loading = true;
+          Global.setLoadingFlag(true); // Global.loadingFlag = true;
           this.employeeService.deleteEmployee(employee.id).subscribe(
             responseData => {
               if (responseData.Success) {
@@ -92,10 +93,10 @@ export class EmployeeListComponent implements OnInit {
                 this.employees.splice(index, 1);
                 this.filteredItems = this.employees;
                 this.setPage(1);
-                this.loading = false;
+                Global.setLoadingFlag(false); // Global.loadingFlag = true;
 
               } else {
-                this.loading = false;
+                Global.setLoadingFlag(false); // Global.loadingFlag = true;
                 this.showMessage(MessageType.Error, 'Error', responseData.Message);
                 return;
               }
@@ -159,5 +160,7 @@ export class EmployeeListComponent implements OnInit {
 
     }).subscribe((isConfirmed) => { this.messageConfirm = isConfirmed; });
   }
+
+  
 
 }

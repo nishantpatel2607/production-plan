@@ -14,6 +14,7 @@ import { DialogService } from 'ng2-bootstrap-modal';
 import { AppError } from '../../errorhandlers/app-error';
 import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
+import { Global } from '../../core/services/global';
 
 
 interface ISelectionListItem {
@@ -31,7 +32,7 @@ export class AssemblyFormComponent implements OnInit {
 
   form: FormGroup;
   private sub: Subscription;
-  loading: boolean = false;
+  //loading: boolean = false;
   assembly: IVMAssembly = {
     "id": 0,
     "assemblyName": "",
@@ -111,22 +112,22 @@ export class AssemblyFormComponent implements OnInit {
   }
 
   getAssembly(id: number): void {
-    this.loading = true;
+    Global.setLoadingFlag(true);;
     this.assemblyService.getAssembly(id)
       .subscribe(responseData => {
         if (responseData.Success) {
           this.assembly = (<IVMAssembly>responseData.data[0]);
           //console.log(this.assembly);
           this.getAllDesignations();
-          this.loading = false;
+          Global.setLoadingFlag(false);
         }
         else {
-          this.loading = false;
+          Global.setLoadingFlag(false);
           this.showMessage(MessageType.Error, "Error", responseData.Message);
         }
       }),
       (error: AppError) => {
-        this.loading = false;
+        Global.setLoadingFlag(false);
         if (error instanceof NotFoundError) {
           this.showMessage(MessageType.Error, "Error", "Requested data not found.");
         }
@@ -156,14 +157,14 @@ export class AssemblyFormComponent implements OnInit {
       this.assemblyService.updateAssembly(this.assembly)
       .subscribe(revData => {
         if (revData.Success){
-          this.loading = false;
+          Global.setLoadingFlag(false);
         } else {
-          this.loading = false; 
+          Global.setLoadingFlag(false); 
           this.showMessage(MessageType.Error, "Error", revData.Message);
         }
       }),
       (error: AppError) => {
-        this.loading = false;
+        Global.setLoadingFlag(false);
         if (error instanceof NotFoundError) {
           this.showMessage(MessageType.Error, "Error", "Requested data not found.");
         }
@@ -173,19 +174,19 @@ export class AssemblyFormComponent implements OnInit {
         else throw error;
       } 
     } else { 
-      this.loading = true;
+      Global.setLoadingFlag(true);;
       this.assemblyService.createAssembly(this.assembly)
       .subscribe(revData => {
         if (revData.Success){
           this.assembly.id = revData.data[0];
-          this.loading = false;
+          Global.setLoadingFlag(false);
         } else {
-          this.loading = false;
+          Global.setLoadingFlag(false);
           this.showMessage(MessageType.Error, "Error", revData.Message);
         }
       }),
       (error: AppError) => {
-        this.loading = false;
+        Global.setLoadingFlag(false);
         if (error instanceof NotFoundError) {
           this.showMessage(MessageType.Error, "Error", "Requested data not found.");
         }
@@ -213,7 +214,7 @@ export class AssemblyFormComponent implements OnInit {
         }
       },
       (error: AppError) => {
-        //this.loading = false;
+        //Global.setLoadingFlag(false);
         if (error instanceof NotFoundError) {
           this.showMessage(MessageType.Error, "Error", "Requested data not found.");
         }

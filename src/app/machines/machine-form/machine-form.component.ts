@@ -21,6 +21,7 @@ import { MessageType, MessageBoxComponent } from '../../shared/message-box/messa
 import { AppError } from '../../errorhandlers/app-error';
 import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
+import { Global } from '../../core/services/global';
 
 //import { mcall } from 'q';
 interface ISelectionListItem {
@@ -76,7 +77,7 @@ export class MachineFormComponent implements OnInit {
   dropdownSettings = {};
   errorMessage: string;
   desigListFromServer: IDesignation[];
-  loading: boolean = false;
+  //loading: boolean = false;
 
   constructor(fb: FormBuilder,
     private router: Router,
@@ -116,20 +117,20 @@ export class MachineFormComponent implements OnInit {
 
   //retrive selected machine values
   getMachine(id: number) {
-    this.loading = true;
+    Global.setLoadingFlag(true);
     this.machineService.getMachine(id).subscribe(
       mac => {
         if (mac.Success) {
           this.machine = mac.data[0];
           this.getMachineCategory();
-          this.loading = false;
+          Global.setLoadingFlag(false);
         } else {
-          this.loading = false;
+          Global.setLoadingFlag(false);
           this.showMessage(MessageType.Error, "Error", mac.Message);
         }
       },
       (error: AppError) => {
-        this.loading = false;
+        Global.setLoadingFlag(false);
         if (error instanceof NotFoundError) {
           this.showMessage(MessageType.Error, "Error", "Requested data not found.");
         }
@@ -150,19 +151,19 @@ export class MachineFormComponent implements OnInit {
   }
 
   getMachineCategory() {
-    this.loading = true;
+    Global.setLoadingFlag(true);
     this.machineCategoryService.getMachineCategory(this.machine.categoryId).subscribe(
       mCategory => {
         if (mCategory.Success) {
           this.selectedMachineCategory = this.machineCategories.find(c => c.id === mCategory.data[0].id);
-          this.loading = false;
+          Global.setLoadingFlag(false);
         }else {
-          this.loading = false;
+          Global.setLoadingFlag(false);
           this.showMessage(MessageType.Error, "Error", mCategory.Message);
         }
       },
       (error: AppError) => {
-        this.loading = false;
+        Global.setLoadingFlag(false);
         if (error instanceof NotFoundError) {
           this.showMessage(MessageType.Error, "Error", "Requested data not found.");
         }
@@ -175,19 +176,19 @@ export class MachineFormComponent implements OnInit {
 
   //get all machine categories
   getAllMachineCategories() {
-    this.loading = true;
+    Global.setLoadingFlag(true);
     this.machineCategoryService.getMachineCategories().subscribe(
       categoriesData => {
         if (categoriesData.Success) {
           this.machineCategories = categoriesData.data;
-          this.loading = false;
+          Global.setLoadingFlag(false);
         } else {
-          this.loading = false;
+          Global.setLoadingFlag(false);
           this.showMessage(MessageType.Error, "Error", categoriesData.Message);
         }
       },
       (error: AppError) => {
-        this.loading = false;
+        Global.setLoadingFlag(false);
         if (error instanceof NotFoundError) {
           this.showMessage(MessageType.Error, "Error", "Requested data not found.");
         }
@@ -224,14 +225,14 @@ export class MachineFormComponent implements OnInit {
       this.machineService.updateMachine(this.machine)
       .subscribe(revData => {
         if (revData.Success){
-          this.loading = false;
+          Global.setLoadingFlag(false);
         } else {
-          this.loading = false; 
+          Global.setLoadingFlag(false); 
           this.showMessage(MessageType.Error, "Error", revData.Message);
         }
       }),
       (error: AppError) => {
-        this.loading = false;
+        Global.setLoadingFlag(false);
         if (error instanceof NotFoundError) {
           this.showMessage(MessageType.Error, "Error", "Requested data not found.");
         }
@@ -241,19 +242,19 @@ export class MachineFormComponent implements OnInit {
         else throw error;
       } 
     } else { 
-      this.loading = true;
+      Global.setLoadingFlag(true);
       this.machineService.createMachine(this.machine)
       .subscribe(revData => {
         if (revData.Success){
           this.machine.id = revData.data[0];
-          this.loading = false;
+          Global.setLoadingFlag(false);
         } else {
-          this.loading = false;
+          Global.setLoadingFlag(false);
           this.showMessage(MessageType.Error, "Error", revData.Message);
         }
       }),
       (error: AppError) => {
-        this.loading = false;
+        Global.setLoadingFlag(false);
         if (error instanceof NotFoundError) {
           this.showMessage(MessageType.Error, "Error", "Requested data not found.");
         }
@@ -337,7 +338,7 @@ export class MachineFormComponent implements OnInit {
         }
       },
       (error: AppError) => {
-        //this.loading = false;
+        //Global.setLoadingFlag(false);
         if (error instanceof NotFoundError) {
           this.showMessage(MessageType.Error, "Error", "Requested data not found.");
         }

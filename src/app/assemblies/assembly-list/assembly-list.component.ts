@@ -8,6 +8,7 @@ import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
 import { MessageType, MessageBoxComponent } from '../../shared/message-box/message-box.component';
 import { DialogService } from 'ng2-bootstrap-modal';
+import { Global } from '../../core/services/global';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class AssemblyListComponent implements OnInit {
   assemblies: IAssembly[];
   errorMessage: string;
   listFilter: string = ""; 
-  loading: boolean = false;
+  //loading: boolean = false;
   pager: any = {};
   pagedItems: IAssembly[];
   filteredItems: IAssembly[];
@@ -41,7 +42,7 @@ export class AssemblyListComponent implements OnInit {
     private dialogService: DialogService) { }
 
   ngOnInit() {
-    this.loading = true;
+    Global.setLoadingFlag(true);
     this.assemblyService.getAssemblies()
     .subscribe(assemblyData =>{
       if (assemblyData.Success){
@@ -49,14 +50,14 @@ export class AssemblyListComponent implements OnInit {
       this.filteredItems = this.assemblies;
       this.checkedItems = [];
         this.setPage(1);
-        this.loading = false;
+        Global.setLoadingFlag(false);
       }else {
-        this.loading = false;
+        Global.setLoadingFlag(false);
         this.showMessage(MessageType.Error, "Error", assemblyData.Message);
       }
     },
     (error: AppError) => {
-      this.loading = false;
+      Global.setLoadingFlag(false);
       if (error instanceof NotFoundError) {
         this.showMessage(MessageType.Error, "Error", "Requested data not found.");
       }
@@ -82,7 +83,7 @@ export class AssemblyListComponent implements OnInit {
         //console.log(isConfirmed);
         var index = this.assemblies.findIndex(c => c.id === assembly.id);
         if (index >= 0) {
-          this.loading = true;
+          Global.setLoadingFlag(true);
           this.assemblyService.deleteAssembly(assembly.id).subscribe(
             responseData => {
               if (responseData.Success) {
@@ -90,10 +91,10 @@ export class AssemblyListComponent implements OnInit {
                 this.assemblies.splice(index, 1);
                 this.filteredItems = this.assemblies;
                 this.setPage(1);
-                this.loading = false;
+                Global.setLoadingFlag(false);
 
               } else {
-                this.loading = false;
+                Global.setLoadingFlag(false);
                 this.showMessage(MessageType.Error, 'Error', responseData.Message);
                 return;
               }

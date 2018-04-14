@@ -15,6 +15,7 @@ import { AppError } from '../../errorhandlers/app-error';
 import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
 import { IVMMachine } from '../../model/viewModel/machineViewModels/vmMachine';
+import { Global } from '../../core/services/global';
 
 @Component({
   selector: 'machine-list',
@@ -27,7 +28,7 @@ export class MachineListComponent implements OnInit {
   machines: IVMMachine[];
   errorMessage: string;
   listFilter: string = "";
-  loading: boolean = false;
+  //loading: boolean = false;
   pager: any = {};
   pagedItems: IVMMachine[];
   filteredItems: IVMMachine[];
@@ -57,7 +58,7 @@ export class MachineListComponent implements OnInit {
   }
 
   getMachines() {
-    this.loading = true;
+    Global.setLoadingFlag(true);
     this.machineService.getMachines()
       .subscribe(machinesData => {
         if (machinesData.Success) {
@@ -65,14 +66,14 @@ export class MachineListComponent implements OnInit {
           this.filteredItems = machinesData.data;
           this.checkedItems = [];
           this.setPage(1);
-          this.loading = false;
+          Global.setLoadingFlag(false);
         } else {
-          this.loading = false;
+          Global.setLoadingFlag(false);
           this.showMessage(MessageType.Error, "Error", machinesData.Message);
         }
       },
         (error: AppError) => {
-          this.loading = false;
+          Global.setLoadingFlag(false);
           if (error instanceof NotFoundError) {
             this.showMessage(MessageType.Error, "Error", "Requested data not found.");
           }
@@ -99,15 +100,15 @@ export class MachineListComponent implements OnInit {
       if (isConfirmed) {
         var index = this.machines.findIndex(c => c.id === machine.id);
         if (index >= 0) {
-          this.loading = true;
+          Global.setLoadingFlag(true);
           this.machineService.deleteMachine(machine.id)
             .subscribe(
               responseData => {
                 if (responseData.Success) {
                   this.getMachines();
-                  this.loading = false;
+                  Global.setLoadingFlag(false);
                 } else {
-                  this.loading = false;
+                  Global.setLoadingFlag(false);
                   this.showMessage(MessageType.Error, 'Error', responseData.Message);
                   return;
                 }

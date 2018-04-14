@@ -8,6 +8,7 @@ import { DialogService } from 'ng2-bootstrap-modal';
 import { AppError } from '../../errorhandlers/app-error';
 import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
+import { Global } from '../../core/services/global';
 
 @Component({
   selector: 'designation-list',
@@ -31,7 +32,7 @@ export class DesignationListComponent implements OnInit {
   titlePagedItems: IDesignation[];
   titleFilteredItems: IDesignation[];
   messageConfirm:boolean = false;
-  loading: boolean = false;
+  //loading: boolean = false;
 
   constructor(private activeRoute: ActivatedRoute,
     private route: Router,
@@ -44,21 +45,21 @@ export class DesignationListComponent implements OnInit {
   }
 
   getDesignations() {
-    this.loading = true;
+    Global.setLoadingFlag(true);
     this.designationService.getDesignations()
       .subscribe(designationData => {
         if (designationData.Success) {
           this.titles = designationData.data;
           this.titleFilteredItems = designationData.data;
           this.setTitlesPage(1);
-          this.loading = false;
+          Global.setLoadingFlag(false);
         } else {
-          this.loading = false;
+          Global.setLoadingFlag(false);
           this.showMessage(MessageType.Error, "Error", designationData.Message);
         }
       },
         (error: AppError) => {
-          this.loading = false;
+          Global.setLoadingFlag(false);
           if (error instanceof NotFoundError) {
             this.showMessage(MessageType.Error, "Error", "Requested data not found.");
           }
@@ -121,7 +122,7 @@ export class DesignationListComponent implements OnInit {
         title: titleVal
 
       }
-      this.loading = true;
+      Global.setLoadingFlag(true);
       this.designationService.createDesignation(newTitle).subscribe(
         responseData => {
           if (responseData.Success) {
@@ -131,9 +132,9 @@ export class DesignationListComponent implements OnInit {
             this.clearTitlePanel();
             // this.setTitlesPage(1);
             this.getDesignations();
-            this.loading = false;
+            Global.setLoadingFlag(false);
           } else {
-            this.loading = false;
+            Global.setLoadingFlag(false);
             this.showMessage(MessageType.Error, 'Error', 'The specified designation already exist.');
             return;
           }
@@ -148,7 +149,7 @@ export class DesignationListComponent implements OnInit {
         title: titleVal
 
       }
-      this.loading = true;
+      Global.setLoadingFlag(true);
       this.designationService.updateDesignation(updateTitle).subscribe(
         responseData => {
           
@@ -158,9 +159,9 @@ export class DesignationListComponent implements OnInit {
             this.clearTitlePanel();
            //this.setTitlesPage(1);
            this.getDesignations();
-            this.loading = false;
+            Global.setLoadingFlag(false);
           } else {
-            this.loading = false;
+            Global.setLoadingFlag(false);
             this.showMessage(MessageType.Error, 'Error', responseData.Message);
             return;
           }
@@ -182,15 +183,15 @@ export class DesignationListComponent implements OnInit {
       //console.log(isConfirmed);
       var index = this.titles.findIndex(c => c.id === designation.id);  
       if (index >= 0) {
-        this.loading = true;    
+        Global.setLoadingFlag(true);    
         this.designationService.deleteDesignation(designation.id).subscribe(
           responseData => {
             if (responseData.Success){
               //this.titles.splice(index, 1);
-              this.loading = false;
+              Global.setLoadingFlag(false);
               this.getDesignations();
             }else {
-              this.loading = false;
+              Global.setLoadingFlag(false);
               this.showMessage(MessageType.Error, 'Error', responseData.Message);
               return;
             }
@@ -218,4 +219,6 @@ export class DesignationListComponent implements OnInit {
 
     }).subscribe((isConfirmed) => { this.messageConfirm = isConfirmed;});
   }
+
+  
 }

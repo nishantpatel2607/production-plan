@@ -22,6 +22,7 @@ import { HttpModule } from '@angular/http';
 import { AppErrorHandler } from './errorhandlers/global-error-handler';
 import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
+import { LoadingService } from './core/services/loading.service';
 const app_routes: Routes = [
   {path: '',  component: LoginFormComponent},
   {path: 'home',   component: HomeComponent}
@@ -50,10 +51,19 @@ const app_routes: Routes = [
     WorkOrderModule,
     MomentModule,
     BootstrapModalModule,
-     
+    LoadingModule.forRoot({
+      animationType: ANIMATION_TYPES.threeBounce,
+        backdropBackgroundColour: 'rgba(0,0,0,0.1)', 
+        backdropBorderRadius: '0px',
+        primaryColour: 'red', 
+        secondaryColour: 'green', 
+        tertiaryColour: 'blue'
+    }) 
     
   ],
-  providers: [  { provide: ErrorHandler, useClass: AppErrorHandler}],
+  providers: [ 
+     { provide: ErrorHandler, useClass: AppErrorHandler}
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

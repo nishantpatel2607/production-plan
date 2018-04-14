@@ -7,6 +7,7 @@ import { DialogService } from 'ng2-bootstrap-modal';
 import { AppError } from '../../errorhandlers/app-error';
 import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
+import { Global } from '../../core/services/global';
 
 @Component({
   selector: 'assembly-selector',
@@ -17,7 +18,7 @@ export class AssemblySelectorComponent implements OnInit {
   assemblies: IAssembly[];
   errorMessage: string;
   listFilter: string = "";
-  loading: boolean = false;
+  //loading: boolean = false;
   pager: any = {};
   pagedItems: IAssembly[];
   filteredItems: IAssembly[];
@@ -49,14 +50,14 @@ export class AssemblySelectorComponent implements OnInit {
         this.filteredItems = this.assemblies;
         
           this.setPage(1);
-          this.loading = false;
+          Global.setLoadingFlag(false);
         }else {
-          this.loading = false;
+          Global.setLoadingFlag(false);
           this.showMessage(MessageType.Error, "Error", assemblyData.Message);
         }
     },
     (error: AppError) => {
-      this.loading = false;
+      Global.setLoadingFlag(false);
       if (error instanceof NotFoundError) {
         this.showMessage(MessageType.Error, "Error", "Requested data not found.");
       }
@@ -114,4 +115,5 @@ export class AssemblySelectorComponent implements OnInit {
     }).subscribe((isConfirmed) => { });
   }
 
+  
 }
