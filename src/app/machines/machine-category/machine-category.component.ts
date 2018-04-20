@@ -61,7 +61,7 @@ export class MachineCategoryComponent implements OnInit {
   }
 
   getMachineCategories() {
-    Global.setLoadingFlag(true);
+    Global.setLoadingFlag(true); 
     this.machineCategoryService.getMachineCategories()
       .subscribe(categoriesData => {
         if (categoriesData.Success) {

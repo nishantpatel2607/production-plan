@@ -47,13 +47,14 @@ export class WoPlannerComponent implements OnInit {
   dateRangeChanged(e) {
     let dateFrom = new Date(e.view.start._d);
     let dateTo = new Date(e.view.end._d);
+    //console.log(dateFrom, dateTo);
     this.loadEvents(dateFrom, dateTo);
   }
 
 
   loadEvents(DtFrom: Date, DtTo: Date) {
-    let dt1 = this.pad(DtFrom.getMonth() + 1) + "/" + this.pad(DtFrom.getDate()) + "/" + DtFrom.getFullYear();
-    let dt2 = this.pad(DtTo.getMonth() + 1) + "/" + this.pad(DtTo.getDate()) + "/" + DtTo.getFullYear();
+    let dt1 = DtFrom.getFullYear() + '-' + this.pad(DtFrom.getMonth() + 1) + "-" + this.pad(DtFrom.getDate()) ; 
+    let dt2 = DtFrom.getFullYear() + '-' + this.pad(DtTo.getMonth() + 1) + "-" + this.pad(DtTo.getDate());
     //console.log(dt1, dt2);
     this.workOrderService.getWorkOrderPlan(dt1, dt2).subscribe(
       woPlans => {
@@ -69,7 +70,7 @@ export class WoPlannerComponent implements OnInit {
 
   }
 
-  AddWorkOrderPlan(plan: IVMWorkOrderPlan) {
+  AddWorkOrderPlan(plan: IVMWorkOrderPlan) { 
     let woEvent: IVMWorkOrderEvent = {
       id: plan.id,
       workOrderId: plan.workOrderId,

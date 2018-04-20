@@ -15,7 +15,8 @@ import { HttpClient } from '@angular/common/http';
 import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
 import { AppError } from '../../errorhandlers/app-error';
-
+import { IResponse } from './IResponse';
+import { Global } from './global';
 
 @Injectable()
 export class WorkOrderService{
@@ -27,30 +28,34 @@ export class WorkOrderService{
 
     constructor(private _http: Http){}
 
-    getWorkOrderList():Observable<IVMWorkOrderListItem[]>{
-        return this._http.get(this.workOrderListUrl)
-        .map((response: Response) => <IVMWorkOrderListItem[]> response.json())
-        //.do(data => console.log('MAC: ' + JSON.stringify(data)))
+    //IVMWorkOrderListItem[]
+    getWorkOrderList():Observable<IResponse>{
+        return this._http.get(Global.apiUrl + "Workorders/list")
+        .map((response: Response) => <IResponse>response.json())
         .catch(this.handleError);
     }
 
-    getWorkOrder(id:number):Observable<IVMWorkOrder>{
-        let workOrder: Observable<IVMWorkOrder>;
-        workOrder = (this._http.get(this.workOrders)
-        .map((response:Response) => <IVMWorkOrder[]> response.json()))
-        .map((workorders:IVMWorkOrder[]) => workorders.find(wo => wo.id == id))
+    //IVMWorkOrder
+    getWorkOrder(workorderid:number):Observable<IResponse>{
+        
+        return this._http.get(Global.apiUrl + "Workorders/" + workorderid)
+        .map((response: Response) => <IResponse>response.json())
         .catch(this.handleError);
-        return workOrder;
     }
 
+    deleteWorkOrder(workorderid:number):Observable<IResponse>{
+        return this._http.delete(Global.apiUrl + "Workorders/" + workorderid)
+        .map((response: Response) => <IResponse>response.json())
+        .catch(this.handleError);
+    }
 
     //get the list of employees suitable to workorder.
-    //At serverside write the query based on machine or assembly
+    
     getSuitableEmployees(id:number): Observable<IVMWorkOrderSuitableEmployee[]>{
         return this._http.get(this.workOrderSuitableEmployees)
         .map((response: Response) => <IVMWorkOrderSuitableEmployee[]> response.json())
         //.do(data => console.log('MAC: ' + JSON.stringify(data)))
-        .catch(this.handleError);  
+        .catch(this.handleError);   
     }
 
     //get workorder team members.

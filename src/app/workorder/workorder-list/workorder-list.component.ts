@@ -3,6 +3,12 @@ import { IVMWorkOrderListItem } from '../../model/viewModel/workorderModels/vmWo
 import { WorkOrderService } from '../../core/services/workorders.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PagerService } from '../../core/services/pager.service';
+import { Global } from '../../core/services/global';
+import { MessageType, MessageBoxComponent } from '../../shared/message-box/message-box.component';
+import { DialogService } from 'ng2-bootstrap-modal';
+import { NotFoundError } from '../../errorhandlers/not-found-error';
+import { AppError } from '../../errorhandlers/app-error';
+import { BadRequestError } from '../../errorhandlers/bad-request-error';
 
 @Component({
   selector: 'app-workorder-list',
@@ -23,39 +29,83 @@ export class WorkorderListComponent implements OnInit {
   //sorting
   key: string = 'workOrderNo'; //set default
   reverse: boolean = false;
-  sort(key){
+  sort(key) {
     this.key = key;
-    this.reverse = !this.reverse; 
+    this.reverse = !this.reverse;
   }
 
   constructor(private workorderService: WorkOrderService,
     private activeRoute: ActivatedRoute,
     private route: Router,
-    private pagerService: PagerService) { }
+    private pagerService: PagerService,
+    private dialogService: DialogService) { }
 
   ngOnInit() {
+    this.getWorkOrderList();
+  }
+
+  getWorkOrderList() {
+    Global.setLoadingFlag(true);
     this.workorderService.getWorkOrderList()
-    .subscribe(woData =>{
-      this.workOrders = woData;
-      this.filteredItems = this.workOrders;
-      this.checkedItems = [];
-        this.setPage(1);
-    },
-    error => this.errorMessage = <any>error);
+      .subscribe(woData => {
+        if (woData.Success) {
+          this.workOrders = woData.data;
+          this.filteredItems = this.workOrders;
+          this.checkedItems = [];
+          this.setPage(1);
+          Global.setLoadingFlag(false);
+        } else {
+          Global.setLoadingFlag(false);
+          this.showMessage(MessageType.Error, "Error", woData.Message);
+        }
+      },
+        (error: AppError) => {
+          Global.setLoadingFlag(false);
+          if (error instanceof NotFoundError) {
+            this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+          }
+          else if (error instanceof BadRequestError) {
+            this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+          }
+          else throw error;
+        });
   }
 
   newWorkOrder() {
     this.route.navigate(['workorder/new']);
   }
 
-  deleteWorkOrder() {}
+  deleteWorkOrder(workorder: IVMWorkOrderListItem) {
+    let disposable = this.dialogService.addDialog(MessageBoxComponent, {
+      title: "Delete?",
+      messageType: MessageType.Question,
+      message: "Do you want to delete selected workorder?"
 
-  selectedItem(workorder, event) {
+    }).subscribe((isConfirmed) => {
+      if (isConfirmed) {
+          this.workorderService.deleteWorkOrder(workorder.id)
+            .subscribe(
+              responseData => {
+                if (responseData.Success) {
+                  this.getWorkOrderList();
+                  Global.setLoadingFlag(false);
+                } else {
+                  Global.setLoadingFlag(false);
+                  this.showMessage(MessageType.Error, 'Error', responseData.Message);
+                  return;
+                }
+              })
+          this.setPage(1);
+      }
+    })
+   }
+
+  /* selectedItem(workorder, event) {
     if (event.target.checked) {
       this.checkedItems.push(workorder);
       //alert(machine.machineSrNo);
     }
-  }
+  } */
 
   setPage(page: number) {
     if (page < 1 || page > this.pager.totalPages) {
@@ -77,8 +127,8 @@ export class WorkorderListComponent implements OnInit {
     if (this.listFilter != "") {
       this.workOrders.forEach(assembly => {
         if (assembly.assemblyName.toUpperCase().indexOf(valueToSearch) >= 0
-          
-         ) {
+
+        ) {
           this.filteredItems.push(assembly);
         }
       });
@@ -89,8 +139,17 @@ export class WorkorderListComponent implements OnInit {
     this.setPage(1);
   }
 
-  openWOTeam(id:number){
-    this.route.navigate(['workorderteam/'+id]) 
+  openWOTeam(id: number) {
+    this.route.navigate(['workorderteam/' + id])
   }
 
+  showMessage(messageType: MessageType, title: string, message: string) {
+
+    let disposable = this.dialogService.addDialog(MessageBoxComponent, {
+      title: title,
+      messageType: messageType,
+      message: message
+
+    }).subscribe((isConfirmed) => { });
+  }
 }

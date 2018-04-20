@@ -1,5 +1,5 @@
 export interface IVMWorkOrderPlan{
-    id:number;
+    id:number; 
     workOrderId: number; 
     workOrderNo: string;
     machineName:string;

@@ -8,7 +8,7 @@
       <form class="form-inline pull-right">
 
         <button class="btn btn-default" (click)="newWorkOrder()">New</button>
-        <button class="btn btn-danger" (click)="deleteWorkOrder()">Delete</button>
+        <!-- <button class="btn btn-danger" (click)="deleteWorkOrder()">Delete</button> -->
       </form>
     </div>
 
@@ -26,7 +26,7 @@
         <table class='table table-hover'>
           <thead>
             <tr>
-              <th class="col-md-1"></th>
+              
               <th class="col-md-2" (click)="sort('workOrderNo')">Work Order No.
                 <span class="glyphicon sort-icon" *ngIf="key =='workOrderNo'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
               </th>
@@ -43,12 +43,11 @@
                 <span class="glyphicon sort-icon" *ngIf="key =='qty'" [ngClass]="{'glyphicon-sort-by-attributes':!reverse,'glyphicon-sort-by-attributes-alt':reverse}"></span>
               </th>
               <th class="col-md-1">Team</th>
+              <th class="col-md-1"></th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let workorder of pagedItems | orderBy: key : reverse">
-              <td>
-                <input type="checkbox" id="delSel" value="1" (change)="selectedItem(workorder,$event)" /> </td>
               <td>
                 <a [routerLink]="['/workorder', workorder.id]">{{workorder.workOrderNo}}</a>
               </td>
@@ -61,7 +60,10 @@
                   <i class="fa fa-users" aria-hidden="true"></i>
                 </button>
             </td>
-            </tr>
+            <td>
+              <button class="btn btn-danger" (click)="deleteWorkOrder(workorder)">Delete</button> 
+            </td>
+          </tr>
 
           </tbody>
         </table>
