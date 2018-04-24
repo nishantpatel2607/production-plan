@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Response, Http } from '@angular/http';
+import { Response,Http, RequestOptions, RequestMethod, Headers } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
@@ -37,45 +37,91 @@ export class WorkOrderService{
 
     //IVMWorkOrder
     getWorkOrder(workorderid:number):Observable<IResponse>{
-        
-        return this._http.get(Global.apiUrl + "Workorders/" + workorderid)
+        return this._http.get(Global.apiUrl + "Workorders/getworkorder/" + workorderid)
         .map((response: Response) => <IResponse>response.json())
         .catch(this.handleError);
     }
 
     deleteWorkOrder(workorderid:number):Observable<IResponse>{
-        return this._http.delete(Global.apiUrl + "Workorders/" + workorderid)
+        const options = this.GetOptions();
+        return this._http.delete(Global.apiUrl + "Workorders/" + workorderid,options)
         .map((response: Response) => <IResponse>response.json())
         .catch(this.handleError);
     }
 
     //get the list of employees suitable to workorder.
-    
-    getSuitableEmployees(id:number): Observable<IVMWorkOrderSuitableEmployee[]>{
-        return this._http.get(this.workOrderSuitableEmployees)
-        .map((response: Response) => <IVMWorkOrderSuitableEmployee[]> response.json())
+    //IVMWorkOrderSuitableEmployee[]
+    getSuitableEmployees(id:number): Observable<IResponse>{
+        return this._http.get(Global.apiUrl + "Workorders/suitableemployees/" + id)
+        .map((response: Response) => <IResponse>response.json())
         //.do(data => console.log('MAC: ' + JSON.stringify(data)))
         .catch(this.handleError);   
     }
 
     //get workorder team members.
-    getTeamMembers(id:number): Observable<IVMWorkOrderTeam[]>{
-        return this._http.get(this.workOrderTeamMembers)
-        .map((response: Response) => <IVMWorkOrderTeam[]> response.json())
+    //IVMWorkOrderTeam[]
+    getTeamMembers(id:number): Observable<IResponse>{
+        return this._http.get(Global.apiUrl + "Workorders/team/" + id)
+        .map((response: Response) => <IResponse>response.json())
         //.do(data => console.log('MAC: ' + JSON.stringify(data)))
         .catch(this.handleError);  
     }
 
-    saveTeamMembers(teamMembers:IVMWorkOrderTeam[]){
+
+    createWorkorder(workorder:IVMWorkOrder) :Observable<IResponse>{
+        const options = this.GetOptions();
+        let body = JSON.stringify(workorder);
+        return this._http.post(Global.apiUrl + "workorders",body,options)
+            .map((response: Response) => <IResponse>response.json())
+            //.do(data => console.log(data.data))
+            .catch(this.handleError);
+    }
+
+    updateWorkorder(workorder:IVMWorkOrder) :Observable<IResponse>{
+        const options = this.GetOptions();
+        let body = JSON.stringify(workorder);
+        return this._http.put(Global.apiUrl + "workorders",body,options)
+            .map((response: Response) => <IResponse>response.json())
+            //.do(data => console.log(data.data))
+            .catch(this.handleError);
+    }
+
+    saveTeamMembers(teamMembers:IVMWorkOrderTeam[]):Observable<IResponse>{
+        const options = this.GetOptions();
+        let body = JSON.stringify(teamMembers);
         
+        return this._http.post(Global.apiUrl + "workorders/addteam",body,options)
+            .map((response: Response) => <IResponse>response.json())
+            //.do(data => console.log(data.data))
+            .catch(this.handleError);
         
     }
 
+    addWorkorderPlan(woPlan: IVMWorkOrderPlan) : Observable<IResponse> {
+        const options = this.GetOptions();
+        let body = JSON.stringify(woPlan);
+        return this._http.post(Global.apiUrl + "workorders/addplan",body,options)
+            .map((response: Response) => <IResponse>response.json())
+            //.do(data => console.log(data.data))
+            .catch(this.handleError);
+    }
+
+    updateWorkorderPlan(woPlan: IVMWorkOrderPlan) : Observable<IResponse> {
+        const options = this.GetOptions();
+        let body = JSON.stringify(woPlan);
+        return this._http.put(Global.apiUrl + "workorders/editplan",body,options)
+            .map((response: Response) => <IResponse>response.json())
+            //.do(data => console.log(data.data))
+            .catch(this.handleError);
+    }
+
     //get the work orders planned between the given dates 
-    getWorkOrderPlan(startDate: string, endDate: string): Observable<IVMWorkOrderPlan[]>{
-        return this._http.get(this.workOrderPlan)
-        .map((response: Response) => <IVMWorkOrderPlan[]> response.json())
-        .catch(this.handleError);
+    //IVMWorkOrderPlan[]
+    getWorkOrderPlan(startDate: string, endDate: string): Observable<IResponse>{
+        return this._http.get(Global.apiUrl + "Workorders/plansindaterange?DateFrom="+startDate+"&DateTo=" + endDate ,)
+        .map((response: Response) => <IResponse>response.json())
+        //.do(data => console.log('MAC: ' + JSON.stringify(data)))
+        .catch(this.handleError);  
     }
 
     private handleError(error: Response) {
@@ -87,5 +133,11 @@ export class WorkOrderService{
         }
 
         return Observable.throw(new AppError(error));
+    }
+
+    private GetOptions(): RequestOptions {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return new RequestOptions({ headers: headers });
     }
 }

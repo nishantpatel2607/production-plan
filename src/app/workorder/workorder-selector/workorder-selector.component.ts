@@ -3,6 +3,12 @@ import { IVMWorkOrderListItem } from '../../model/viewModel/workorderModels/vmWo
 import { WorkOrderService } from '../../core/services/workorders.service';
 import { PagerService } from '../../core/services/pager.service';
 import { IVMWorkOrderPlan } from '../../model/viewModel/workorderModels/vmWorkOrderPlan';
+import { Global } from '../../core/services/global';
+import { MessageType, MessageBoxComponent } from '../../shared/message-box/message-box.component';
+import { AppError } from '../../errorhandlers/app-error';
+import { NotFoundError } from '../../errorhandlers/not-found-error';
+import { BadRequestError } from '../../errorhandlers/bad-request-error';
+import { DialogService } from 'ng2-bootstrap-modal';
 
 @Component({
   selector: 'workorder-selector',
@@ -30,7 +36,7 @@ export class WorkorderSelectorComponent implements OnInit {
   plannedDate = "";
   timeFrom = "";
   timeTo = "";
-  currentDate:Date;
+  currentDate: Date;
 
   NoDateError = true;
   NoStartTimeError = true;
@@ -65,15 +71,16 @@ export class WorkorderSelectorComponent implements OnInit {
     }
     this.selectedRow = -1;
     this.NoDateError = true;
-  this.NoStartTimeError = true;
-  this.NoEndTimeError = true;
-  this.NoWorkOrderSelectedError = true;
+    this.NoStartTimeError = true;
+    this.NoEndTimeError = true;
+    this.NoWorkOrderSelectedError = true;
 
   }
 
 
   constructor(private workorderService: WorkOrderService,
-    private pagerService: PagerService) {
+    private pagerService: PagerService,
+    private dialogService: DialogService) {
     //console.log('constructor');
     this.selectedWorkOrder = {
       id: 0,
@@ -100,13 +107,29 @@ export class WorkorderSelectorComponent implements OnInit {
   }
 
   getWorkOrderList() {
+    Global.setLoadingFlag(true);
     this.workorderService.getWorkOrderList()
       .subscribe(woData => {
-        this.workOrders = woData;
-        this.filteredItems = this.workOrders;
-        this.setPage(1);
+        if (woData.Success) {
+          this.workOrders = woData.data;
+          this.filteredItems = this.workOrders;
+          this.setPage(1);
+          Global.setLoadingFlag(false);
+        } else {
+          Global.setLoadingFlag(false);
+          this.showMessage(MessageType.Error, "Error", woData.Message);
+        }
       },
-        error => this.errorMessage = <any>error);
+        (error: AppError) => {
+          Global.setLoadingFlag(false);
+          if (error instanceof NotFoundError) {
+            this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+          }
+          else if (error instanceof BadRequestError) {
+            this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+          }
+          else throw error;
+        });
   }
   setPage(page: number) {
     if (page < 1 || page > this.pager.totalPages) {
@@ -155,15 +178,15 @@ export class WorkorderSelectorComponent implements OnInit {
 
   cancelForm() { this.onCancel.emit(); }
 
-  planDateChange(){
+  planDateChange() {
     this.NoDateError = true;
   }
 
-  plannedStartTimeChanged(){
+  plannedStartTimeChanged() {
     this.NoStartTimeError = true;
   }
 
-  plannedEndTimeChanged(){
+  plannedEndTimeChanged() {
     this.NoEndTimeError = true;
   }
 
@@ -175,20 +198,20 @@ export class WorkorderSelectorComponent implements OnInit {
     }
 
     //console.log(this.selectedWorkOrder.plannedStartDate);
-    if (this.selectedWorkOrder.plannedStartDate == "" || this.selectedWorkOrder.plannedStartDate == null ) {
+    if (this.selectedWorkOrder.plannedStartDate == "" || this.selectedWorkOrder.plannedStartDate == null) {
       bValid = false;
       this.NoDateError = false;
       //console.log(this.NoDateError);
     }
 
-    if (this.selectedWorkOrder.plannedStartTime == "" || this.selectedWorkOrder.plannedStartTime == null ) {
+    if (this.selectedWorkOrder.plannedStartTime == "" || this.selectedWorkOrder.plannedStartTime == null) {
       bValid = false;
       this.NoStartTimeError = false;
     }
 
     if (this.selectedWorkOrder.plannedEndTime == "" || this.selectedWorkOrder.plannedEndTime == null) {
       bValid = false;
-      this.NoEndTimeError= false;
+      this.NoEndTimeError = false;
     }
 
     if (Date.parse('01/01/2011 ' + this.selectedWorkOrder.plannedStartTime) >
@@ -219,6 +242,16 @@ export class WorkorderSelectorComponent implements OnInit {
 
       this.onSelect.emit(selectedWorkOrderTemp);
     }
+  }
+
+  showMessage(messageType: MessageType, title: string, message: string) {
+
+    let disposable = this.dialogService.addDialog(MessageBoxComponent, {
+      title: title,
+      messageType: messageType,
+      message: message
+
+    }).subscribe((isConfirmed) => { });
   }
 
 

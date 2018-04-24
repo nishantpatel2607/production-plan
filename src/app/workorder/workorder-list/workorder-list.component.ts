@@ -100,12 +100,7 @@ export class WorkorderListComponent implements OnInit {
     })
    }
 
-  /* selectedItem(workorder, event) {
-    if (event.target.checked) {
-      this.checkedItems.push(workorder);
-      //alert(machine.machineSrNo);
-    }
-  } */
+  
 
   setPage(page: number) {
     if (page < 1 || page > this.pager.totalPages) {

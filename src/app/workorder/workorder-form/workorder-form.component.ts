@@ -10,6 +10,12 @@ import { IEmployee } from '../../model/employee';
 import { EmployeeService } from '../../core/services/employee.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkOrderService } from '../../core/services/workorders.service';
+import { Global } from '../../core/services/global';
+import { AppError } from '../../errorhandlers/app-error';
+import { NotFoundError } from '../../errorhandlers/not-found-error';
+import { BadRequestError } from '../../errorhandlers/bad-request-error';
+import { MessageType, MessageBoxComponent } from '../../shared/message-box/message-box.component';
+import { DialogService } from 'ng2-bootstrap-modal';
 @Component({
   selector: 'app-workorder-form',
   templateUrl: './workorder-form.component.html',
@@ -26,12 +32,13 @@ export class WorkorderFormComponent implements OnInit {
 
   errorMessage;
 
-  constructor(fb: FormBuilder, 
+  constructor(fb: FormBuilder,
     private assemblyService: AssemblyService,
     private machineService: MachineService,
     private activateRoute: ActivatedRoute,
     private employeeService: EmployeeService,
     private workOrderService: WorkOrderService,
+    private dialogService: DialogService,
     private router: Router) {
     this.form = fb.group({
       workOrderNo: ['', Validators.required],
@@ -62,28 +69,74 @@ export class WorkorderFormComponent implements OnInit {
           this.getWorkOrder(id);
         }
       });
-
+    Global.setLoadingFlag(true);
     this.machineService.getMachineList().subscribe(list => {
-      //this.machineList = list; fix this
-    }, () => { }, () => {
+      if (list.Success) {
+        this.machineList = list.data;
+        Global.setLoadingFlag(false);
+      } else {
+        Global.setLoadingFlag(false);
+        this.showMessage(MessageType.Error, "Error", list.Message);
+      }
+
+    }, (error: AppError) => {
+      Global.setLoadingFlag(false);
+      if (error instanceof NotFoundError) {
+        this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+      }
+      else if (error instanceof BadRequestError) {
+        this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+      }
+      else throw error;
+    }, () => {
       this.assemblyService.getAssemblyList().subscribe(list => {
-        //this.assemblyList = list;
-      });
+        if (list.Success) {
+          this.assemblyList = list.data;
+          Global.setLoadingFlag(false);
+        } else {
+          Global.setLoadingFlag(false);
+          this.showMessage(MessageType.Error, "Error", list.Message);
+        }
+      },
+        (error: AppError) => {
+          Global.setLoadingFlag(false);
+          if (error instanceof NotFoundError) {
+            this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+          }
+          else if (error instanceof BadRequestError) {
+            this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+          }
+          else throw error;
+        });
     });
   }
 
   getWorkOrder(id: number) {
+    Global.setLoadingFlag(true);
     this.workOrderService.getWorkOrder(id).subscribe(
       wo => {
-        this.workOrder = wo;
-        console.log(this.workOrder);
-        //this.getEmployeeDesignation();
-      },
-      error => this.errorMessage = <any>error, () => {
-        if (this.workOrder.machine.id > 0) {
-          this.form.controls['buildMachine'].setValue(true);
+        if (wo.Success) {
+          this.workOrder = wo.data[0];
+          //console.log(this.workOrder);
+          if (this.workOrder.assembly.id === 0){
+            this.buildMachine = true;
+          }
+          Global.setLoadingFlag(false);
+        } else {
+          Global.setLoadingFlag(false);
+          this.showMessage(MessageType.Error, "Error", wo.Message);
         }
-      })
+      },
+      (error: AppError) => {
+        Global.setLoadingFlag(false);
+        if (error instanceof NotFoundError) {
+          this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+        }
+        else if (error instanceof BadRequestError) {
+          this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+        }
+        else throw error;
+      });
   }
 
 
@@ -103,11 +156,64 @@ export class WorkorderFormComponent implements OnInit {
   }
 
   saveForm() {
-    console.log(this.workOrder);
+    //console.log(this.workOrder);
+
+    if (this.workOrder.id > 0) {
+      this.workOrderService.updateWorkorder(this.workOrder)
+      .subscribe(revData => {
+        if (revData.Success){
+          Global.setLoadingFlag(false);
+        } else {
+          Global.setLoadingFlag(false); 
+          this.showMessage(MessageType.Error, "Error", revData.Message);
+        }
+      }),
+      (error: AppError) => {
+        Global.setLoadingFlag(false);
+        if (error instanceof NotFoundError) {
+          this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+        }
+        else if (error instanceof BadRequestError) {
+          this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+        }
+        else throw error;
+      } 
+    } else { 
+      Global.setLoadingFlag(true);
+      this.workOrderService.createWorkorder(this.workOrder)
+      .subscribe(revData => { 
+        if (revData.Success){
+          this.workOrder.id = revData.data[0];
+          Global.setLoadingFlag(false);
+        } else {
+          Global.setLoadingFlag(false);
+          this.showMessage(MessageType.Error, "Error", revData.Message);
+        }
+      }),
+      (error: AppError) => {
+        Global.setLoadingFlag(false);
+        if (error instanceof NotFoundError) {
+          this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+        }
+        else if (error instanceof BadRequestError) {
+          this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+        }
+        else throw error;
+      } 
   }
+}
 
   cancelForm() {
     this.router.navigate(['/workorderlist']);
   }
 
+  showMessage(messageType: MessageType, title: string, message: string) {
+
+    let disposable = this.dialogService.addDialog(MessageBoxComponent, {
+      title: title,
+      messageType: messageType,
+      message: message
+
+    }).subscribe((isConfirmed) => { });
+  }
 }

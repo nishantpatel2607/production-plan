@@ -7,6 +7,12 @@ import { IVMAssemblyListItem } from '../../model/viewModel/assemblyViewModels/vm
 import { IVMWorkOrderSuitableEmployee } from '../../model/viewModel/workorderModels/vmWorkOrderSuitableEmployee';
 import { PagerService } from '../../core/services/pager.service';
 import { IVMWorkOrderTeam } from '../../model/viewModel/workorderModels/vmWorkOrderTeam';
+import { Global } from '../../core/services/global';
+import { AppError } from '../../errorhandlers/app-error';
+import { NotFoundError } from '../../errorhandlers/not-found-error';
+import { MessageType, MessageBoxComponent } from '../../shared/message-box/message-box.component';
+import { BadRequestError } from '../../errorhandlers/bad-request-error';
+import { DialogService } from 'ng2-bootstrap-modal';
 
 @Component({
   selector: 'app-workorder-team',
@@ -33,7 +39,8 @@ export class WorkorderTeamComponent implements OnInit {
   constructor(private workOrderService: WorkOrderService,
     private activateRoute: ActivatedRoute,
     private pagerService: PagerService,
-    private router: Router,) { }
+    private router: Router,
+    private dialogService: DialogService) { }
 
   ngOnInit() {
     let machineItem: IVMMachineListItem = { 'id': 0, 'machineName': '' };
@@ -61,45 +68,80 @@ export class WorkorderTeamComponent implements OnInit {
   }
 
   getWorkOrder(id: number) {
+    Global.setLoadingFlag(true);
     this.workOrderService.getWorkOrder(id).subscribe(
       wo => {
-        this.workOrder = wo;
-        //console.log(this.workOrder);
-
+        if (wo.Success) {
+          this.workOrder = wo.data[0];
+          Global.setLoadingFlag(false);
+        } else {
+          Global.setLoadingFlag(false);
+          this.showMessage(MessageType.Error, "Error", wo.Message);
+        }
       },
-      error => this.errorMessage = <any>error, () => {
-      })
+      (error: AppError) => {
+        Global.setLoadingFlag(false);
+        if (error instanceof NotFoundError) {
+          this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+        }
+        else if (error instanceof BadRequestError) {
+          this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+        }
+        else throw error;
+      });
   }
 
   getSuitableEmployees(id: number) {
+    Global.setLoadingFlag(true);
     this.workOrderService.getSuitableEmployees(id).subscribe(
       emp => {
-        this.suitableEmployees = emp;
-        this.filteredItems_suitableEmployees = emp;
-        this.setPage_suitableEmployees(1);
+        if (emp.Success) {
+         
+          this.suitableEmployees = emp.data;
+          this.filteredItems_suitableEmployees = emp.data;
+          this.setPage_suitableEmployees(1);
+          Global.setLoadingFlag(false);
+        } else {
+          Global.setLoadingFlag(false);
+          this.showMessage(MessageType.Error, "Error", emp.Message);
+        }
       },
-      error => this.errorMessage = <any>error, () => {
-      })
+      (error: AppError) => {
+        Global.setLoadingFlag(false);
+        if (error instanceof NotFoundError) {
+          this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+        }
+        else if (error instanceof BadRequestError) {
+          this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+        }
+        else throw error;
+      });
   }
 
   getWorkOrderTeam(id: number) {
+    Global.setLoadingFlag(true);
     this.workOrderService.getTeamMembers(id).subscribe(
       emp => {
-        this.teamMembers = emp;
-        this.filteredItems_teamMembers = emp;
-        this.setPage_teamMembers(1);
-      },
-      error => this.errorMessage = <any>error,
-      () => {
-        //Remove employees from available list
-        for (let member of this.teamMembers) {
-          let empPos = this.suitableEmployees.findIndex(e => e.id == member.employeeId);
-          this.suitableEmployees.splice(empPos, 1);
+        if (emp.Success) {
+          this.teamMembers = emp.data;
+          this.filteredItems_teamMembers = emp.data;
+          this.setPage_teamMembers(1);
+          Global.setLoadingFlag(false);
+        } else {
+          Global.setLoadingFlag(false);
+          this.showMessage(MessageType.Error, "Error", emp.Message);
         }
-
-        this.filteredItems_suitableEmployees = this.suitableEmployees;
-        this.setPage_suitableEmployees(1);
-      })
+      },
+      (error: AppError) => {
+        Global.setLoadingFlag(false);
+        if (error instanceof NotFoundError) {
+          this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+        }
+        else if (error instanceof BadRequestError) {
+          this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+        }
+        else throw error;
+      });
   }
 
   setPage_suitableEmployees(page: number) {
@@ -137,6 +179,7 @@ export class WorkorderTeamComponent implements OnInit {
   }
 
   addEmpToTeam(emp: IVMWorkOrderSuitableEmployee) {
+    console.log(emp);
     let teamMember: IVMWorkOrderTeam = {
       workOrderId: this.workOrder.id,
       employeeId: emp.id,
@@ -213,12 +256,43 @@ export class WorkorderTeamComponent implements OnInit {
     this.setPage_teamMembers(1);
   }
 
-  saveForm(){
-    this.workOrderService.saveTeamMembers(this.teamMembers);
+  saveForm() {
+    Global.setLoadingFlag(true);
+    console.log(this.teamMembers); 
+    this.workOrderService.saveTeamMembers(this.teamMembers) .subscribe(revData => {
+      if (revData.Success){
+        
+        Global.setLoadingFlag(false);
+      } else {
+        Global.setLoadingFlag(false);
+        this.showMessage(MessageType.Error, "Error", revData.Message);
+      }
+    }),
+    (error: AppError) => {
+      Global.setLoadingFlag(false);
+      if (error instanceof NotFoundError) {
+        this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+      }
+      else if (error instanceof BadRequestError) {
+        this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+      }
+      else throw error;
+    } 
   }
 
-  cancelForm(){
+  cancelForm() {
     this.router.navigate(['/workorderlist']);
+  }
+
+
+  showMessage(messageType: MessageType, title: string, message: string) {
+
+    let disposable = this.dialogService.addDialog(MessageBoxComponent, {
+      title: title,
+      messageType: messageType,
+      message: message
+
+    }).subscribe((isConfirmed) => { });
   }
 
 }

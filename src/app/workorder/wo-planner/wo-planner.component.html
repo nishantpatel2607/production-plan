@@ -1,12 +1,12 @@
 <div class="container-fluid">
   <home></home>
-  <div class="row">
+  <div class="row"> 
     <div class="col-sm-2">
       <button class="btn btn-primary btn-block" (click)="showSelector()">Add Work Order</button>
     </div>
-    <div class="col-sm-2"> 
+   <!--  <div class="col-sm-2"> 
       <button class="btn btn-primary btn-block" (click)="saveWOPlan()">Save Plan</button>
-    </div>
+    </div> -->
   </div>
   <div class="row" style="margin-top: 10px;">
     <p-schedule [height]=500 [events]="woEvents" [header]="header" [eventLimit]="4" [editable]="true" [slotEventOverlap]="false"
