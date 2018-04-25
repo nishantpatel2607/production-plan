@@ -9,6 +9,7 @@ import { DialogService } from 'ng2-bootstrap-modal';
 import { AppError } from '../../errorhandlers/app-error';
 import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
+import { Moment } from 'moment';
 
 
 
@@ -22,6 +23,7 @@ export class WoPlannerComponent implements OnInit {
   woEvents: IVMWorkOrderEvent[] = []; //displayed on schedule control
   woPlans: IVMWorkOrderPlan[] = []; //loaded from DB 
   header: any;
+  
   showWOSelector: boolean = false;
   colorIndex: number = 0;
   colorcodes: colorCodes;
@@ -36,7 +38,7 @@ export class WoPlannerComponent implements OnInit {
 
   ngOnInit() {
     this.header = {
-      left: 'prev,next today',
+      left: 'prev,next,today',
       center: 'title',
       right: 'month,agendaWeek,agendaDay,listWeek'
     };
@@ -126,7 +128,6 @@ export class WoPlannerComponent implements OnInit {
       let index = this.woEvents.findIndex(w => w.workOrderId == woEvent.workOrderId && w.start == woEvent.start);
       if (index < 0) {
         if (plan.id === 0) {
-          
           Global.setLoadingFlag(true);
           this.workOrderService.addWorkorderPlan(plan)
             .subscribe(revData => {
@@ -134,6 +135,7 @@ export class WoPlannerComponent implements OnInit {
                 plan.id = revData.data[0];
                 woEvent.id = plan.id;
                 this.woEvents.push(woEvent);
+                //onsole.log(woEvent);
                 Global.setLoadingFlag(false);
               } else {
                 Global.setLoadingFlag(false);
@@ -152,7 +154,7 @@ export class WoPlannerComponent implements OnInit {
             }
         } else {
           this.woEvents.push(woEvent);
-          console.log( this.woEvents);
+          //console.log(woEvent);
         }
       }
     }
@@ -167,8 +169,11 @@ export class WoPlannerComponent implements OnInit {
       }
       event.event.isDirty = true;
       let woEvent: IVMWorkOrderEvent = event.event;
-      let startDtTm: string[] = woEvent.start.split('T');
-      let endDtTm: string[] = woEvent.end.split('T');
+      
+      let startDtTm: string[] = ((<Moment>woEvent.start).format('YYYY-MM-DD') + 'T' + (<Moment>woEvent.start).format('HH:mm')).split('T');
+      
+      let endDtTm: string[] = ((<Moment>woEvent.end).format('YYYY-MM-DD') + 'T' + (<Moment>woEvent.end).format('HH:mm')).split('T');
+      //console.log(((<Moment>woEvent.end).format('YYYY-MM-DD') + 'T' + (<Moment>woEvent.end).format('HH:mm')));
       let plan: IVMWorkOrderPlan = {
         id: woEvent.id,
         workOrderId: woEvent.workOrderId,
@@ -190,7 +195,7 @@ export class WoPlannerComponent implements OnInit {
       this.workOrderService.updateWorkorderPlan(plan)
         .subscribe(revData => {
           if (revData.Success) {
-            plan.id = revData.data[0];
+            //plan.id = revData.data[0];
             Global.setLoadingFlag(false);
           } else {
             Global.setLoadingFlag(false);
@@ -236,7 +241,7 @@ export class WoPlannerComponent implements OnInit {
       }
     });
     if (woPlans.length > 0) {
-      console.log(woPlans);
+      //console.log(woPlans);
       //call service to save the events and redraw events
       //returned from the server.
     }

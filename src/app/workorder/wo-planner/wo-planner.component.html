@@ -9,7 +9,7 @@
     </div> -->
   </div>
   <div class="row" style="margin-top: 10px;">
-    <p-schedule [height]=500 [events]="woEvents" [header]="header" [eventLimit]="4" [editable]="true" [slotEventOverlap]="false"
+    <p-schedule  [height]=500 [events]="woEvents" [header]="header" [eventLimit]="4" [editable]="true" [slotEventOverlap]="false"
       (onEventClick)="handleEventClick($event)" [slotDuration]="slot" (onViewRender)="dateRangeChanged($event)"
       (onEventResize)="changeEventDuration($event)" (onEventDrop)="changeEventDuration($event)">  </p-schedule>
   </div>
