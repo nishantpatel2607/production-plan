@@ -2,6 +2,7 @@
   <home></home>
  
   <div class="row">
+      <p-growl [life]='3000'></p-growl>
       <div class="col-sm-4">
           <assembly-selector (ItemSelected)="addAssembly($event)"></assembly-selector>
         </div>

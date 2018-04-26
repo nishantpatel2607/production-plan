@@ -11,7 +11,9 @@ import { AppError } from '../../errorhandlers/app-error';
 import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
 import { Global } from '../../core/services/global';
-
+import { toastMessage } from '../../model/toastMessage';
+import { MessageService } from 'primeng/components/common/messageservice';
+import { Message } from 'primeng/components/common/api';
 @Component({
   selector: 'employee-list',
   templateUrl: './employee-list.component.html',
@@ -34,7 +36,8 @@ export class EmployeeListComponent implements OnInit {
     private route: Router,
     private employeeService: EmployeeService,
     private pagerService: PagerService,
-    private dialogService: DialogService) { }
+    private dialogService: DialogService,
+    private messageService: MessageService) { }
 
   //sorting
   key: string = 'firstName'; //set default
@@ -94,7 +97,7 @@ export class EmployeeListComponent implements OnInit {
                 this.filteredItems = this.employees;
                 this.setPage(1);
                 Global.setLoadingFlag(false); // Global.loadingFlag = true;
-
+                this.showToastMessage('success','','Employee record deleted successfully.');
               } else {
                 Global.setLoadingFlag(false); // Global.loadingFlag = true;
                 this.showMessage(MessageType.Error, 'Error', responseData.Message);
@@ -160,7 +163,15 @@ export class EmployeeListComponent implements OnInit {
 
     }).subscribe((isConfirmed) => { this.messageConfirm = isConfirmed; });
   }
-
+  
+  showToastMessage(severity:string, summary: string, detail:string){
+    let message: Message = {
+      severity: severity,
+      summary: summary,
+      detail:detail
+    }
+    this.messageService.add(message);
+  }
   
 
 }

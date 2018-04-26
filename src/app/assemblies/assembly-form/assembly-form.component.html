@@ -1,13 +1,19 @@
 <!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '0px' }">
 </ngx-loading> -->
+
 <div class="container-fluid">
+    
+ 
   <home></home>
+
   <div class="row">
+      <p-growl [life] = '3000' ></p-growl>
     <div class="col-sm-4">
       <assembly-selector [DisableAssembly]="assembly.assemblyName"  (ItemSelected)="addSubAssembly($event)"></assembly-selector>
     </div>
     <div class="col-md-8">
       <div class="well">
+       
         <form class="data-form" [formGroup]="form">
           <div class="form-group">
             <label for="assemblyName">Assembly Name</label>

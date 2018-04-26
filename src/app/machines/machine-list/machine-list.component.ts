@@ -17,6 +17,9 @@ import { BadRequestError } from '../../errorhandlers/bad-request-error';
 import { IVMMachine } from '../../model/viewModel/machineViewModels/vmMachine';
 import { Global } from '../../core/services/global';
 
+import { toastMessage } from '../../model/toastMessage';
+import { MessageService } from 'primeng/components/common/messageservice';
+import { Message } from 'primeng/components/common/api';
 @Component({
   selector: 'machine-list',
   templateUrl: './machine-list.component.html',
@@ -48,7 +51,8 @@ export class MachineListComponent implements OnInit {
     private machineService: MachineService,
     private machineCategoryService: MachineCategoryService,
     private pagerService: PagerService,
-    private dialogService: DialogService) { }
+    private dialogService: DialogService,
+    private messageService: MessageService) { }
 
   ngOnInit() {
 
@@ -107,6 +111,7 @@ export class MachineListComponent implements OnInit {
                 if (responseData.Success) {
                   this.getMachines();
                   Global.setLoadingFlag(false);
+                  this.showToastMessage('success','','Machine deleted successfully.');
                 } else {
                   Global.setLoadingFlag(false);
                   this.showMessage(MessageType.Error, 'Error', responseData.Message);
@@ -172,4 +177,12 @@ export class MachineListComponent implements OnInit {
     }).subscribe((isConfirmed) => { });
   }
 
+  showToastMessage(severity:string, summary: string, detail:string){
+    let message: Message = {
+      severity: severity,
+      summary: summary,
+      detail:detail
+    }
+    this.messageService.add(message);
+  }
 }

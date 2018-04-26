@@ -10,6 +10,7 @@ import { AssemblySelectorComponent } from './assembly-selector/assembly-selector
 import { AssemblyFormComponent } from './assembly-form/assembly-form.component';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
+import { GrowlModule } from 'primeng/growl';
  
  
 @NgModule({
@@ -20,6 +21,7 @@ import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
     SharedModule,
     Ng2OrderModule,
     AngularMultiSelectModule,
+    GrowlModule,
     RouterModule.forChild([
       { path: 'assemblies', component: AssemblyListComponent},
       { path: 'assemblies/new', component: AssemblyFormComponent},

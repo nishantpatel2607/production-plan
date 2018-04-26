@@ -9,6 +9,7 @@ import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { DesignationListComponent } from './designation-list/designation-list.component';
 import { DesignationService } from '../core/services/designation.service';
 import { Ng2OrderModule } from 'ng2-order-pipe';
+import { GrowlModule } from 'primeng/growl';
 //import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
 //import { LoadingService } from '../core/services/loading.service';
 
@@ -18,6 +19,7 @@ import { Ng2OrderModule } from 'ng2-order-pipe';
         ReactiveFormsModule,
         FormsModule,
         Ng2OrderModule,
+        GrowlModule,
         RouterModule.forChild([
             {path: 'designations',component:DesignationListComponent},
             { path: 'employees', component: EmployeeListComponent},

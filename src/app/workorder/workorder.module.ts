@@ -10,6 +10,7 @@ import { WorkorderListComponent } from './workorder-list/workorder-list.componen
 import { WorkOrderService } from '../core/services/workorders.service';
 import { WorkorderTeamComponent } from './workorder-team/workorder-team.component';
 import { WorkorderSelectorComponent } from './workorder-selector/workorder-selector.component';
+import { GrowlModule } from 'primeng/growl';
 
 @NgModule({  
     imports: [
@@ -17,6 +18,7 @@ import { WorkorderSelectorComponent } from './workorder-selector/workorder-selec
         ReactiveFormsModule,
         SharedModule,
         Ng2OrderModule,
+        GrowlModule,
         //DateTimePickerModule,
         RouterModule.forChild([
             { path: 'workorderlist', component: WorkorderListComponent},

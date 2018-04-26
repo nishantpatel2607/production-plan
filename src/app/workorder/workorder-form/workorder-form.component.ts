@@ -16,6 +16,11 @@ import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
 import { MessageType, MessageBoxComponent } from '../../shared/message-box/message-box.component';
 import { DialogService } from 'ng2-bootstrap-modal';
+
+import { toastMessage } from '../../model/toastMessage';
+import { MessageService } from 'primeng/components/common/messageservice';
+import { Message } from 'primeng/components/common/api';
+
 @Component({
   selector: 'app-workorder-form',
   templateUrl: './workorder-form.component.html',
@@ -39,6 +44,7 @@ export class WorkorderFormComponent implements OnInit {
     private employeeService: EmployeeService,
     private workOrderService: WorkOrderService,
     private dialogService: DialogService,
+    private messageService: MessageService,
     private router: Router) {
     this.form = fb.group({
       workOrderNo: ['', Validators.required],
@@ -163,6 +169,7 @@ export class WorkorderFormComponent implements OnInit {
       .subscribe(revData => {
         if (revData.Success){
           Global.setLoadingFlag(false);
+          this.showToastMessage('success','','Workorder saved successfully.');
         } else {
           Global.setLoadingFlag(false); 
           this.showMessage(MessageType.Error, "Error", revData.Message);
@@ -185,6 +192,7 @@ export class WorkorderFormComponent implements OnInit {
         if (revData.Success){
           this.workOrder.id = revData.data[0];
           Global.setLoadingFlag(false);
+          this.showToastMessage('success','','Workorder updated successfully.');
         } else {
           Global.setLoadingFlag(false);
           this.showMessage(MessageType.Error, "Error", revData.Message);
@@ -215,5 +223,14 @@ export class WorkorderFormComponent implements OnInit {
       message: message
 
     }).subscribe((isConfirmed) => { });
+  }
+
+  showToastMessage(severity:string, summary: string, detail:string){
+    let message: Message = {
+      severity: severity,
+      summary: summary,
+      detail:detail
+    }
+    this.messageService.add(message);
   }
 }

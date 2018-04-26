@@ -15,6 +15,7 @@ import { MachineCategoryService } from '../core/services/machineCategory.service
 import { Ng2OrderModule } from 'ng2-order-pipe';
 import { AssembliesModule } from '../assemblies/assemblies.module';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import { GrowlModule } from 'primeng/growl';
 //import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
 @NgModule({  
     imports: [
@@ -24,6 +25,7 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
         Ng2OrderModule,
         AssembliesModule,
         AngularMultiSelectModule,
+        GrowlModule,
         RouterModule.forChild([
             { path: 'machines', component: MachineListComponent},
             { path: 'machines/new', component: MachineFormComponent},

@@ -9,7 +9,9 @@ import { AppError } from '../../errorhandlers/app-error';
 import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
 import { Global } from '../../core/services/global';
-
+import { toastMessage } from '../../model/toastMessage';
+import { MessageService } from 'primeng/components/common/messageservice';
+import { Message } from 'primeng/components/common/api';
 @Component({
   selector: 'designation-list',
   templateUrl: './designation-list.component.html',
@@ -38,7 +40,8 @@ export class DesignationListComponent implements OnInit {
     private route: Router,
     private pagerService: PagerService,
     private designationService: DesignationService,
-    private dialogService: DialogService) { }
+    private dialogService: DialogService,
+    private messageService: MessageService) { }
 
   ngOnInit() {
     this.getDesignations();
@@ -133,6 +136,7 @@ export class DesignationListComponent implements OnInit {
             // this.setTitlesPage(1);
             this.getDesignations();
             Global.setLoadingFlag(false);
+            this.showToastMessage('success','','Designation saved successfully.');
           } else {
             Global.setLoadingFlag(false);
             this.showMessage(MessageType.Error, 'Error', 'The specified designation already exist.');
@@ -160,6 +164,7 @@ export class DesignationListComponent implements OnInit {
            //this.setTitlesPage(1);
            this.getDesignations();
             Global.setLoadingFlag(false);
+            this.showToastMessage('success','','Desgnation updated successfully.');
           } else {
             Global.setLoadingFlag(false);
             this.showMessage(MessageType.Error, 'Error', responseData.Message);
@@ -190,6 +195,7 @@ export class DesignationListComponent implements OnInit {
               //this.titles.splice(index, 1);
               Global.setLoadingFlag(false);
               this.getDesignations();
+              this.showToastMessage('success','','Designation deleted successfully.');
             }else {
               Global.setLoadingFlag(false);
               this.showMessage(MessageType.Error, 'Error', responseData.Message);
@@ -220,5 +226,12 @@ export class DesignationListComponent implements OnInit {
     }).subscribe((isConfirmed) => { this.messageConfirm = isConfirmed;});
   }
 
-  
+  showToastMessage(severity:string, summary: string, detail:string){
+    let message: Message = {
+      severity: severity,
+      summary: summary,
+      detail:detail
+    }
+    this.messageService.add(message);
+  }
 }

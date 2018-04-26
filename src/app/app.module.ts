@@ -23,6 +23,9 @@ import { AppErrorHandler } from './errorhandlers/global-error-handler';
 import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
 import { LoadingService } from './core/services/loading.service';
+import {MessageService} from 'primeng/components/common/messageservice';
+import {GrowlModule} from 'primeng/growl';
+
 const app_routes: Routes = [
   {path: '',  component: LoginFormComponent},
   {path: 'home',   component: HomeComponent}
@@ -51,6 +54,7 @@ const app_routes: Routes = [
     WorkOrderModule,
     MomentModule,
     BootstrapModalModule,
+    GrowlModule,
     LoadingModule.forRoot({
       animationType: ANIMATION_TYPES.threeBounce,
         backdropBackgroundColour: 'rgba(0,0,0,0.1)', 
@@ -62,7 +66,8 @@ const app_routes: Routes = [
     
   ],
   providers: [ 
-     { provide: ErrorHandler, useClass: AppErrorHandler}
+     { provide: ErrorHandler, useClass: AppErrorHandler},
+     MessageService
     ],
   bootstrap: [AppComponent]
 })

@@ -15,6 +15,9 @@ import { AppError } from '../../errorhandlers/app-error';
 import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
 import { Global } from '../../core/services/global';
+import { MessageService } from 'primeng/components/common/messageservice';
+import {Message} from 'primeng/components/common/api';
+import { toastMessage } from '../../model/toastMessage';
 
 
 interface ISelectionListItem {
@@ -25,7 +28,8 @@ interface ISelectionListItem {
 @Component({
   selector: 'app-assembly-form',
   templateUrl: './assembly-form.component.html',
-  styleUrls: ['./assembly-form.component.css']
+  styleUrls: ['./assembly-form.component.css'],
+  //providers: [MessageService]
 })
 export class AssemblyFormComponent implements OnInit {
 
@@ -53,7 +57,10 @@ export class AssemblyFormComponent implements OnInit {
     private assemblyService: AssemblyService,
     private router: Router,
     private activateRoute: ActivatedRoute,
-    private dialogService: DialogService) {
+    private dialogService: DialogService,
+    private messageService: MessageService
+    ) {
+     
     this.form = fb.group({
       assemblyName: ['', Validators.required],
       assemblyDescription: [],
@@ -158,6 +165,7 @@ export class AssemblyFormComponent implements OnInit {
       .subscribe(revData => {
         if (revData.Success){
           Global.setLoadingFlag(false);
+          this.showToastMessage('success','','Assembly saved.');
         } else {
           Global.setLoadingFlag(false); 
           this.showMessage(MessageType.Error, "Error", revData.Message);
@@ -180,6 +188,8 @@ export class AssemblyFormComponent implements OnInit {
         if (revData.Success){
           this.assembly.id = revData.data[0];
           Global.setLoadingFlag(false);
+          
+         this.showToastMessage('success','','Assembly saved.');
         } else {
           Global.setLoadingFlag(false);
           this.showMessage(MessageType.Error, "Error", revData.Message);
@@ -256,5 +266,18 @@ export class AssemblyFormComponent implements OnInit {
       message: message
 
     }).subscribe((isConfirmed) => { });
+  }
+
+  // checkmsg(){
+  //   this.showToastMessage({severity:'info', summary:'Info Message', detail:'PrimeNG rocks'});
+  // }
+
+  showToastMessage(severity:string, summary: string, detail:string){
+    let message: Message = {
+      severity: severity,
+      summary: summary,
+      detail:detail
+    }
+    this.messageService.add(message);
   }
 }

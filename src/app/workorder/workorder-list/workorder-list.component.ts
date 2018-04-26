@@ -10,6 +10,10 @@ import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { AppError } from '../../errorhandlers/app-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
 
+import { toastMessage } from '../../model/toastMessage';
+import { MessageService } from 'primeng/components/common/messageservice';
+import { Message } from 'primeng/components/common/api';
+
 @Component({
   selector: 'app-workorder-list',
   templateUrl: './workorder-list.component.html',
@@ -38,7 +42,8 @@ export class WorkorderListComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private route: Router,
     private pagerService: PagerService,
-    private dialogService: DialogService) { }
+    private dialogService: DialogService,
+    private messageService: MessageService) { }
 
   ngOnInit() {
     this.getWorkOrderList();
@@ -89,6 +94,7 @@ export class WorkorderListComponent implements OnInit {
                 if (responseData.Success) {
                   this.getWorkOrderList();
                   Global.setLoadingFlag(false);
+                  this.showToastMessage('success','','Workorder deleted successfully.');
                 } else {
                   Global.setLoadingFlag(false);
                   this.showMessage(MessageType.Error, 'Error', responseData.Message);
@@ -146,5 +152,14 @@ export class WorkorderListComponent implements OnInit {
       message: message
 
     }).subscribe((isConfirmed) => { });
+  }
+
+  showToastMessage(severity:string, summary: string, detail:string){
+    let message: Message = {
+      severity: severity,
+      summary: summary,
+      detail:detail
+    }
+    this.messageService.add(message);
   }
 }

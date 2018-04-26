@@ -13,7 +13,9 @@ import { AppError } from '../../errorhandlers/app-error';
 import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
 import { Global } from '../../core/services/global';
-
+import { toastMessage } from '../../model/toastMessage';
+import { MessageService } from 'primeng/components/common/messageservice';
+import { Message } from 'primeng/components/common/api';
 @Component({
   selector: 'machine-category',
   templateUrl: './machine-category.component.html',
@@ -53,7 +55,8 @@ export class MachineCategoryComponent implements OnInit {
     private route: Router,
     private pagerService: PagerService,
     private machineCategoryService: MachineCategoryService,
-    private dialogService: DialogService) { }
+    private dialogService: DialogService,
+    private messageService: MessageService) { }
   //private machineModelService: MachineModelService) { }
 
   ngOnInit() {
@@ -161,6 +164,7 @@ export class MachineCategoryComponent implements OnInit {
               this.setPage(1); */
               this.getMachineCategories();
               Global.setLoadingFlag(false);
+              this.showToastMessage('success','','Category saved successfully.');
             } else {
               Global.setLoadingFlag(false);
               this.showMessage(MessageType.Error, 'Error', 'The specified category already exist.');
@@ -191,6 +195,7 @@ export class MachineCategoryComponent implements OnInit {
               this.getMachineCategories();
               //this.setPage(1);
               Global.setLoadingFlag(false);
+              this.showToastMessage('success','','Category updated successfully.');
             } else {
               Global.setLoadingFlag(false);
               this.showMessage(MessageType.Error, 'Error', responseData.Message);
@@ -221,6 +226,7 @@ export class MachineCategoryComponent implements OnInit {
                   this.setPage(1); */
                   this.getMachineCategories();
                   Global.setLoadingFlag(false);
+                  this.showToastMessage('success','','Category deleted successfully.');
                 } else {
                   Global.setLoadingFlag(false);
                   this.showMessage(MessageType.Error, 'Error', responseData.Message);
@@ -243,5 +249,14 @@ export class MachineCategoryComponent implements OnInit {
       message: message
 
     }).subscribe((isConfirmed) => { });
+  }
+
+  showToastMessage(severity:string, summary: string, detail:string){
+    let message: Message = {
+      severity: severity,
+      summary: summary,
+      detail:detail
+    }
+    this.messageService.add(message);
   }
 }

@@ -12,6 +12,9 @@ import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { AppError } from '../../errorhandlers/app-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
 import { Global } from '../../core/services/global';
+import { toastMessage } from '../../model/toastMessage';
+import { MessageService } from 'primeng/components/common/messageservice';
+import { Message } from 'primeng/components/common/api';
 
 @Component({
   selector: 'employee-form',
@@ -42,7 +45,8 @@ export class EmployeeFormComponent implements OnInit {
     private activateRoute: ActivatedRoute,
     private employeeService: EmployeeService,
     private designationService: DesignationService,
-    private dialogService: DialogService) {
+    private dialogService: DialogService,
+    private messageService: MessageService) {
     this.form = fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -138,6 +142,7 @@ export class EmployeeFormComponent implements OnInit {
             
             this.employee.id = responseData.data[0];
             Global.setLoadingFlag(false);
+            this.showToastMessage('success','','Employee saved successfully.');
           } else {
             Global.setLoadingFlag(false);
             this.showMessage(MessageType.Error, "Error", responseData.Message);
@@ -158,9 +163,12 @@ export class EmployeeFormComponent implements OnInit {
         responseData => {
           if (responseData.Success) {           
             Global.setLoadingFlag(false);
+           
+            this.showToastMessage('success','','Employee saved successfully.');
           } else {
             Global.setLoadingFlag(false);
             this.showMessage(MessageType.Error, "Error", responseData.Message);
+
           }
         }, (error: AppError) => {
           Global.setLoadingFlag(false);
@@ -190,6 +198,15 @@ export class EmployeeFormComponent implements OnInit {
       message: message
 
     }).subscribe((isConfirmed) => { });
+  }
+
+  showToastMessage(severity:string, summary: string, detail:string){
+    let message: Message = {
+      severity: severity,
+      summary: summary,
+      detail:detail
+    }
+    this.messageService.add(message);
   }
 
   get designation() {

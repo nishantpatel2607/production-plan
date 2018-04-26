@@ -11,7 +11,9 @@ import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
 import { Moment } from 'moment';
 
-
+import { toastMessage } from '../../model/toastMessage';
+import { MessageService } from 'primeng/components/common/messageservice';
+import { Message } from 'primeng/components/common/api';
 
 @Component({
   selector: 'app-wo-planner',
@@ -32,8 +34,10 @@ export class WoPlannerComponent implements OnInit {
   initializeFlag: boolean = true;
 
   constructor(private workOrderService: WorkOrderService,
-    private dialogService: DialogService) {
+    private dialogService: DialogService,
+    private messageService: MessageService) {
     this.colorcodes = new colorCodes();
+    
   }
 
   ngOnInit() {
@@ -137,6 +141,7 @@ export class WoPlannerComponent implements OnInit {
                 this.woEvents.push(woEvent);
                 //onsole.log(woEvent);
                 Global.setLoadingFlag(false);
+                this.showToastMessage('success','','Plan saved successfully.');
               } else {
                 Global.setLoadingFlag(false);
                 this.showMessage(MessageType.Error, "Error", revData.Message);
@@ -197,6 +202,7 @@ export class WoPlannerComponent implements OnInit {
           if (revData.Success) {
             //plan.id = revData.data[0];
             Global.setLoadingFlag(false);
+            this.showToastMessage('success','','Plan updated successfully.');
           } else {
             Global.setLoadingFlag(false);
             this.showMessage(MessageType.Error, "Error", revData.Message);
@@ -277,4 +283,12 @@ export class WoPlannerComponent implements OnInit {
     }).subscribe((isConfirmed) => { });
   }
 
+  showToastMessage(severity:string, summary: string, detail:string){
+    let message: Message = {
+      severity: severity,
+      summary: summary,
+      detail:detail
+    }
+    this.messageService.add(message);
+  }
 }

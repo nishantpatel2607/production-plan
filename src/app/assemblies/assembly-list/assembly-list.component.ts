@@ -9,7 +9,9 @@ import { BadRequestError } from '../../errorhandlers/bad-request-error';
 import { MessageType, MessageBoxComponent } from '../../shared/message-box/message-box.component';
 import { DialogService } from 'ng2-bootstrap-modal';
 import { Global } from '../../core/services/global';
-
+import {Message} from 'primeng/components/common/api';
+import { toastMessage } from '../../model/toastMessage';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 @Component({
   selector: 'assembly-list',
@@ -39,7 +41,11 @@ export class AssemblyListComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private route: Router,
     private pagerService: PagerService,
-    private dialogService: DialogService) { }
+    private dialogService: DialogService,
+    private messageService: MessageService
+    ) {
+      
+     }
 
   ngOnInit() {
     Global.setLoadingFlag(true);
@@ -92,12 +98,24 @@ export class AssemblyListComponent implements OnInit {
                 this.filteredItems = this.assemblies;
                 this.setPage(1);
                 Global.setLoadingFlag(false);
-
+                this.showToastMessage('success','','Assembly deleted successfully.');
               } else {
                 Global.setLoadingFlag(false);
                 this.showMessage(MessageType.Error, 'Error', responseData.Message);
                 return;
               }
+            },(error: AppError) => {
+              Global.setLoadingFlag(false);
+              if (error instanceof NotFoundError) {
+                this.showMessage(MessageType.Error, "Error", "Requested data not found.");
+              }
+              else if (error instanceof BadRequestError) {
+                this.showMessage(MessageType.Error, "Error", "Unable to process the request.");
+              }
+              else throw error;
+            } ,()=>{
+              console.log('Deleted');
+             
             }
           )
         }
@@ -154,5 +172,14 @@ export class AssemblyListComponent implements OnInit {
       message: message
 
     }).subscribe((isConfirmed) => { });
+  }
+
+  showToastMessage(severity:string, summary: string, detail:string){
+    let message: Message = {
+      severity: severity,
+      summary: summary,
+      detail:detail
+    }
+    this.messageService.add(message);
   }
 }

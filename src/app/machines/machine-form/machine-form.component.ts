@@ -23,6 +23,10 @@ import { NotFoundError } from '../../errorhandlers/not-found-error';
 import { BadRequestError } from '../../errorhandlers/bad-request-error';
 import { Global } from '../../core/services/global';
 
+import { toastMessage } from '../../model/toastMessage';
+import { MessageService } from 'primeng/components/common/messageservice';
+import { Message } from 'primeng/components/common/api';
+
 //import { mcall } from 'q';
 interface ISelectionListItem {
   id: number,
@@ -85,7 +89,8 @@ export class MachineFormComponent implements OnInit {
     private machineService: MachineService,
     private designationService: DesignationService,
     private machineCategoryService: MachineCategoryService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private messageService: MessageService
   ) {
     this.form = fb.group({
       machineName: ['', Validators.required],
@@ -226,6 +231,7 @@ export class MachineFormComponent implements OnInit {
       .subscribe(revData => {
         if (revData.Success){
           Global.setLoadingFlag(false);
+          this.showToastMessage('success','','Machine updated successfully.');
         } else {
           Global.setLoadingFlag(false); 
           this.showMessage(MessageType.Error, "Error", revData.Message);
@@ -248,6 +254,7 @@ export class MachineFormComponent implements OnInit {
         if (revData.Success){
           this.machine.id = revData.data[0];
           Global.setLoadingFlag(false);
+          this.showToastMessage('success','','Machine saved successfully.');
         } else {
           Global.setLoadingFlag(false);
           this.showMessage(MessageType.Error, "Error", revData.Message);
@@ -368,6 +375,15 @@ export class MachineFormComponent implements OnInit {
       message: message
 
     }).subscribe((isConfirmed) => { });
+  }
+
+  showToastMessage(severity:string, summary: string, detail:string){
+    let message: Message = {
+      severity: severity,
+      summary: summary,
+      detail:detail
+    }
+    this.messageService.add(message);
   }
 
 }
